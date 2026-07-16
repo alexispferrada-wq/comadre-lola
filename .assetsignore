@@ -1,0 +1,14 @@
+**/node_modules
+**/.DS_Store
+**/.git
+**/.wrangler
+backend
+package.json
+package-lock.json
+README.md
+INSTRUCCIONES.md
+render.yaml
+wrangler.jsonc
+.assetsignore
+.gitignore
+.npmrc

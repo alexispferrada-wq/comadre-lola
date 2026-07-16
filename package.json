@@ -8,5 +8,8 @@
     "dev": "npm --prefix backend run dev",
     "start:clean": "npm --prefix backend run start:clean",
     "dev:clean": "npm --prefix backend run dev:clean"
+  },
+  "devDependencies": {
+    "wrangler": "^4.111.0"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "lacomadrelola",
+  "compatibility_date": "2026-07-15",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "www.lacomadrelola.cl", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
