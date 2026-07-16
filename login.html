@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — La Comadre Lola</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--p:#E8913A;--s:#D4547B;--a:#4ECDC4;--bg:#0d0d12;--tx:#f0f0f0;--tm:#8a8aa0;--bd:rgba(255,255,255,.07);}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(232,145,58,.1) 0%,transparent 60%);pointer-events:none;}
+
+.card{width:100%;max-width:420px;background:rgba(18,18,28,.97);border:1px solid rgba(232,145,58,.2);border-radius:24px;padding:48px 40px;box-shadow:0 40px 120px rgba(0,0,0,.7);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(232,145,58,.1),transparent 70%);pointer-events:none;}
+.card::after{content:'';position:absolute;bottom:-50px;left:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(212,84,123,.08),transparent 70%);pointer-events:none;}
+
+.logo{text-align:center;margin-bottom:36px;}
+.logo-brand{font-family:'BudmoJiggler',cursive;font-size:24px;color:var(--p);}
+.logo-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--tm);margin-top:4px;}
+
+.fld{margin-bottom:18px;}
+.fld label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);margin-bottom:8px;}
+.fld input{width:100%;padding:13px 16px;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s,background .2s;}
+.fld input:focus{outline:none;border-color:var(--p);background:rgba(232,145,58,.04);}
+.fld input.error{border-color:#f44336;}
+
+.err-msg{display:none;background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.3);color:#ff6b6b;border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:16px;}
+.err-msg.show{display:block;}
+
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--p),var(--s));border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 8px 30px rgba(232,145,58,.3);transition:opacity .2s,transform .2s;margin-top:4px;}
+.btn:hover{opacity:.92;transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:wait;transform:none;}
+
+.back{text-align:center;margin-top:20px;font-size:12px;color:var(--tm);}
+.back a{color:var(--p);cursor:pointer;}
+@media(max-width:480px){
+  .card{padding:36px 24px;}
+  .logo-brand{font-size:20px;}
+}
+@media(max-width:360px){
+  .card{padding:28px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-brand">🌹 La Comadre Lola</div>
+    <div class="logo-sub">Panel de Administracion</div>
+  </div>
+
+  <div class="err-msg" id="errMsg"></div>
+
+  <div class="fld">
+    <label>Usuario</label>
+    <input type="text" id="usuario" placeholder="admin" autocomplete="username">
+  </div>
+  <div class="fld">
+    <label>Contrasena</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+  </div>
+
+  <button class="btn" id="loginBtn" onclick="doLogin()">Ingresar →</button>
+
+  <div class="back"><a onclick="location.href='/'">← Volver al sitio</a></div>
+</div>
+
+<script>
+const API = window.location.origin;
+
+document.getElementById('password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('usuario').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('password').focus();
+});
+
+// Si ya tiene token valido, redirigir directo
+(async () => {
+  const token = localStorage.getItem('lola_token');
+  if (!token) return;
+  try {
+    const r = await fetch(API + '/api/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+    if (r.ok) location.href = '/admin';
+  } catch {}
+})();
+
+async function doLogin() {
+  const usuario  = document.getElementById('usuario').value.trim();
+  const password = document.getElementById('password').value;
+  const btn      = document.getElementById('loginBtn');
+  const err      = document.getElementById('errMsg');
+
+  err.classList.remove('show');
+  if (!usuario || !password) { showErr('Completa usuario y contrasena.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
+
+  try {
+    const res = await fetch(API + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario, password }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      localStorage.setItem('lola_token', data.token);
+      localStorage.setItem('lola_user',  data.usuario);
+      const to = new URLSearchParams(location.search).get('to') || '/admin';
+      location.href = to;
+    } else {
+      showErr(data.error || 'Credenciales incorrectas.');
+      btn.disabled = false;
+      btn.textContent = 'Ingresar →';
+    }
+  } catch {
+    showErr('Error de conexion. Verifica que el servidor este corriendo.');
+    btn.disabled = false;
+    btn.textContent = 'Ingresar →';
+  }
+}
+
+function showErr(msg) {
+  const e = document.getElementById('errMsg');
+  e.textContent = '⚠  ' + msg;
+  e.classList.add('show');
+}
+</script>
+</body>
+</html>

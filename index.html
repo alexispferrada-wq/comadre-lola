@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Comadre Lola — Restaurant · Bar · Eventos · Quilicura</title>
+<meta name="description" content="Restaurant, Bar y Eventos en Quilicura. Shows en vivo, los mejores DJs y la mejor gastronomia. Reserva tu mesa ahora.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --p:#E8913A;--s:#D4547B;--a:#4ECDC4;
+  --bg:#0d0d12;--bg2:rgba(18,18,28,.97);--bg3:#0f0f18;
+  --tx:#f0f0f0;--tm:#8a8aa0;--bd:rgba(255,255,255,.07);
+  --r:14px;--tr:.25s cubic-bezier(.25,.46,.45,.94);
+  --ft:'BudmoJiggler',cursive;--fb:'Inter',sans-serif;
+  --bg-pattern:url('assets/fondo-adjunto.png');
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--fb);
+  background:linear-gradient(rgba(13,13,18,.72),rgba(13,13,18,.72)),var(--bg-pattern),var(--bg);
+  background-size:auto,cover,auto;
+  background-position:center center,center center,center center;
+  background-attachment:fixed,fixed,fixed;
+  color:var(--tx);overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:64px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  background:rgba(13,13,18,.96);
+  border-bottom:1px solid rgba(232,145,58,.2);
+  backdrop-filter:blur(6px);
+  transition:background var(--tr);
+}
+.nav-logo{font-family:var(--ft);font-size:20px;color:var(--p);display:flex;align-items:center;gap:8px;cursor:pointer;}
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-link{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);transition:color var(--tr);cursor:pointer;}
+.nav-link:hover{color:var(--p);}
+.nav-cta{
+  padding:9px 22px;border-radius:50px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  font-size:12px;font-weight:700;color:#fff;border:none;cursor:pointer;
+  box-shadow:0 3px 12px rgba(232,145,58,.28);
+  transition:opacity var(--tr),transform var(--tr);
+}
+.nav-cta:hover{opacity:.9;transform:translateY(-1px);}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-burger span{width:22px;height:2px;background:var(--tx);border-radius:2px;transition:all .3s;}
+.nav-mobile{display:none;flex-direction:column;gap:0;background:var(--bg2);border-bottom:1px solid var(--bd);}
+.nav-mobile.open{display:flex;}
+.nav-mobile a{padding:16px 24px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tm);border-bottom:1px solid var(--bd);cursor:pointer;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:100px 24px 80px;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 45%,rgba(232,145,58,.14) 0%,var(--bg) 65%);
+}
+.hero-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+.hero-particles span{
+  position:absolute;border-radius:50%;
+  animation:float linear infinite;opacity:0;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) scale(0);opacity:0;}
+  10%{opacity:.6;}
+  90%{opacity:.4;}
+  100%{transform:translateY(-20px) scale(1);opacity:0;}
+}
+.roses{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;
+}
+.roses span{
+  position:absolute;top:-40px;font-size:1.2rem;
+  animation:fall linear infinite;opacity:0;
+}
+@keyframes fall{
+  0%{transform:translateY(-40px) rotate(0deg);opacity:0;}
+  10%{opacity:.7;}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+.hero-content{position:relative;z-index:4;max-width:800px;}
+.hero-badge{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;padding:6px 20px;border-radius:50px;margin-bottom:24px;
+  color:var(--p);border:1px solid rgba(232,145,58,.35);background:rgba(232,145,58,.08);
+}
+.hero-h1{
+  font-family:var(--ft);
+  font-size:clamp(2.8rem,8vw,5.5rem);
+  line-height:1.02;margin-bottom:16px;
+  color:#fff;
+}
+.hero-h1 span{color:var(--p);}
+.hero-sub{
+  font-size:clamp(14px,2vw,17px);color:#ffffff;
+  margin-bottom:40px;line-height:1.6;
+}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;}
+.btn-main{
+  padding:15px 36px;border-radius:50px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;
+  box-shadow:0 6px 20px rgba(232,145,58,.35);
+  transition:transform var(--tr),box-shadow var(--tr);
+}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,145,58,.42);}
+.btn-sec{
+  padding:15px 36px;border-radius:50px;
+  background:transparent;border:1px solid rgba(255,255,255,.2);
+  font-size:14px;font-weight:700;color:var(--tx);cursor:pointer;
+  transition:border-color var(--tr),background var(--tr);
+}
+.btn-sec:hover{border-color:var(--p);background:rgba(232,145,58,.08);}
+.hero-roses{font-size:20px;letter-spacing:10px;opacity:.4;margin-top:8px;}
+.hero-scroll{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:4;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tm);
+}
+.hero-scroll-dot{
+  width:1px;height:40px;background:linear-gradient(to bottom,var(--p),transparent);
+  animation:scrollPulse 1.8s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.5);}50%{opacity:1;transform:scaleY(1);}}
+
+/* ── HERO CAROUSEL ── */
+.hero-carousel{position:absolute;inset:0;z-index:0;}
+.hero-carousel-slide{
+  position:absolute;inset:0;
+  background-size:100% auto;background-position:center top;
+  opacity:0;transition:opacity 1.4s ease-in-out;
+}
+.hero-carousel-slide.active{opacity:1;}
+.hero-carousel-overlay{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(13,13,18,.52) 0%,rgba(13,13,18,.65) 52%,rgba(13,13,18,.88) 100%);
+}
+.hero-carousel-dots{
+  position:absolute;bottom:72px;left:50%;transform:translateX(-50%);
+  z-index:5;display:flex;gap:8px;align-items:center;
+}
+.carousel-dot{
+  height:8px;border-radius:4px;
+  background:rgba(255,255,255,.3);border:none;cursor:pointer;padding:0;
+  transition:all var(--tr);width:8px;
+}
+.carousel-dot.active{background:var(--p);width:22px;}
+
+/* ── MEJORES MOMENTOS ── */
+.momentos{background:var(--bg3);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.momentos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:14px;
+}
+.momento-item{
+  position:relative;overflow:hidden;border-radius:14px;
+  aspect-ratio:4/3;cursor:pointer;
+  background:rgba(16,16,26,.95);border:1px solid var(--bd);
+}
+.momento-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.momento-item:hover img{transform:scale(1.07);}
+.momento-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%);
+  opacity:0;transition:opacity var(--tr);
+  display:flex;align-items:flex-end;padding:14px;
+}
+.momento-item:hover .momento-overlay{opacity:1;}
+.momento-caption{font-size:12px;font-weight:600;color:#fff;}
+.momentos-empty{
+  grid-column:1/-1;text-align:center;padding:64px 20px;color:var(--tm);
+}
+.momentos-empty-ico{font-size:48px;margin-bottom:16px;}
+
+/* ── LIGHTBOX ── */
+.lightbox{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.93);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.lightbox.open{display:flex;}
+.lightbox-img{max-width:90vw;max-height:84vh;border-radius:10px;object-fit:contain;position:relative;z-index:1;}
+.lightbox-close{
+  position:absolute;top:20px;right:24px;z-index:2;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  color:#fff;font-size:20px;width:44px;height:44px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background var(--tr);
+}
+.lightbox-close:hover{background:rgba(232,145,58,.4);}
+.lightbox-prev,.lightbox-next{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:#fff;width:48px;height:48px;border-radius:50%;
+  cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;
+  transition:background var(--tr);
+}
+.lightbox-prev{left:20px;}
+.lightbox-next{right:20px;}
+.lightbox-prev:hover,.lightbox-next:hover{background:rgba(232,145,58,.4);}
+.lightbox-counter{
+  position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:2;
+  font-size:12px;color:rgba(255,255,255,.5);font-weight:600;
+  background:rgba(0,0,0,.45);padding:5px 14px;border-radius:20px;
+}
+.lightbox-caption{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:2;
+  font-size:13px;color:rgba(255,255,255,.8);font-weight:500;
+  background:rgba(0,0,0,.55);padding:6px 18px;border-radius:20px;
+  white-space:nowrap;max-width:80vw;overflow:hidden;text-overflow:ellipsis;display:none;
+}
+.lightbox-caption.visible{display:block;}
+
+/* ── SECTIONS ── */
+section{padding:90px 40px;}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--p);display:block;margin-bottom:12px;}
+.sec-title{font-family:var(--ft);font-size:clamp(1.8rem,4vw,2.8rem);color:#fff;margin-bottom:10px;}
+.sec-title span{color:var(--p);}
+.sec-desc{color:var(--tm);font-size:14px;max-width:520px;line-height:1.7;margin-bottom:32px;}
+.sec-divider{width:50px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--p),var(--s));margin-bottom:36px;}
+
+/* ── EVENTOS ── */
+.eventos{background:var(--bg);}
+.eventos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.ev-card{
+  background:rgba(16,16,26,.95);border:1px solid var(--bd);
+  border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .3s,box-shadow .3s;cursor:pointer;
+}
+.ev-card:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(0,0,0,.5);}
+.ev-flyer{width:100%;aspect-ratio:3/4;position:relative;overflow:hidden;flex-shrink:0;background:var(--bg3);}
+.ev-flyer img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.ev-card:hover .ev-flyer img{transform:scale(1.06);}
+.ev-flyer-ph{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:20px;text-align:center;
+}
+.ev-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(10,10,18,.98) 100%);
+}
+.ev-badge{
+  position:absolute;top:14px;left:14px;
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:#fff;padding:4px 13px;border-radius:12px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+}
+.ev-tag{
+  position:absolute;bottom:14px;left:14px;right:14px;width:fit-content;
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 12px;border-radius:20px;
+}
+.ev-tag.musica{background:rgba(232,145,58,.18);color:var(--p);}
+.ev-tag.carrete{background:rgba(212,84,123,.18);color:var(--s);}
+.ev-tag.especial{background:rgba(78,205,196,.18);color:var(--a);}
+.ev-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1;}
+.ev-name{font-family:var(--ft);font-size:17px;color:#fff;line-height:1.2;}
+.ev-genero{font-size:11px;color:var(--tm);}
+.ev-meta{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--tm);line-height:1.6;}
+.ev-desc{font-size:11px;color:#6a6a80;line-height:1.5;}
+.ev-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px;border-top:1px solid var(--bd);}
+.ev-price{font-size:17px;font-weight:700;color:var(--p);}
+.ev-btn{
+  padding:7px 18px;border-radius:20px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  font-size:11px;font-weight:700;color:#fff;border:none;cursor:pointer;
+  white-space:nowrap;transition:opacity var(--tr);
+}
+.ev-btn:hover{opacity:.85;}
+
+/* ── RESERVAS ── */
+.reservas{background:var(--bg3);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.reservas-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1100px;margin:0 auto;}
+.reservas-info{position:sticky;top:80px;}
+.reservas-perks{display:flex;flex-direction:column;gap:16px;margin-top:28px;}
+.perk{display:flex;align-items:flex-start;gap:14px;padding:16px;background:rgba(232,145,58,.05);border:1px solid rgba(232,145,58,.12);border-radius:12px;}
+.perk-ico{font-size:22px;flex-shrink:0;}
+.perk-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:3px;}
+.perk-desc{font-size:12px;color:var(--tm);}
+.reserva-form{background:rgba(18,18,28,.9);border:1px solid var(--bd);border-radius:20px;padding:36px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-full{grid-column:1/-1;}
+.fld{display:flex;flex-direction:column;gap:8px;}
+.fld label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);}
+.fld input,.fld select,.fld textarea{
+  background:rgba(255,255,255,.04);border:1px solid var(--bd);
+  border-radius:10px;color:var(--tx);padding:12px 16px;
+  font-size:14px;font-family:var(--fb);width:100%;
+  transition:border-color var(--tr),background var(--tr);
+  appearance:none;
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--p);background:rgba(232,145,58,.04);}
+.fld select option{background:#0f0f18;}
+.fld textarea{resize:vertical;min-height:90px;}
+.form-msg{display:none;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-top:8px;}
+.form-msg.ok{background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3);color:#4CAF50;display:block;}
+.form-msg.err{background:rgba(244,67,54,.12);border:1px solid rgba(244,67,54,.3);color:#ff6b6b;display:block;}
+.btn-submit{
+  width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  font-size:15px;font-weight:700;color:#fff;border:none;cursor:pointer;
+  box-shadow:0 8px 30px rgba(232,145,58,.3);
+  transition:opacity var(--tr),transform var(--tr);
+  margin-top:8px;
+}
+.btn-submit:hover{opacity:.92;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.5;cursor:wait;}
+
+/* ── NEWSLETTER ── */
+.newsletter{
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,145,58,.1) 0%,var(--bg) 60%);
+  text-align:center;padding:80px 40px;
+}
+.nl-form{display:flex;gap:12px;max-width:480px;margin:0 auto;flex-wrap:wrap;justify-content:center;}
+.nl-input{
+  flex:1;min-width:220px;padding:13px 20px;
+  background:rgba(255,255,255,.05);border:1px solid var(--bd);
+  border-radius:50px;color:var(--tx);font-size:14px;font-family:var(--fb);
+  transition:border-color var(--tr);
+}
+.nl-input:focus{outline:none;border-color:var(--p);}
+.nl-input::placeholder{color:var(--tm);}
+.nl-btn{
+  padding:13px 28px;border-radius:50px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;
+  white-space:nowrap;transition:opacity var(--tr);
+}
+.nl-btn:hover{opacity:.9;}
+.nl-msg{font-size:13px;font-weight:600;margin-top:12px;min-height:20px;}
+.nl-msg.ok{color:#4CAF50;}
+.nl-msg.err{color:#ff6b6b;}
+
+/* ── FOOTER ── */
+footer{background:#07070e;padding:56px 40px 24px;border-top:1px solid var(--bd);}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-brand{font-family:var(--ft);font-size:24px;color:var(--p);margin-bottom:6px;}
+.footer-tag{font-size:12px;color:var(--tm);margin-bottom:18px;}
+.footer-social{display:flex;gap:10px;}
+.soc-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.05);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;transition:background var(--tr),border-color var(--tr);
+}
+.soc-btn:hover{background:rgba(232,145,58,.15);border-color:var(--p);}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p);margin-bottom:18px;}
+.footer-col p,.footer-info{font-size:13px;color:var(--tm);line-height:2.2;}
+.footer-map{
+  margin-top:12px;border-radius:10px;overflow:hidden;border:1px solid var(--bd);
+}
+.footer-bot{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:#555;}
+.footer-bot span{color:var(--p);font-weight:700;}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:9999;
+  padding:13px 22px;border-radius:12px;font-size:13px;font-weight:600;
+  opacity:0;transform:translateY(12px);pointer-events:none;
+  transition:all .3s;box-shadow:0 8px 30px rgba(0,0,0,.5);
+}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{background:#4CAF50;color:#fff;}
+.toast.err{background:#f44336;color:#fff;}
+.toast.info{background:rgba(78,205,196,.9);color:#0d0d12;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .reservas-inner{grid-template-columns:1fr;gap:32px;}
+  .reservas-info{position:static;}
+  .footer-inner{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-main,.btn-sec{width:100%;max-width:320px;}
+}
+@media(max-width:768px){
+  .hero-carousel-slide{background-size:cover;background-position:center center;}
+  section{padding:70px 24px;}
+  footer{padding:48px 24px 20px;}
+  .newsletter{padding:60px 24px;}
+  .reserva-form{padding:24px 20px;}
+  .ev-name{font-size:15px;}
+  .tabs-bar{overflow-x:auto;flex-wrap:nowrap;}
+}
+@media(max-width:600px){
+  section{padding:60px 16px;}
+  .nav{padding:0 16px;}
+  footer{padding:40px 16px 16px;}
+  .newsletter{padding:48px 16px;}
+  .form-grid{grid-template-columns:1fr;}
+  .footer-bot{flex-direction:column;gap:8px;text-align:center;}
+  .reserva-form{padding:20px 16px;}
+  .hero-h1{font-size:clamp(2.2rem,10vw,3.5rem);}
+  .hero-badge{font-size:9px;letter-spacing:2px;padding:5px 14px;}
+  .lightbox-prev{left:8px;}
+  .lightbox-next{right:8px;}
+  .lightbox-img{max-width:96vw;max-height:78vh;}
+  .momentos-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+  .eventos-grid{grid-template-columns:1fr;}
+  .nl-form{flex-direction:column;align-items:stretch;}
+  .nl-input,.nl-btn{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="scrollTo(0,0)">🌹 La Comadre Lola</div>
+  <div class="nav-links">
+    <a class="nav-link" onclick="scrollToId('eventos')">Eventos</a>
+    <a class="nav-link" onclick="scrollToId('momentos')">Galería</a>
+    <a class="nav-link" onclick="scrollToId('reservas')">Reservas</a>
+    <a class="nav-link" onclick="scrollToId('footer')">Contacto</a>
+    <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar</button>
+  </div>
+  <div class="nav-burger" id="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a onclick="scrollToId('eventos');toggleMenu()">Eventos</a>
+  <a onclick="scrollToId('momentos');toggleMenu()">Galería</a>
+  <a onclick="scrollToId('reservas');toggleMenu()">Reservas</a>
+  <a onclick="scrollToId('footer');toggleMenu()">Contacto</a>
+  <a onclick="scrollToId('reservas');toggleMenu()" style="color:var(--p)">🎉 Reservar</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="inicio">
+  <div class="hero-carousel" id="heroCarousel"></div>
+  <div class="hero-carousel-overlay"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="roses" id="roses"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Restaurant · Bar · Eventos · Quilicura</div>
+    <h1 class="hero-h1">LA COMADRE<br><span>LOLA</span></h1>
+    <p class="hero-sub">Gastronomia · Shows en Vivo · El Mejor Carrete</p>
+    <div class="hero-btns">
+      <button class="btn-main" onclick="scrollToId('reservas')">🎉 RESERVA AHORA</button>
+      <button class="btn-sec" onclick="scrollToId('eventos')">🎤 Ver Eventos</button>
+    </div>
+    <div class="hero-roses">🌹🌹🌹</div>
+  </div>
+  <div class="hero-carousel-dots" id="carouselDots"></div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-dot"></div>
+    desliza
+  </div>
+</section>
+
+<!-- ── EVENTOS ── -->
+<section class="eventos" id="eventos">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="sec-label">🎤 Proximamente</span>
+    <h2 class="sec-title">CARTELERA DE <span>EVENTOS</span></h2>
+    <p class="sec-desc">Los mejores artistas nacionales en vivo. Shows, DJ sets y el mejor carrete de Quilicura.</p>
+    <div class="sec-divider"></div>
+    <div class="eventos-grid" id="eventosGrid"></div>
+  </div>
+</section>
+
+<!-- ── MEJORES MOMENTOS ── -->
+<section class="momentos" id="momentos">
+  <div style="max-width:1200px;margin:0 auto;">
+    <span class="sec-label">📸 Nuestros Momentos</span>
+    <h2 class="sec-title">LOS MEJORES <span>MOMENTOS</span></h2>
+    <p class="sec-desc">Revive las mejores noches de La Comadre Lola. Shows, carrete y pura emoción.</p>
+    <div class="sec-divider"></div>
+    <div class="momentos-grid" id="momentosGrid"></div>
+  </div>
+</section>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox" id="lightbox" onclick="if(event.target.id==='lightbox')closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-prev" onclick="lbNav(-1);event.stopPropagation()">&#8249;</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="La Comadre Lola">
+  <button class="lightbox-next" onclick="lbNav(1);event.stopPropagation()">&#8250;</button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<!-- ── RESERVAS ── -->
+<section class="reservas" id="reservas">
+  <div class="reservas-inner">
+    <div class="reservas-info">
+      <span class="sec-label">📅 Mesa para ti</span>
+      <h2 class="sec-title">RESERVA <span>AHORA</span></h2>
+      <p class="sec-desc">Asegura tu lugar. Confirmamos tu reserva en menos de 24 horas.</p>
+      <div class="sec-divider"></div>
+      <div class="reservas-perks">
+        <div class="perk">
+          <div class="perk-ico">🎤</div>
+          <div>
+            <div class="perk-title">Shows en vivo</div>
+            <div class="perk-desc">Las mejores bandas y DJs de la escena nacional</div>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-ico">🍽</div>
+          <div>
+            <div class="perk-title">Gastronomia</div>
+            <div class="perk-desc">Cocina chilena con ingredientes frescos de temporada</div>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-ico">📍</div>
+          <div>
+            <div class="perk-title">Quilicura</div>
+            <div class="perk-desc">Manuel Antonio Matta 1269 · Fácil acceso y estacionamiento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reserva-form">
+      <form id="reservaForm" onsubmit="handleReserva(event)">
+        <div class="form-grid">
+          <div class="fld">
+            <label>Nombre completo *</label>
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="fld">
+            <label>Email *</label>
+            <input type="email" name="email" placeholder="tu@correo.cl" required>
+          </div>
+          <div class="fld">
+            <label>Telefono</label>
+            <input type="tel" name="telefono" placeholder="+56 9 XXXX XXXX">
+          </div>
+          <div class="fld">
+            <label>N° de personas *</label>
+            <select name="personas" required>
+              <option value="" disabled selected>Selecciona</option>
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+              <option value="6">6 personas</option>
+              <option value="7">7 personas</option>
+              <option value="8">8+ personas</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Fecha *</label>
+            <input type="date" name="fecha" required>
+          </div>
+          <div class="fld">
+            <label>Hora *</label>
+            <input type="time" name="hora" required>
+          </div>
+          <div class="fld form-full">
+            <label>Mensaje (opcional)</label>
+            <textarea name="mensaje" placeholder="Evento especial, alergias, peticiones..."></textarea>
+          </div>
+        </div>
+        <div class="form-msg" id="reservaMsg"></div>
+        <button type="submit" class="btn-submit" id="reservaBtn">🎉 Confirmar reserva</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter">
+  <div style="max-width:600px;margin:0 auto;">
+    <span class="sec-label" style="text-align:center;display:block;">📬 Novedades</span>
+    <h2 class="sec-title" style="text-align:center;">ENTERATE PRIMERO</h2>
+    <p class="sec-desc" style="margin:0 auto 32px;text-align:center;">Suscribete y recibe la cartelera de eventos antes que nadie. Sin spam.</p>
+    <div class="nl-form">
+      <input type="email" class="nl-input" id="nlEmail" placeholder="tu@correo.cl">
+      <button class="nl-btn" onclick="handleNewsletter()">Suscribirme</button>
+    </div>
+    <div class="nl-msg" id="nlMsg"></div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">🌹 La Comadre Lola</div>
+      <div class="footer-tag">Restaurant · Bar · Eventos — Quilicura</div>
+      <div class="footer-social">
+        <div class="soc-btn">📘</div>
+        <div class="soc-btn">📸</div>
+        <div class="soc-btn">🎵</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Horarios</h4>
+      <p class="footer-info">
+        Miercoles: 17:00 – 00:00<br>
+        Jueves: 17:00 – 01:00<br>
+        Viernes – Sabado: 13:00 – 02:00<br>
+        Domingo: 13:00 – 19:00
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p class="footer-info">
+        📍 Manuel Antonio Matta 1269<br>
+        Quilicura, Santiago<br><br>
+        📞 +56 9 1234 5678<br>
+        ✉️ contacto@lacomadrelola.cl
+      </p>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <span>© 2026 La Comadre Lola. Todos los derechos reservados.</span>
+    <span>Hecho con ❤ en Quilicura</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { submitReservation, submitNewsletter } from './js/api.js';
+
+/* ── Eventos data ── */
+const EVENTOS = [
+  { name:'Sunset Sessions',    genero:'House · Deep House',   fecha:'Viernes 18 Jul',   hora:'22:00', price:'$8.000',  badge:'PROXIMO',    tag:'musica',   desc:'Una noche de house y deep house con los mejores DJs de la escena local.',   btn:'Comprar Entradas', link:'', flyer:'' },
+  { name:'Noche de Bandas',    genero:'Rock · Pop Nacional',  fecha:'Sabado 26 Jul',    hora:'21:00', price:'$12.000', badge:'AGOTANDOSE', tag:'musica',   desc:'Las mejores bandas de rock y pop nacional en un solo escenario.',          btn:'Comprar Entradas', link:'', flyer:'' },
+  { name:'Carrete La Comadre', genero:'Cumbia · Folclor',     fecha:'Domingo 27 Jul',   hora:'14:00', price:'$6.000',  badge:'NUEVO',      tag:'especial', desc:'El carrete mas grande de Quilicura con cumbia y folclor chileno.',          btn:'Comprar Entradas', link:'', flyer:'' },
+  { name:'Noche de Tributos',  genero:'Tributos · Covers',    fecha:'Viernes 1 Ago',    hora:'22:00', price:'$10.000', badge:'MUY PRONTO', tag:'musica',   desc:'Los mejores tributos a bandas iconicas nacionales e internacionales.',      btn:'Comprar Entradas', link:'', flyer:'' },
+  { name:'Fiesta Criolla',     genero:'Folclor · Cueca',      fecha:'Sabado 2 Ago',     hora:'20:00', price:'$12.000', badge:'ESPECIAL',   tag:'especial', desc:'Una noche de folclor y cueca para celebrar lo mejor de Chile.',             btn:'Comprar Entradas', link:'', flyer:'' },
+  { name:'Open Mic Night',     genero:'Open Mic · Talentos',  fecha:'Miercoles 6 Ago',  hora:'19:00', price:'GRATIS',  badge:'GRATIS',     tag:'carrete',  desc:'Tu oportunidad de brillar en el escenario de La Comadre Lola.',            btn:'Inscribirse',      link:'', flyer:'' },
+];
+
+/* ── Render eventos ── */
+function renderEventos() {
+  const grid = document.getElementById('eventosGrid');
+  grid.innerHTML = EVENTOS.map(e => `
+    <div class="ev-card">
+      <div class="ev-flyer">
+        ${e.flyer
+          ? `<img src="${e.flyer}" alt="${e.name}">`
+          : `<div class="ev-flyer-ph" style="background:linear-gradient(145deg,rgba(232,145,58,.18),rgba(212,84,123,.12))">
+               <div style="font-family:'Righteous',cursive;font-size:15px;color:#E8913A;text-align:center">${e.name}</div>
+               <div style="font-size:11px;color:#8a8aa0;margin-top:8px">${e.genero}</div>
+             </div>`
+        }
+        <div class="ev-overlay"></div>
+        <div class="ev-badge">${e.badge}</div>
+        <div class="ev-tag ${e.tag}">${e.genero}</div>
+      </div>
+      <div class="ev-body">
+        <div class="ev-name">${e.name}</div>
+        <div class="ev-meta">
+          <span>📅 ${e.fecha} · ${e.hora}</span>
+        </div>
+        <div class="ev-desc">${e.desc}</div>
+        <div class="ev-footer">
+          <div class="ev-price">${e.price}</div>
+          ${e.link
+            ? `<a href="${e.link}" target="_blank" rel="noopener"><button class="ev-btn">${e.btn}</button></a>`
+            : `<button class="ev-btn" style="opacity:.5;cursor:default">Próximamente</button>`
+          }
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Particles ── */
+function initParticles() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span');
+    const size = 4 + Math.random() * 8;
+    const colors = ['#E8913A','#D4547B','#4ECDC4'];
+    s.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*3)]};
+      animation-duration:${8+Math.random()*12}s;
+      animation-delay:${Math.random()*10}s;
+      opacity:0;
+    `;
+    c.appendChild(s);
+  }
+}
+
+function initRoses() {
+  const c = document.getElementById('roses');
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('span');
+    s.textContent = '🌹';
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      font-size:${0.8+Math.random()*0.8}rem;
+      animation-duration:${12+Math.random()*14}s;
+      animation-delay:${Math.random()*14}s;
+      opacity:0;
+    `;
+    c.appendChild(s);
+  }
+}
+
+/* ── Nav fecha minima ── */
+function setMinDate() {
+  const inp = document.querySelector('input[name="fecha"]');
+  if (inp) inp.min = new Date().toISOString().split('T')[0];
+}
+
+/* ── Toast ── */
+function toast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── Reserva ── */
+window.handleReserva = async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('reservaBtn');
+  const msg = document.getElementById('reservaMsg');
+  const data = Object.fromEntries(new FormData(form));
+  data.personas = parseInt(data.personas);
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  msg.className = 'form-msg';
+
+  try {
+    const res = await submitReservation(data);
+    if (res.ok) {
+      msg.className = 'form-msg ok';
+      msg.textContent = 'Reserva recibida. Te confirmaremos pronto!';
+      form.reset();
+      toast('Reserva enviada correctamente');
+    } else {
+      throw new Error(res.error || 'Error al enviar');
+    }
+  } catch (err) {
+    msg.className = 'form-msg err';
+    msg.textContent = err.message || 'Error de conexion. Intentalo de nuevo.';
+    toast('No se pudo enviar la reserva', 'err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Confirmar reserva';
+  }
+};
+
+/* ── Newsletter ── */
+window.handleNewsletter = async function() {
+  const inp = document.getElementById('nlEmail');
+  const msg = document.getElementById('nlMsg');
+  const email = inp.value.trim();
+  if (!email) { msg.className = 'nl-msg err'; msg.textContent = 'Ingresa tu email.'; return; }
+
+  msg.className = 'nl-msg';
+  msg.textContent = 'Enviando...';
+
+  try {
+    const res = await submitNewsletter(email);
+    if (res.ok) {
+      msg.className = 'nl-msg ok';
+      msg.textContent = res.msg || 'Bienvenido/a al newsletter!';
+      inp.value = '';
+      toast('Suscripcion exitosa!');
+    } else {
+      throw new Error(res.error || 'Error');
+    }
+  } catch {
+    msg.className = 'nl-msg err';
+    msg.textContent = 'No se pudo suscribir. Intentalo de nuevo.';
+  }
+};
+
+/* ── Entradas (placeholder) ── */
+window.handleEntrada = function(nombre) {
+  toast('Pronto habilitaremos venta de entradas para ' + nombre + '!', 'info');
+};
+
+/* ── Nav mobile ── */
+window.toggleMenu = function() {
+  document.getElementById('navMobile').classList.toggle('open');
+};
+
+/* ── Scroll ── */
+window.scrollToId = function(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+/* ── Nav shadow on scroll ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background =
+    window.scrollY > 40 ? 'rgba(13,13,18,.98)' : 'rgba(13,13,18,.92)';
+});
+
+/* ══════════════════════════════════════════
+   CAROUSEL
+══════════════════════════════════════════ */
+// Imágenes hardcodeadas — editar acá o via CMS → Exportar
+const CAROUSEL_IMAGES = [];
+
+let _carouselSlides = [];
+let _carouselIdx    = 0;
+let _carouselTimer  = null;
+
+function loadCarouselData() {
+  try {
+    const stored = localStorage.getItem('lola_carousel');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      _carouselSlides = parsed.length ? parsed : CAROUSEL_IMAGES;
+    } else {
+      _carouselSlides = CAROUSEL_IMAGES;
+    }
+  } catch { _carouselSlides = CAROUSEL_IMAGES; }
+}
+
+function initCarousel() {
+  loadCarouselData();
+  const container = document.getElementById('heroCarousel');
+  const dotsEl    = document.getElementById('carouselDots');
+  if (!_carouselSlides.length) { container.innerHTML=''; dotsEl.innerHTML=''; return; }
+
+  container.innerHTML = _carouselSlides.map((img, i) =>
+    `<div class="hero-carousel-slide${i===0?' active':''}" style="background-image:url('${img.src}')"></div>`
+  ).join('');
+  dotsEl.innerHTML = _carouselSlides.map((_, i) =>
+    `<button class="carousel-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`
+  ).join('');
+
+  _carouselIdx = 0;
+  clearInterval(_carouselTimer);
+  if (_carouselSlides.length > 1)
+    _carouselTimer = setInterval(() => goSlide((_carouselIdx + 1) % _carouselSlides.length), 5000);
+}
+
+window.goSlide = function(idx) {
+  const slides = document.querySelectorAll('.hero-carousel-slide');
+  const dots   = document.querySelectorAll('.carousel-dot');
+  if (!slides.length) return;
+  slides[_carouselIdx].classList.remove('active');
+  if (dots[_carouselIdx]) dots[_carouselIdx].classList.remove('active');
+  _carouselIdx = idx;
+  slides[_carouselIdx].classList.add('active');
+  if (dots[_carouselIdx]) dots[_carouselIdx].classList.add('active');
+  clearInterval(_carouselTimer);
+  if (slides.length > 1)
+    _carouselTimer = setInterval(() => goSlide((_carouselIdx + 1) % slides.length), 5000);
+};
+
+/* ══════════════════════════════════════════
+   GALERÍA — MEJORES MOMENTOS
+══════════════════════════════════════════ */
+// Fotos hardcodeadas — editar acá o via CMS → Exportar
+const GALERIA_FOTOS = [];
+
+let _galeriaFotos = [];
+let _lbCurrent    = 0;
+
+function loadGaleriaData() {
+  try {
+    const stored = localStorage.getItem('lola_galeria');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      _galeriaFotos = parsed.length ? parsed : GALERIA_FOTOS;
+    } else {
+      _galeriaFotos = GALERIA_FOTOS;
+    }
+  } catch { _galeriaFotos = GALERIA_FOTOS; }
+}
+
+function renderGaleria() {
+  const grid = document.getElementById('momentosGrid');
+  if (!_galeriaFotos.length) {
+    grid.innerHTML = `
+      <div class="momentos-empty">
+        <div class="momentos-empty-ico">📸</div>
+        <p style="font-size:15px;font-weight:600;color:var(--tx);margin-bottom:8px">Próximamente</p>
+        <p>Las mejores noches de La Comadre Lola en imágenes</p>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = _galeriaFotos.map((f, i) => `
+    <div class="momento-item" onclick="openLightbox(${i})">
+      <img src="${f.src}" alt="${f.caption || 'La Comadre Lola'}" loading="lazy">
+      <div class="momento-overlay">
+        ${f.caption ? `<div class="momento-caption">${f.caption}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+window.openLightbox = function(idx) {
+  _lbCurrent = idx;
+  const f = _galeriaFotos[idx];
+  document.getElementById('lightboxImg').src = f.src;
+  const cap = document.getElementById('lightboxCaption');
+  cap.textContent = f.caption || '';
+  cap.className   = 'lightbox-caption' + (f.caption ? ' visible' : '');
+  document.getElementById('lightboxCounter').textContent = `${idx + 1} / ${_galeriaFotos.length}`;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeLightbox = function() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+window.lbNav = function(dir) {
+  _lbCurrent = (_lbCurrent + dir + _galeriaFotos.length) % _galeriaFotos.length;
+  const f = _galeriaFotos[_lbCurrent];
+  document.getElementById('lightboxImg').src = f.src;
+  const cap = document.getElementById('lightboxCaption');
+  cap.textContent = f.caption || '';
+  cap.className   = 'lightbox-caption' + (f.caption ? ' visible' : '');
+  document.getElementById('lightboxCounter').textContent = `${_lbCurrent + 1} / ${_galeriaFotos.length}`;
+};
+
+// Teclado — lightbox
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')      window.closeLightbox();
+  if (e.key === 'ArrowLeft')   window.lbNav(-1);
+  if (e.key === 'ArrowRight')  window.lbNav(1);
+});
+
+/* ── Init ── */
+renderEventos();
+initParticles();
+initRoses();
+setMinDate();
+initCarousel();
+loadGaleriaData();
+renderGaleria();
+</script>
+</body>
+</html>

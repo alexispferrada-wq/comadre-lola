@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — La Comadre Lola</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--p:#E8913A;--s:#D4547B;--a:#4ECDC4;--bg:#0d0d12;--bg2:rgba(15,15,22,.98);--bg3:#0a0a10;--tx:#f0f0f0;--tm:#8a8aa0;--bd:rgba(255,255,255,.07);--ok:#4CAF50;--err:#f44336;--warn:#ff9800;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
+
+/* ── TOP NAV ── */
+.topbar{height:60px;background:var(--bg2);border-bottom:1px solid rgba(232,145,58,.2);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'BudmoJiggler',cursive;font-size:17px;color:var(--p);display:flex;align-items:center;gap:8px;}
+.topbar-logo span{font-family:'Inter',sans-serif;font-size:12px;color:var(--tm);font-weight:400;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.tb-user{font-size:12px;color:var(--tm);}
+.tb-btn{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:all .2s;}
+.tb-btn.editor{background:rgba(78,205,196,.12);border:1px solid rgba(78,205,196,.25);color:var(--a);}
+.tb-btn.editor:hover{background:rgba(78,205,196,.22);}
+.tb-btn.logout{background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.25);color:#ff6b6b;}
+.tb-btn.logout:hover{background:rgba(244,67,54,.2);}
+.tb-btn.site{background:rgba(232,145,58,.1);border:1px solid rgba(232,145,58,.25);color:var(--p);}
+.tb-btn.site:hover{background:rgba(232,145,58,.2);}
+
+/* ── LAYOUT ── */
+.main{max-width:1300px;margin:0 auto;padding:32px 28px;}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:36px;}
+.stat-card{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:22px 24px;}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tm);margin-bottom:8px;}
+.stat-value{font-size:34px;font-weight:700;font-family:'BudmoJiggler',cursive;}
+.stat-sub{font-size:11px;color:var(--tm);margin-top:4px;}
+.stat-card.primary .stat-value{color:var(--p);}
+.stat-card.secondary .stat-value{color:var(--s);}
+.stat-card.accent .stat-value{color:var(--a);}
+.stat-card.ok .stat-value{color:var(--ok);}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;margin-bottom:24px;}
+.tab{padding:9px 20px;border-radius:9px;border:1px solid var(--bd);background:transparent;color:var(--tm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.tab.active{background:rgba(232,145,58,.15);border-color:var(--p);color:var(--p);}
+.tab:hover:not(.active){border-color:rgba(255,255,255,.15);color:var(--tx);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── TABLE ── */
+.tbl-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden;}
+.tbl-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--bd);}
+.tbl-title{font-size:14px;font-weight:700;}
+.tbl-search{padding:8px 14px;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:8px;color:var(--tx);font-size:12px;font-family:'Inter',sans-serif;width:220px;}
+.tbl-search:focus{outline:none;border-color:var(--p);}
+
+table{width:100%;border-collapse:collapse;}
+thead tr{background:rgba(255,255,255,.03);}
+th{padding:11px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);white-space:nowrap;}
+td{padding:13px 16px;font-size:13px;border-top:1px solid var(--bd);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,.02);}
+
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.badge.pendiente{background:rgba(255,152,0,.15);color:var(--warn);}
+.badge.confirmada{background:rgba(76,175,80,.15);color:var(--ok);}
+.badge.cancelada{background:rgba(244,67,54,.15);color:var(--err);}
+
+.btn-sm{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:all .2s;}
+.btn-sm.confirm{background:rgba(76,175,80,.15);color:var(--ok);}
+.btn-sm.confirm:hover{background:rgba(76,175,80,.3);}
+.btn-sm.cancel{background:rgba(255,152,0,.15);color:var(--warn);}
+.btn-sm.cancel:hover{background:rgba(255,152,0,.3);}
+.btn-sm.del{background:rgba(244,67,54,.1);color:var(--err);}
+.btn-sm.del:hover{background:rgba(244,67,54,.25);}
+
+.actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-top:1px solid var(--bd);}
+.pag-info{font-size:12px;color:var(--tm);}
+.pag-btns{display:flex;gap:6px;}
+.pag-btn{padding:6px 14px;border-radius:7px;border:1px solid var(--bd);background:transparent;color:var(--tm);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.pag-btn:hover,.pag-btn.active{border-color:var(--p);color:var(--p);}
+.pag-btn:disabled{opacity:.35;cursor:default;}
+
+/* ── NEWSLETTER LIST ── */
+.nl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;padding:16px;}
+.nl-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:10px;}
+.nl-email{font-size:13px;}
+.nl-date{font-size:11px;color:var(--tm);margin-top:2px;}
+
+/* ── EMPTY / LOADING ── */
+.empty{padding:60px 20px;text-align:center;color:var(--tm);}
+.empty-ico{font-size:40px;margin-bottom:12px;}
+.loading{padding:40px;text-align:center;color:var(--tm);font-size:13px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transform:translateY(10px);pointer-events:none;transition:all .3s;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{background:var(--ok);color:#fff;}
+.toast.err{background:var(--err);color:#fff;}
+.toast.info{background:rgba(78,205,196,.9);color:#0d0d12;}
+@media(max-width:768px){
+  .main{padding:20px 14px;}
+  .tbl-wrap{overflow-x:auto;}
+  table{min-width:600px;}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;gap:2px;}
+  .tab{white-space:nowrap;padding:8px 14px;font-size:11px;}
+  .topbar{padding:0 14px;}
+  .tbl-search{width:150px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr 1fr;}
+  .stat-card{padding:16px;}
+  .stat-value{font-size:26px;}
+  .pagination{flex-direction:column;gap:10px;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">🌹 La Comadre Lola <span>/ Admin</span></div>
+  <div class="topbar-right">
+    <span class="tb-user" id="tbUser"></span>
+    <button class="tb-btn site" onclick="location.href='/'">Ver Sitio</button>
+    <button class="tb-btn editor" onclick="location.href='/editor'">Editor CMS</button>
+    <button class="tb-btn logout" onclick="doLogout()">Salir</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats" id="statsRow">
+    <div class="stat-card primary"><div class="stat-label">Total Reservas</div><div class="stat-value" id="stTotal">—</div></div>
+    <div class="stat-card secondary"><div class="stat-label">Pendientes</div><div class="stat-value" id="stPend">—</div></div>
+    <div class="stat-card accent"><div class="stat-label">Newsletter</div><div class="stat-value" id="stNl">—</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('reservas',this)">📅 Reservas</button>
+    <button class="tab" onclick="switchTab('newsletter',this)">📬 Newsletter</button>
+  </div>
+
+  <!-- RESERVAS -->
+  <div class="tab-panel active" id="panel-reservas">
+    <div class="tbl-wrap">
+      <div class="tbl-head">
+        <div class="tbl-title">Reservas</div>
+        <input class="tbl-search" id="searchRes" placeholder="Buscar nombre o email..." oninput="filterReservas()">
+      </div>
+      <div id="reservasBody"><div class="loading">Cargando...</div></div>
+      <div class="pagination" id="resPag" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="tab-panel" id="panel-newsletter">
+    <div class="tbl-wrap">
+      <div class="tbl-head">
+        <div class="tbl-title">Suscriptores</div>
+        <input class="tbl-search" id="searchNl" placeholder="Buscar email..." oninput="filterNewsletter()">
+      </div>
+      <div class="nl-grid" id="newsletterBody"><div class="loading">Cargando...</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = window.location.origin;
+let TOKEN = localStorage.getItem('lola_token');
+let allReservas = [];
+let allNewsletter = [];
+let resPage = 1;
+const RES_PER_PAGE = 15;
+
+/* ── AUTH GUARD ── */
+(async () => {
+  if (!TOKEN) return redirect();
+  try {
+    const r = await fetch(API + '/api/auth/me', { headers: auth() });
+    if (!r.ok) return redirect();
+    const d = await r.json();
+    document.getElementById('tbUser').textContent = 'Hola, ' + d.user.usuario;
+  } catch { redirect(); }
+  loadAll();
+})();
+
+function redirect() { location.href = '/login?to=/admin'; }
+function auth()     { return { Authorization: 'Bearer ' + TOKEN }; }
+
+function doLogout() {
+  localStorage.removeItem('lola_token');
+  localStorage.removeItem('lola_user');
+  location.href = '/login';
+}
+
+/* ── TABS ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+/* ── LOAD ── */
+async function loadAll() {
+  loadStats();
+  loadReservas();
+  loadNewsletter();
+}
+
+async function loadStats() {
+  try {
+    const r = await fetch(API + '/api/admin/stats', { headers: auth() });
+    const d = await r.json();
+    if (!d.ok) return;
+    document.getElementById('stTotal').textContent = d.totalReservas;
+    document.getElementById('stPend').textContent  = d.pendientes;
+    document.getElementById('stNl').textContent    = d.newsletter;
+  } catch {}
+}
+
+async function loadReservas() {
+  try {
+    const r = await fetch(API + '/api/admin/reservations?limit=200', { headers: auth() });
+    const d = await r.json();
+    if (!d.ok) return;
+    allReservas = d.data;
+    renderReservas();
+  } catch {
+    document.getElementById('reservasBody').innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div>Error al cargar reservas.</div>';
+  }
+}
+
+async function loadNewsletter() {
+  try {
+    const r = await fetch(API + '/api/admin/newsletter', { headers: auth() });
+    const d = await r.json();
+    if (!d.ok) return;
+    allNewsletter = d.data;
+    renderNewsletter();
+  } catch {}
+}
+
+/* ── RENDER RESERVAS ── */
+function filterReservas() { resPage = 1; renderReservas(); }
+
+function renderReservas() {
+  const q    = document.getElementById('searchRes').value.toLowerCase();
+  const list = allReservas.filter(r =>
+    r.nombre.toLowerCase().includes(q) ||
+    r.email.toLowerCase().includes(q)  ||
+    (r.telefono && r.telefono.includes(q))
+  );
+
+  const total = list.length;
+  const pages = Math.ceil(total / RES_PER_PAGE) || 1;
+  if (resPage > pages) resPage = pages;
+  const slice = list.slice((resPage - 1) * RES_PER_PAGE, resPage * RES_PER_PAGE);
+
+  const tbody = document.getElementById('reservasBody');
+  if (!slice.length) {
+    tbody.innerHTML = '<div class="empty"><div class="empty-ico">📅</div>Sin reservas.</div>';
+    document.getElementById('resPag').style.display = 'none';
+    return;
+  }
+
+  tbody.innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Nombre</th><th>Email</th><th>Telefono</th>
+        <th>Fecha</th><th>Hora</th><th>Personas</th>
+        <th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody>
+        ${slice.map(r => `
+          <tr id="row-${r._id}">
+            <td><b>${esc(r.nombre)}</b></td>
+            <td><a href="mailto:${esc(r.email)}" style="color:var(--a)">${esc(r.email)}</a></td>
+            <td>${r.telefono || '—'}</td>
+            <td>${esc(r.fecha)}</td>
+            <td>${esc(r.hora)}</td>
+            <td style="text-align:center">${r.personas}</td>
+            <td><span class="badge ${r.estado}">${r.estado}</span></td>
+            <td>
+              <div class="actions">
+                ${r.estado !== 'confirmada' ? `<button class="btn-sm confirm" onclick="setEstado('${r._id}','confirmada')">Confirmar</button>` : ''}
+                ${r.estado !== 'cancelada'  ? `<button class="btn-sm cancel"  onclick="setEstado('${r._id}','cancelada')">Cancelar</button>` : ''}
+                <button class="btn-sm del" onclick="deleteReserva('${r._id}')">Borrar</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const pag = document.getElementById('resPag');
+  pag.style.display = 'flex';
+  let btns = '';
+  for (let i = 1; i <= pages; i++) {
+    btns += `<button class="pag-btn ${i===resPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  pag.innerHTML = `
+    <span class="pag-info">${total} reserva(s)</span>
+    <div class="pag-btns">
+      <button class="pag-btn" onclick="goPage(${resPage-1})" ${resPage===1?'disabled':''}>‹</button>
+      ${btns}
+      <button class="pag-btn" onclick="goPage(${resPage+1})" ${resPage===pages?'disabled':''}>›</button>
+    </div>
+  `;
+}
+
+function goPage(p) { resPage = p; renderReservas(); }
+
+async function setEstado(id, estado) {
+  try {
+    const r = await fetch(API + '/api/admin/reservations/' + id, {
+      method: 'PATCH',
+      headers: { ...auth(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado }),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      const idx = allReservas.findIndex(r => r._id === id);
+      if (idx >= 0) allReservas[idx].estado = estado;
+      renderReservas();
+      loadStats();
+      toast('Estado actualizado', 'ok');
+    }
+  } catch { toast('Error al actualizar', 'err'); }
+}
+
+async function deleteReserva(id) {
+  if (!confirm('Eliminar esta reserva?')) return;
+  try {
+    await fetch(API + '/api/admin/reservations/' + id, { method: 'DELETE', headers: auth() });
+    allReservas = allReservas.filter(r => r._id !== id);
+    renderReservas();
+    loadStats();
+    toast('Reserva eliminada', 'info');
+  } catch { toast('Error al eliminar', 'err'); }
+}
+
+/* ── RENDER NEWSLETTER ── */
+function filterNewsletter() { renderNewsletter(); }
+
+function renderNewsletter() {
+  const q    = document.getElementById('searchNl').value.toLowerCase();
+  const list = allNewsletter.filter(n => n.email.toLowerCase().includes(q));
+  const body = document.getElementById('newsletterBody');
+
+  if (!list.length) {
+    body.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📬</div>Sin suscriptores.</div>';
+    return;
+  }
+
+  body.innerHTML = list.map(n => `
+    <div class="nl-item">
+      <div>
+        <div class="nl-email">${esc(n.email)}</div>
+        <div class="nl-date">${fmtDate(n.createdAt)}</div>
+      </div>
+      <button class="btn-sm del" onclick="deleteNl('${n._id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+async function deleteNl(id) {
+  if (!confirm('Eliminar suscriptor?')) return;
+  try {
+    await fetch(API + '/api/admin/newsletter/' + id, { method: 'DELETE', headers: auth() });
+    allNewsletter = allNewsletter.filter(n => n._id !== id);
+    renderNewsletter();
+    loadStats();
+    toast('Suscriptor eliminado', 'info');
+  } catch { toast('Error al eliminar', 'err'); }
+}
+
+/* ── UTILS ── */
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtDate(d) { return new Date(d).toLocaleDateString('es-CL',{day:'2-digit',month:'short',year:'numeric'}); }
+
+function toast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>

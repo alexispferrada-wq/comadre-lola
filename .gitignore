@@ -1,0 +1,21 @@
+# Backend
+backend/node_modules/
+backend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Temp
+/tmp/
+
+# Tooling cache
+graphify-out/

@@ -1,0 +1,12 @@
+{
+  "name": "lacomadrelolaCL",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm --prefix backend install",
+    "start": "npm --prefix backend start",
+    "dev": "npm --prefix backend run dev",
+    "start:clean": "npm --prefix backend run start:clean",
+    "dev:clean": "npm --prefix backend run dev:clean"
+  }
+}
