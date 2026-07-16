@@ -605,35 +605,36 @@ footer{background:#07070e;padding:56px 40px 24px;border-top:1px solid var(--bd);
   <div class="footer-inner">
     <div>
       <div class="footer-brand">🌹 La Comadre Lola</div>
-      <div class="footer-tag">Restaurant · Bar · Eventos — Quilicura</div>
+      <div class="footer-tag">Espacio que rompe esquemas — Quilicura</div>
       <div class="footer-social">
-        <div class="soc-btn">📘</div>
-        <div class="soc-btn">📸</div>
-        <div class="soc-btn">🎵</div>
+        <a class="soc-btn" href="https://www.instagram.com/lacomadrelola__/" target="_blank" rel="noopener" aria-label="Instagram">📸</a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Horarios</h4>
       <p class="footer-info">
-        Miercoles: 17:00 – 00:00<br>
+        Lunes y Martes: Cerrado<br>
+        Miércoles: 17:00 – 00:00<br>
         Jueves: 17:00 – 01:00<br>
-        Viernes – Sabado: 13:00 – 02:00<br>
+        Viernes – Sábado: 13:00 – 02:00<br>
         Domingo: 13:00 – 19:00
       </p>
     </div>
     <div class="footer-col">
       <h4>Contacto</h4>
       <p class="footer-info">
-        📍 Manuel Antonio Matta 1269<br>
-        Quilicura, Santiago<br><br>
-        📞 +56 9 1234 5678<br>
+        📍 Av. Manuel Antonio Matta 1269<br>
+        Quilicura, Santiago<br>
+        Ⓜ️ a pasos del Metro Lo Cruzat (L3)<br>
+        🚗 Estacionamiento externo (#1351)<br><br>
+        📸 <a href="https://www.instagram.com/lacomadrelola__/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">@lacomadrelola__</a><br>
         ✉️ contacto@lacomadrelola.cl
       </p>
     </div>
   </div>
   <div class="footer-bot">
     <span>© 2026 La Comadre Lola. Todos los derechos reservados.</span>
-    <span>Hecho con ❤ en Quilicura</span>
+    <span>Diseño y Desarrollo Web por <a href="https://tusitioya.cl" target="_blank" rel="noopener" style="color:var(--p);text-decoration:none;font-weight:700">TuSitioYa.cl 🚀</a></span>
   </div>
 </footer>
 
@@ -644,12 +645,12 @@ import { submitReservation, submitNewsletter } from './js/api.js';
 
 /* ── Eventos data ── */
 const EVENTOS = [
-  { name:'Sunset Sessions',    genero:'House · Deep House',   fecha:'Viernes 18 Jul',   hora:'22:00', price:'$8.000',  badge:'PROXIMO',    tag:'musica',   desc:'Una noche de house y deep house con los mejores DJs de la escena local.',   btn:'Comprar Entradas', link:'', flyer:'' },
-  { name:'Noche de Bandas',    genero:'Rock · Pop Nacional',  fecha:'Sabado 26 Jul',    hora:'21:00', price:'$12.000', badge:'AGOTANDOSE', tag:'musica',   desc:'Las mejores bandas de rock y pop nacional en un solo escenario.',          btn:'Comprar Entradas', link:'', flyer:'' },
-  { name:'Carrete La Comadre', genero:'Cumbia · Folclor',     fecha:'Domingo 27 Jul',   hora:'14:00', price:'$6.000',  badge:'NUEVO',      tag:'especial', desc:'El carrete mas grande de Quilicura con cumbia y folclor chileno.',          btn:'Comprar Entradas', link:'', flyer:'' },
-  { name:'Noche de Tributos',  genero:'Tributos · Covers',    fecha:'Viernes 1 Ago',    hora:'22:00', price:'$10.000', badge:'MUY PRONTO', tag:'musica',   desc:'Los mejores tributos a bandas iconicas nacionales e internacionales.',      btn:'Comprar Entradas', link:'', flyer:'' },
-  { name:'Fiesta Criolla',     genero:'Folclor · Cueca',      fecha:'Sabado 2 Ago',     hora:'20:00', price:'$12.000', badge:'ESPECIAL',   tag:'especial', desc:'Una noche de folclor y cueca para celebrar lo mejor de Chile.',             btn:'Comprar Entradas', link:'', flyer:'' },
-  { name:'Open Mic Night',     genero:'Open Mic · Talentos',  fecha:'Miercoles 6 Ago',  hora:'19:00', price:'GRATIS',  badge:'GRATIS',     tag:'carrete',  desc:'Tu oportunidad de brillar en el escenario de La Comadre Lola.',            btn:'Inscribirse',      link:'', flyer:'' },
+  { name:'La Muralla Verde',         genero:'Tributo · Los Enanitos Verdes', fecha:'Sábado 18 Jul',   hora:'21:00', price:'Ver FilaCero', badge:'ESTE FIN',   tag:'musica',   desc:'Tributo oficial a los grandes éxitos de Marciano Cantero. De "Tus Viejas Cartas" a "Lamento Boliviano" en un ambiente relajado.', btn:'Entradas FilaCero',   link:'https://www.filacero.com/', flyer:'' },
+  { name:'Sexual Democracia',        genero:'Rock Chileno · En Vivo',        fecha:'Sábado 25 Jul',   hora:'21:00', price:'Ver Passline', badge:'IMPERDIBLE', tag:'musica',   desc:'La gira "El Auténtico Rock Chileno" llega a Quilicura. Prepárate para corear himnos y vivir el rock nacional del bueno.',        btn:'Entradas Passline',   link:'https://www.passline.com/eventos/sexual-democracia-en-comadre-lola-quilicura-529589', flyer:'' },
+  { name:'Noche Despecho',           genero:'Fiesta · Despecho Chile',        fecha:'Viernes 8 Ago',   hora:'22:00', price:'Ver Ticketera', badge:'PRÓXIMO',    tag:'especial', desc:'La noche más prendida vuelve con grandes artistas en escena. La fiesta favorita de Comadre Lola.',                               btn:'Más Info',            link:'https://www.instagram.com/lacomadrelola__/', flyer:'' },
+  { name:'Fiesta 80\' & 90\'',       genero:'DJ M@URY · Pista de Baile',      fecha:'Miércoles',       hora:'21:00', price:'ENTRADA LIBERADA', badge:'GRATIS',   tag:'carrete',  desc:'DJ M@URY prende la pista con lo mejor de los 80 y 90. Coctelería, gastronomía y pista de baile 🪩',                              btn:'Ver en Instagram',    link:'https://www.instagram.com/lacomadrelola__/', flyer:'' },
+  { name:'Armando Chistes',          genero:'Stand-Up · Luis Slimming',       fecha:'Próximamente',    hora:'—',     price:'Ver Ticketplus', badge:'NUEVO',   tag:'especial', desc:'Don Comedia se sube al escenario a probar material nuevo, sin filtros ni certezas. Comedia en su forma más pura.',              btn:'Entradas Ticketplus', link:'https://www.ticketplus.cl/', flyer:'' },
+  { name:'Tributo The Doors',        genero:'Rock Psicodélico · Eternals',    fecha:'Próximamente',    hora:'—',     price:'Ver FilaCero', badge:'MUY PRONTO', tag:'musica',   desc:'La banda Eternals trae toda la mística de Jim Morrison al escenario: Light My Fire, Roadhouse Blues y más.',                    btn:'Entradas FilaCero',   link:'https://www.filacero.com/', flyer:'' },
 ];
 
 /* ── Render eventos ── */
