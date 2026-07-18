@@ -251,50 +251,58 @@ html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--tex
 .preview-doc::-webkit-scrollbar{width:4px;}
 .preview-doc::-webkit-scrollbar-thumb{background:var(--primary);border-radius:4px;}
 
-/* ═══════════════════════════════════════════════
-   SITE PREVIEW INTERNALS
-═══════════════════════════════════════════════ */
 .pv-nav{
-  position:sticky;top:0;background:rgba(13,13,18,.96);
-  border-bottom:1px solid rgba(232,145,58,.25);
+  position:sticky;top:0;background:rgba(9,9,13,.97);
+  border-bottom:3px solid var(--primary);
   padding:0 28px;height:58px;display:flex;align-items:center;
   justify-content:space-between;z-index:10;backdrop-filter:blur(20px);
 }
-.pv-brand{font-family:'BudmoJiggler',cursive;font-size:18px;}
+.pv-brand{font-family:'BudmoJiggler',cursive;font-size:16px;}
 .pv-links{display:flex;gap:18px;align-items:center;}
-.pv-link{font-size:11px;font-weight:500;color:#8a8aa0;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
-.pv-cta{padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;border:none;cursor:pointer;color:#fff;}
+.pv-link{font-size:10px;font-weight:700;color:#8a8aa0;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.pv-cta{padding:6px 16px;font-size:10px;font-weight:800;font-family:'Inter',sans-serif;border:none;cursor:pointer;color:#000;background:var(--primary);transform:skewX(-10deg);box-shadow:3px 3px 0px var(--secondary);}
 
 .pv-hero{
-  min-height:500px;display:flex;flex-direction:column;
+  min-height:500px;display:grid;
+  grid-template-columns:1fr;
   align-items:center;justify-content:center;text-align:center;
   padding:70px 28px;position:relative;overflow:hidden;
 }
 .pv-hero-glow{position:absolute;inset:0;pointer-events:none;}
 .pv-badge{
-  display:inline-block;font-size:11px;font-weight:600;letter-spacing:3px;
-  text-transform:uppercase;border-radius:20px;padding:5px 16px;margin-bottom:22px;
+  display:inline-block;font-size:9px;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;padding:5px 12px;margin-bottom:22px;
+  background:var(--secondary);color:#fff;transform:rotate(-1.5deg);
+  box-shadow:2px 2px 0px #000;
 }
-.pv-h1{font-family:'BudmoJiggler',cursive;font-size:clamp(2rem,5vw,3.4rem);color:#fff;line-height:1.08;margin-bottom:12px;}
-.pv-sub{color:#8a8aa0;font-size:14px;margin-bottom:32px;font-family:'Inter',sans-serif;}
+.pv-h1{font-family:'BudmoJiggler',cursive;font-size:clamp(1.8rem,4vw,3.2rem);color:#fff;line-height:1.02;margin-bottom:12px;transform:skewY(-2deg);}
+.pv-sub{color:#8a8aa0;font-size:13px;margin-bottom:32px;font-family:'Inter',sans-serif;border-left:3px solid var(--accent);padding-left:12px;text-align:left;}
 .pv-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
-.pv-btn-main{padding:13px 30px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;color:#fff;font-family:'Inter',sans-serif;}
-.pv-btn-sec{padding:13px 30px;border-radius:50px;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;background:transparent;color:#f0f0f0;border:1px solid rgba(255,255,255,.2);cursor:pointer;}
+.pv-btn-main{padding:12px 28px;font-size:12px;font-weight:800;border:none;cursor:pointer;color:#000;background:var(--primary);box-shadow:3px 3px 0px var(--secondary);font-family:'Inter',sans-serif;}
+.pv-btn-sec{padding:12px 28px;font-size:12px;font-weight:800;font-family:'Inter',sans-serif;background:transparent;color:#fff;border:2px solid #fff;cursor:pointer;}
 .pv-roses{margin-top:20px;font-size:22px;letter-spacing:8px;opacity:.45;}
 
 .pv-section{padding:60px 28px;}
-.pv-lbl{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;display:block;margin-bottom:10px;font-family:'Inter',sans-serif;}
+.pv-lbl{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;display:inline-block;padding:2px 8px;background:var(--primary);color:#000;margin-bottom:10px;font-family:'Inter',sans-serif;transform:rotate(-1deg);}
 .pv-title{font-family:'BudmoJiggler',cursive;font-size:clamp(1.6rem,3vw,2.2rem);color:#fff;margin-bottom:8px;}
 .pv-desc{color:#8a8aa0;font-size:13px;margin-bottom:26px;max-width:500px;font-family:'Inter',sans-serif;}
-.pv-divider{width:50px;height:3px;border-radius:2px;margin-bottom:28px;}
+.pv-divider{width:50px;height:4px;background:var(--primary);margin-bottom:28px;transform:skewX(-15deg);}
 
 .pv-events{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
-.pv-ecard{background:rgba(20,20,30,.9);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s;}
-.pv-ecard:hover{transform:translateY(-5px);}
+.pv-ecard{background:#12121c;border:3px solid #1a1a26;border-radius:4px 24px 4px 24px;overflow:hidden;cursor:pointer;transition:all var(--trans);box-shadow:4px 4px 0px rgba(0,0,0,0.4);display:flex;flex-direction:column;position:relative;}
+.pv-ecard:hover{border-color:var(--primary);transform:translate(-3px,-3px);box-shadow:6px 6px 0px var(--primary);}
 .pv-eimg{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:38px;}
 .pv-ebody{padding:13px;}
 .pv-etag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:7px;font-family:'Inter',sans-serif;}
-.pv-ename{font-family:'Righteous',cursive;font-size:14px;color:#fff;margin-bottom:4px;}
+.pv-ename{font-family:'BudmoJiggler',cursive;font-size:14px;color:#fff;margin-bottom:4px;}
+.pv-edate{font-size:11px;color:#8a8aa0;margin-bottom:7px;font-family:'Inter',sans-serif;}
+.pv-eprice{font-size:14px;font-weight:700;font-family:'Inter',sans-serif;}
+
+.pv-footer{background:#050508;padding:40px 28px 20px;border-top:3px solid var(--primary);}
+.pv-fbrand{font-family:'BudmoJiggler',cursive;font-size:22px;margin-bottom:4px;color:var(--primary);}
+.pv-ftag{font-size:12px;color:#8a8aa0;margin-bottom:16px;font-family:'Inter',sans-serif;}
+.pv-finfo{font-size:12px;color:#8a8aa0;line-height:2.1;margin-bottom:20px;font-family:'Inter',sans-serif;}
+.pv-fbot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:#666;font-family:'Inter',sans-serif;}fff;margin-bottom:4px;}
 .pv-edate{font-size:11px;color:#8a8aa0;margin-bottom:7px;font-family:'Inter',sans-serif;}
 .pv-eprice{font-size:14px;font-weight:700;font-family:'Inter',sans-serif;}
 
@@ -437,6 +445,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--tex
     </div>
     <div class="topnav-actions">
       <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+      <button class="btn-publish" id="publishBtn" onclick="publishLive()">🚀 Publicar en vivo</button>
       <button class="btn-export" onclick="exportChanges()">📋 Exportar</button>
       <button class="btn-logout" onclick="doLogout()">✕ Salir</button>
     </div>
@@ -568,23 +577,28 @@ window.addEventListener('DOMContentLoaded', async ()=>{
    STATE
 ═══════════════════════════════════════════════ */
 const S = {
-  colors:{ primary:'#E8913A', secondary:'#D4547B', accent:'#4ECDC4', bg:'#0d0d12' },
-  carousel: [],
-  galeria:  [],
+  colors:{ primary:'#E8913A', secondary:'#D4547B', accent:'#4ECDC4', bg:'#09090d' },
+  carousel: [
+    { src: "https://res.cloudinary.com/dqsz4ua73/image/upload/v1782942627/IMG_2304_kcpvka.jpg" },
+    { src: "https://res.cloudinary.com/dqsz4ua73/image/upload/v1782942628/IMG_2173_llllb0.jpg" }
+  ],
+  galeria:  [
+    { src: "assets/galeria_brindis.png", caption: "Brindis con amigos en La Comadre Lola" },
+    { src: "assets/galeria_ambiente.png", caption: "Gran ambiente acogedor de noche" }
+  ],
   hero:{
     title1:'LA COMADRE', title2:'LOLA',
-    subtitle:'Gastronomia - Shows en Vivo - El Mejor Carrete',
-    badge:'Restaurant - Bar - Eventos - Quilicura',
+    subtitle:'Gastronomia · Shows en Vivo · El Mejor Carrete',
+    badge:'Restaurant · Bar · Eventos · Quilicura',
     btn1:'🎉 RESERVA AHORA', btn2:'🎤 Ver Eventos',
     particles:true, roses:true,
   },
   eventos:[
-    {flyer:'',name:'Sunset Sessions',     genero:'House - Deep House',   fecha:'Viernes 18 Jul', hora:'22:00',price:'$8.000', badge:'¡PRÓXIMO!',  tag:'música',   desc:'Una noche de house y deep house con los mejores DJs de la escena local.',          btn:'Comprar Entradas',link:''},
-    {flyer:'',name:'Noche de Bandas',     genero:'Rock - Pop Nacional',  fecha:'Sábado 26 Jul',  hora:'21:00',price:'$12.000',badge:'AGOTÁNDOSE', tag:'música',   desc:'Las mejores bandas de rock y pop nacional en un solo escenario.',                  btn:'Comprar Entradas',link:''},
-    {flyer:'',name:'Carrete La Comadre', genero:'Cumbia - Folclor',     fecha:'Domingo 27 Jul', hora:'14:00',price:'$6.000', badge:'NUEVO',      tag:'especial',desc:'El carrete más grande de Quilicura con cumbia y folclor chileno.',                   btn:'Comprar Entradas',link:''},
-    {flyer:'',name:'Noche de Tributos',  genero:'Tributos - Covers',    fecha:'Viernes 1 Ago',  hora:'22:00',price:'$10.000',badge:'MUY PRONTO', tag:'música',   desc:'Los mejores tributos a bandas icónicas nacionales e internacionales.',              btn:'Comprar Entradas',link:''},
-    {flyer:'',name:'Fiesta Criolla',     genero:'Folclor - Cueca',      fecha:'Sábado 2 Ago',   hora:'20:00',price:'$12.000',badge:'ESPECIAL',   tag:'especial',desc:'Una noche de folclor y cueca para celebrar lo mejor de Chile.',                     btn:'Comprar Entradas',link:''},
-    {flyer:'',name:'Open Mic Night',     genero:'Open Mic - Talentos',  fecha:'Miércoles 6 Ago',hora:'19:00',price:'GRATIS', badge:'GRATIS',     tag:'especial',desc:'Tu oportunidad de brillar en el escenario de La Comadre Lola.',                     btn:'Inscribirse',link:''},
+    {flyer:'',name:'Sexual Democracia',     genero:'Rock Chileno · En Vivo',        fecha:'Sábado 25 Jul',   hora:'21:00',price:'Ver Passline', badge:'IMPERDIBLE', tag:'música',   desc:'La gira "El Auténtico Rock Chileno" llega a Quilicura. Prepárate para corear himnos y vivir el rock nacional del bueno.',        btn:'Entradas Passline',   link:'https://www.passline.com/eventos/sexual-democracia-en-comadre-lola-quilicura-529589'},
+    {flyer:'',name:'Luis Slimming',         genero:'Stand-Up · Don Comedia',        fecha:'Jueves 30 Jul',   hora:'21:00',price:'Ver Ticketplus', badge:'CONFIRMADO',  tag:'especial', desc:'Don Comedia se sube al escenario a probar material nuevo y desatar carcajadas en Quilicura. Comedia en su forma más pura.',  btn:'Entradas Ticketplus', link:'https://ticketplus.cl/'},
+    {flyer:'',name:'Noche Despecho',        genero:'Fiesta · Despecho Chile',        fecha:'Viernes 8 Ago',   hora:'22:00',price:'Ver Ticketera', badge:'PRÓXIMO',    tag:'especial', desc:'La noche más prendida vuelve con grandes artistas en escena. La fiesta favorita de Comadre Lola.',                               btn:'Más Info',            link:'https://www.instagram.com/lacomadrelola__/'},
+    {flyer:'',name:'Fiesta 80\' & 90\'',    genero:'DJ M@URY · Pista de Baile',      fecha:'Miércoles',       hora:'21:00',price:'ENTRADA LIBERADA', badge:'GRATIS',   tag:'carrete',  desc:'DJ M@URY prende la pista con lo mejor de los 80 y 90. Coctelería, gastronomía y pista de baile 🪩',                              btn:'Ver en Instagram',    link:'https://www.instagram.com/lacomadrelola__/'},
+    {flyer:'',name:'Tributo The Doors',     genero:'Rock Psicodélico · Eternals',    fecha:'Próximamente',    hora:'—',     price:'Ver FilaCero', badge:'MUY PRONTO', tag:'música',   desc:'La banda Eternals trae toda la mística de Jim Morrison al escenario: Light My Fire, Roadhouse Blues y más.',                    btn:'Entradas FilaCero',   link:'https://www.filacero.com/'},
   ],
   footer:{
     address:'Manuel Antonio Matta 1269, Quilicura',
@@ -694,10 +708,26 @@ const SECTIONS={
       <!-- FLYER UPLOAD -->
       <div class="fld-group">
         <div class="fld-label">🖼 Flyer del evento</div>
-        <div class="flyer-upload-area" id="flyerArea${i}" onclick="triggerFlyerPick(${i})">
+        
+        <!-- Opción 1: Link URL con Comprobación -->
+        <div style="margin-bottom:10px">
+          <div class="fld-label" style="font-size:10px;color:var(--text-muted)">Ingresar URL directa de la foto</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input class="fld-input" id="flyerUrlInput${i}" placeholder="https://..." value="${e.flyer||''}" style="flex:1">
+            <button onclick="addEventFlyerUrl(${i})" style="padding:9px 14px;background:rgba(232,145,58,.2);border:1px solid var(--primary);border-radius:9px;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap">+ Link</button>
+          </div>
+          <div id="flyerUrlStatus${i}" style="font-size:10px;margin-top:4px">
+            ${e.flyer ? '<span style="color:#4CAF50;font-weight:700">✓ Activa</span>' : ''}
+          </div>
+        </div>
+
+        <div style="text-align:center;font-size:11px;color:var(--text-muted);padding:4px 0;margin-bottom:6px">— o —</div>
+
+        <!-- Opción 2: Subir desde Computador -->
+        <div class="flyer-upload-area" id="flyerArea${i}" onclick="triggerFlyerPick(${i})" style="min-height:90px;aspect-ratio:16/9">
           ${e.flyer
             ? `<img src="${e.flyer}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`
-            : `<div class="flyer-placeholder"><span style="font-size:28px">🖼</span><span style="font-size:12px;color:var(--text-muted);margin-top:6px">Click para subir flyer</span><span style="font-size:10px;color:var(--text-muted);margin-top:2px">JPG, PNG, WEBP · máx 5MB</span></div>`
+            : `<div class="flyer-placeholder" style="padding:8px 16px"><span style="font-size:24px">📁</span><span style="font-size:12px;color:var(--text-muted);margin-top:4px">Subir desde computador</span></div>`
           }
         </div>
         <input type="file" id="flyerInput${i}" accept="image/*" style="display:none" onchange="handleFlyerUpload(${i},this)">
@@ -765,10 +795,11 @@ const SECTIONS={
           <div class="fld-section" style="margin-bottom:8px">AGREGAR IMAGEN</div>
           <div class="fld-group">
             <div class="fld-label">URL de imagen</div>
-            <div style="display:flex;gap:8px">
+            <div style="display:flex;gap:8px;align-items:center">
               <input class="fld-input" id="carouselUrlInput" placeholder="https://..." style="flex:1">
               <button onclick="addCarouselUrl()" style="padding:9px 14px;background:rgba(232,145,58,.2);border:1px solid var(--primary);border-radius:9px;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap">+ URL</button>
             </div>
+            <div id="carouselUrlStatus" style="font-size:10px;margin-top:4px"></div>
           </div>
           <div style="text-align:center;font-size:11px;color:var(--text-muted);padding:6px 0">— o —</div>
           <div class="flyer-upload-area" style="aspect-ratio:16/9;min-height:100px" onclick="triggerCarouselPick()">
@@ -810,10 +841,11 @@ const SECTIONS={
       const addArea = S.galeria.length < 20 ? `
         <div class="fld-group">
           <div class="fld-label">URL de foto</div>
-          <div style="display:flex;gap:8px">
+          <div style="display:flex;gap:8px;align-items:center">
             <input class="fld-input" id="galeriaUrlInput" placeholder="https://..." style="flex:1">
             <button onclick="addGaleriaUrl()" style="padding:9px 14px;background:rgba(232,145,58,.2);border:1px solid var(--primary);border-radius:9px;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap">+ URL</button>
           </div>
+          <div id="galeriaUrlStatus" style="font-size:10px;margin-top:4px"></div>
         </div>
         <div style="text-align:center;font-size:11px;color:var(--text-muted);padding:4px 0">— o —</div>
         <div class="flyer-upload-area" style="aspect-ratio:4/3;min-height:90px" onclick="triggerGaleriaPick()">
@@ -1176,6 +1208,29 @@ function removeFlyerImg(i){
   showToast('Flyer eliminado','info');
 }
 
+async function addEventFlyerUrl(i){
+  const inp = document.getElementById('flyerUrlInput' + i);
+  const url = (inp?.value || '').trim();
+  const statusEl = document.getElementById('flyerUrlStatus' + i);
+  if (!url) { showToast('Ingresa una URL','error'); return; }
+
+  if (statusEl) statusEl.innerHTML = '<span style="color:var(--text-muted)">⏳ Verificando...</span>';
+  const isValid = await validateImageUrl(url);
+  if (isValid) {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#4CAF50;font-weight:700">✓ Link verificado (OK)</span>';
+    S.eventos[i].flyer = url;
+    dirty['eventos.'+i+'.flyer'] = '[imagen ingresada por link]';
+    setSaveBadge('show','● Cambios pendientes');
+    renderSection('eventos');
+    renderPreview();
+    queueAutoSave();
+    showToast('✓ Flyer de evento asignado');
+  } else {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#f44336;font-weight:700">❌ URL no accesible o no es imagen</span>';
+    showToast('La URL no es una imagen válida o accesible','error');
+  }
+}
+
 /* ═══════════════════════════════════════════════
    CAROUSEL HANDLERS
 ═══════════════════════════════════════════════ */
@@ -1192,24 +1247,40 @@ function saveCarousel(){
 
 function triggerCarouselPick(){ document.getElementById('carouselInput').click(); }
 
+function validateImageUrl(url) {
+  return new Promise((resolve) => {
+    if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+      resolve(false);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+}
+
 async function addCarouselUrl(){
   const inp = document.getElementById('carouselUrlInput');
   const url = (inp?.value || '').trim();
-  if (!url) { showToast('Ingresa una URL válida','error'); return; }
+  const statusEl = document.getElementById('carouselUrlStatus');
+  if (!url) { showToast('Ingresa una URL','error'); return; }
   if (S.carousel.length >= 6) { showToast('Máximo 6 slides','error'); return; }
-  try {
-    setSaveBadge('saving','● Subiendo imagen...');
-    const cloudUrl = await uploadImageViaApi({ imageUrl:url, target:'carrusel' });
-    S.carousel.push({ src: cloudUrl });
-  } catch (err) {
-    setSaveBadge('error','⚠ Error de subida');
-    showToast(err.message || 'No se pudo subir imagen','error');
-    return;
+
+  if (statusEl) statusEl.innerHTML = '<span style="color:var(--text-muted)">⏳ Verificando...</span>';
+  const isValid = await validateImageUrl(url);
+  if (isValid) {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#4CAF50;font-weight:700">✓ Link verificado (OK)</span>';
+    S.carousel.push({ src: url });
+    if (saveCarousel()) {
+      renderSection('carrusel');
+      renderPreview();
+      showToast('✓ Imagen agregada al carrusel');
+    }
+  } else {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#f44336;font-weight:700">❌ URL no accesible o no es imagen</span>';
+    showToast('La URL no es una imagen válida o accesible','error');
   }
-  if (!saveCarousel()) { S.carousel.pop(); return; }
-  renderSection('carrusel');
-  renderPreview();
-  showToast('✅ Slide subido a Cloudinary y guardado');
 }
 
 async function handleCarouselUpload(input){
@@ -1218,13 +1289,13 @@ async function handleCarouselUpload(input){
   if (file.size > 5*1024*1024) { showToast('El archivo supera los 5MB','error'); return; }
   if (!file.type.startsWith('image/')) { showToast('Solo se permiten imágenes','error'); return; }
   try {
-    setSaveBadge('saving','● Subiendo imagen...');
+    setSaveBadge('saving','● Guardando imagen...');
     const cloudUrl = await uploadImageViaApi({ file, target:'carrusel' });
     S.carousel.push({ src: cloudUrl });
     if (!saveCarousel()) { S.carousel.pop(); return; }
     renderSection('carrusel');
     renderPreview();
-    showToast('✅ Slide subido a Cloudinary y guardado');
+    showToast('✓ Slide subido e ingresado');
   } catch (err) {
     setSaveBadge('error','⚠ Error de subida');
     showToast(err.message || 'No se pudo subir imagen','error');
@@ -1269,21 +1340,24 @@ function triggerGaleriaPick(){ document.getElementById('galeriaInput').click(); 
 async function addGaleriaUrl(){
   const inp = document.getElementById('galeriaUrlInput');
   const url = (inp?.value || '').trim();
-  if (!url) { showToast('Ingresa una URL válida','error'); return; }
+  const statusEl = document.getElementById('galeriaUrlStatus');
+  if (!url) { showToast('Ingresa una URL','error'); return; }
   if (S.galeria.length >= 20) { showToast('Máximo 20 fotos','error'); return; }
-  try {
-    setSaveBadge('saving','● Subiendo imagen...');
-    const cloudUrl = await uploadImageViaApi({ imageUrl:url, target:'galeria' });
-    S.galeria.push({ src: cloudUrl, caption: '' });
-  } catch (err) {
-    setSaveBadge('error','⚠ Error de subida');
-    showToast(err.message || 'No se pudo subir imagen','error');
-    return;
+
+  if (statusEl) statusEl.innerHTML = '<span style="color:var(--text-muted)">⏳ Verificando...</span>';
+  const isValid = await validateImageUrl(url);
+  if (isValid) {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#4CAF50;font-weight:700">✓ Link verificado (OK)</span>';
+    S.galeria.push({ src: url, caption: '' });
+    if (saveGaleria()) {
+      renderSection('galeria');
+      renderPreview();
+      showToast('✓ Imagen agregada a la galería');
+    }
+  } else {
+    if (statusEl) statusEl.innerHTML = '<span style="color:#f44336;font-weight:700">❌ URL no accesible o no es imagen</span>';
+    showToast('La URL no es una imagen válida o accesible','error');
   }
-  if (!saveGaleria()) { S.galeria.pop(); return; }
-  renderSection('galeria');
-  renderPreview();
-  showToast('✅ Foto subida a Cloudinary y guardada');
 }
 
 async function handleGaleriaUpload(input){
@@ -1351,6 +1425,39 @@ function exportChanges(){
   navigator.clipboard.writeText(out)
     .then(()=>showToast(`✅ ${entries.length} cambio(s) copiado(s) al portapapeles`))
     .catch(()=>showToast(`📋 ${entries.length} cambio(s) listo(s)`,'info'));
+}
+
+/* ── PUBLICAR EN VIVO ── */
+async function publishLive(){
+  const btn=document.getElementById('publishBtn');
+  const origHTML=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='<span class="pub-spinner"></span> Publicando...';
+
+  try {
+    const token=localStorage.getItem('lola_token');
+    const res=await fetch(API + '/api/admin/content', {
+      method:'PUT',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+token,
+      },
+      body: JSON.stringify({ data: S }),
+    });
+    const result=await res.json();
+    if(result.ok){
+      showToast('🚀 ¡Cambios publicados en vivo!','success');
+      setSaveBadge('saved','✓ Publicado en vivo · '+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}));
+    } else {
+      showToast('⚠ Error: '+(result.error||'No se pudo publicar'),'error');
+    }
+  } catch(err){
+    showToast('⚠ Error de conexión al publicar','error');
+    console.error('Publish error:',err);
+  } finally {
+    btn.disabled=false;
+    btn.innerHTML=origHTML;
+  }
 }
 </script>
 </body>

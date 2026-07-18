@@ -1,7 +1,7 @@
 require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const express    = require('express');
 const cors       = require('cors');
-const mongoose   = require('mongoose');
+const { Pool }   = require('pg');
 const nodemailer = require('nodemailer');
 const path       = require('path');
 const jwt        = require('jsonwebtoken');
@@ -24,7 +24,11 @@ app.use(helmet({ contentSecurityPolicy: false }));
 const generalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
 const authLimiter    = rateLimit({ windowMs: 15 * 60 * 1000, max: 20,  standardHeaders: true, legacyHeaders: false, message: { error: 'Demasiados intentos. Intenta en 15 minutos.' } });
 const uploadLimiter  = rateLimit({ windowMs: 60 * 1000,      max: 30,  standardHeaders: true, legacyHeaders: false });
-app.use(generalLimiter);
+
+// Solo aplicar límite general en producción para evitar bloqueos durante el desarrollo local
+if (process.env.NODE_ENV === 'production') {
+  app.use(generalLimiter);
+}
 
 /* ── STATIC FILES ── */
 const staticDir = process.env.STATIC_DIR || path.join(__dirname, '..');
@@ -77,31 +81,18 @@ function sanitizeFolderPart(value, fallback) {
     .replace(/^-+|-+$/g, '') || fallback;
 }
 
-/* ── MONGODB ── */
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB conectado'))
-  .catch(err => console.error('❌ MongoDB error:', err.message));
-
-/* ── SCHEMAS ── */
-const reservationSchema = new mongoose.Schema({
-  nombre:   { type: String, required: true },
-  email:    { type: String, required: true },
-  telefono: { type: String },
-  fecha:    { type: String, required: true },
-  hora:     { type: String, required: true },
-  personas: { type: Number, required: true },
-  mensaje:  { type: String },
-  estado:   { type: String, default: 'pendiente', enum: ['pendiente','confirmada','cancelada'] },
-  createdAt:{ type: Date, default: Date.now },
+/* ── POSTGRESQL (Neon) ── */
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
-const newsletterSchema = new mongoose.Schema({
-  email:     { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now },
-});
-
-const Reservation = mongoose.model('Reservation', reservationSchema);
-const Newsletter  = mongoose.model('Newsletter',  newsletterSchema);
+pool.connect()
+  .then(client => {
+    console.log('✅ PostgreSQL (Neon) conectado');
+    client.release();
+  })
+  .catch(err => console.error('❌ PostgreSQL error:', err.message));
 
 /* ── MAILER ── */
 let transporter = null;
@@ -170,12 +161,17 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
 /* GET /api/admin/stats */
 app.get('/api/admin/stats', requireAuth, async (_req, res) => {
   try {
-    const [totalReservas, pendientes, newsletter] = await Promise.all([
-      Reservation.countDocuments(),
-      Reservation.countDocuments({ estado: 'pendiente' }),
-      Newsletter.countDocuments(),
+    const [totalRes, pendRes, nlRes] = await Promise.all([
+      pool.query('SELECT COUNT(*) FROM reservations'),
+      pool.query("SELECT COUNT(*) FROM reservations WHERE estado = 'pendiente'"),
+      pool.query('SELECT COUNT(*) FROM newsletter'),
     ]);
-    res.json({ ok: true, totalReservas, pendientes, newsletter });
+    res.json({
+      ok: true,
+      totalReservas: parseInt(totalRes.rows[0].count),
+      pendientes: parseInt(pendRes.rows[0].count),
+      newsletter: parseInt(nlRes.rows[0].count),
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -186,12 +182,33 @@ app.get('/api/admin/reservations', requireAuth, async (req, res) => {
   try {
     const page  = parseInt(req.query.page  || '1');
     const limit = parseInt(req.query.limit || '20');
-    const skip  = (page - 1) * limit;
-    const [docs, total] = await Promise.all([
-      Reservation.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      Reservation.countDocuments(),
+    const offset = (page - 1) * limit;
+
+    const [docsRes, countRes] = await Promise.all([
+      pool.query(
+        'SELECT * FROM reservations ORDER BY created_at DESC LIMIT $1 OFFSET $2',
+        [limit, offset]
+      ),
+      pool.query('SELECT COUNT(*) FROM reservations'),
     ]);
-    res.json({ ok: true, data: docs, total, page, pages: Math.ceil(total / limit) });
+
+    const total = parseInt(countRes.rows[0].count);
+
+    // Mapear campos para compatibilidad con frontend (id → _id, created_at → createdAt)
+    const data = docsRes.rows.map(row => ({
+      _id: row.id,
+      nombre: row.nombre,
+      email: row.email,
+      telefono: row.telefono,
+      fecha: row.fecha,
+      hora: row.hora,
+      personas: row.personas,
+      mensaje: row.mensaje,
+      estado: row.estado,
+      createdAt: row.created_at,
+    }));
+
+    res.json({ ok: true, data, total, page, pages: Math.ceil(total / limit) });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -200,10 +217,29 @@ app.get('/api/admin/reservations', requireAuth, async (req, res) => {
 /* PATCH /api/admin/reservations/:id */
 app.patch('/api/admin/reservations/:id', requireAuth, async (req, res) => {
   try {
-    const doc = await Reservation.findByIdAndUpdate(
-      req.params.id, { estado: req.body.estado }, { new: true }
+    const result = await pool.query(
+      'UPDATE reservations SET estado = $1 WHERE id = $2 RETURNING *',
+      [req.body.estado, req.params.id]
     );
-    res.json({ ok: true, data: doc });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ ok: false, error: 'Reserva no encontrada' });
+    }
+    const row = result.rows[0];
+    res.json({
+      ok: true,
+      data: {
+        _id: row.id,
+        nombre: row.nombre,
+        email: row.email,
+        telefono: row.telefono,
+        fecha: row.fecha,
+        hora: row.hora,
+        personas: row.personas,
+        mensaje: row.mensaje,
+        estado: row.estado,
+        createdAt: row.created_at,
+      },
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -212,7 +248,7 @@ app.patch('/api/admin/reservations/:id', requireAuth, async (req, res) => {
 /* DELETE /api/admin/reservations/:id */
 app.delete('/api/admin/reservations/:id', requireAuth, async (req, res) => {
   try {
-    await Reservation.findByIdAndDelete(req.params.id);
+    await pool.query('DELETE FROM reservations WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -222,8 +258,13 @@ app.delete('/api/admin/reservations/:id', requireAuth, async (req, res) => {
 /* GET /api/admin/newsletter */
 app.get('/api/admin/newsletter', requireAuth, async (_req, res) => {
   try {
-    const docs = await Newsletter.find().sort({ createdAt: -1 });
-    res.json({ ok: true, data: docs });
+    const result = await pool.query('SELECT * FROM newsletter ORDER BY created_at DESC');
+    const data = result.rows.map(row => ({
+      _id: row.id,
+      email: row.email,
+      createdAt: row.created_at,
+    }));
+    res.json({ ok: true, data });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -232,10 +273,40 @@ app.get('/api/admin/newsletter', requireAuth, async (_req, res) => {
 /* POST /api/admin/upload-image */
 app.post('/api/admin/upload-image', requireAuth, uploadLimiter, async (req, res) => {
   if (!CLOUDINARY_CONFIGURED) {
-    return res.status(503).json({
-      ok: false,
-      error: 'Cloudinary no configurado en el servidor',
-    });
+    try {
+      const { dataUrl, target } = req.body || {};
+      if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+        return res.status(400).json({ ok: false, error: 'Imagen en formato base64 requerida (desarrollo local)' });
+      }
+
+      // Convertir base64 a archivo local
+      const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(400).json({ ok: false, error: 'Formato de base64 inválido' });
+      }
+
+      const ext = matches[1].split('/')[1] || 'png';
+      const buffer = Buffer.from(matches[2], 'base64');
+
+      const uploadsDir = path.join(staticDir, 'assets', 'uploads');
+      const fs = require('fs');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const fileName = `upload_${Date.now()}_${Math.floor(Math.random() * 1000)}.${ext}`;
+      const filePath = path.join(uploadsDir, fileName);
+      fs.writeFileSync(filePath, buffer);
+
+      console.log(`💾 Imagen guardada localmente en desarrollo: assets/uploads/${fileName}`);
+      return res.json({
+        ok: true,
+        url: `/assets/uploads/${fileName}`,
+      });
+    } catch (err) {
+      console.error('Local upload error:', err.message);
+      return res.status(500).json({ ok: false, error: 'Error al guardar la imagen localmente', detail: err.message });
+    }
   }
 
   try {
@@ -284,8 +355,44 @@ app.post('/api/admin/upload-image', requireAuth, uploadLimiter, async (req, res)
 /* DELETE /api/admin/newsletter/:id */
 app.delete('/api/admin/newsletter/:id', requireAuth, async (req, res) => {
   try {
-    await Newsletter.findByIdAndDelete(req.params.id);
+    await pool.query('DELETE FROM newsletter WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* ══════════════════════════════════════════
+   API CONTENIDO CMS
+══════════════════════════════════════════ */
+
+/* PUT /api/admin/content — Publicar contenido en vivo */
+app.put('/api/admin/content', requireAuth, async (req, res) => {
+  try {
+    const { data } = req.body;
+    if (!data || typeof data !== 'object') {
+      return res.status(400).json({ ok: false, error: 'Datos inválidos' });
+    }
+    await pool.query(
+      `INSERT INTO site_content (key, data, updated_at)
+       VALUES ('live', $1, NOW())
+       ON CONFLICT (key) DO UPDATE SET data = $1, updated_at = NOW()`,
+      [JSON.stringify(data)]
+    );
+    res.json({ ok: true, message: 'Contenido publicado en vivo' });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* GET /api/content — Contenido público (lo consume el index.html) */
+app.get('/api/content', async (_req, res) => {
+  try {
+    const result = await pool.query("SELECT data, updated_at FROM site_content WHERE key = 'live'");
+    if (result.rows.length === 0) {
+      return res.json({ ok: true, data: null });
+    }
+    res.json({ ok: true, data: result.rows[0].data, updatedAt: result.rows[0].updated_at });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -304,7 +411,12 @@ app.post('/api/reservations', async (req, res) => {
     if (!nombre || !email || !fecha || !hora || !personas)
       return res.status(400).json({ ok: false, error: 'Faltan campos obligatorios' });
 
-    const doc = await Reservation.create({ nombre, email, telefono, fecha, hora, personas, mensaje });
+    const result = await pool.query(
+      `INSERT INTO reservations (nombre, email, telefono, fecha, hora, personas, mensaje)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING id`,
+      [nombre, email, telefono, fecha, hora, personas, mensaje]
+    );
 
     await sendMail({
       from: process.env.EMAIL_USER,
@@ -325,7 +437,7 @@ app.post('/api/reservations', async (req, res) => {
         <p>📍 Manuel Antonio Matta 1269, Quilicura</p>`,
     });
 
-    res.json({ ok: true, id: doc._id });
+    res.json({ ok: true, id: result.rows[0].id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: 'Error interno' });
@@ -337,10 +449,12 @@ app.post('/api/newsletter', async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) return res.status(400).json({ ok: false, error: 'Email requerido' });
-    await Newsletter.create({ email });
+    await pool.query(
+      'INSERT INTO newsletter (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
+      [email]
+    );
     res.json({ ok: true });
   } catch (err) {
-    if (err.code === 11000) return res.json({ ok: true, msg: 'Ya estas suscrito/a' });
     res.status(500).json({ ok: false, error: 'Error interno' });
   }
 });
@@ -348,4 +462,5 @@ app.post('/api/newsletter', async (req, res) => {
 /* ── START ── */
 app.listen(PORT, () => {
   console.log(`🚀 http://localhost:${PORT}`);
-  console.log(`   /login  /admin  /editor
+  console.log(`   /login  /admin  /editor`);
+});
