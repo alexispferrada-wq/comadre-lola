@@ -494,7 +494,9 @@ html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--tex
 /* ═══════════════════════════════════════════════
    AUTH — JWT via backend
 ═══════════════════════════════════════════════ */
-const API = window.location.origin;
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? window.location.origin
+  : 'https://lacomadrelola-api.onrender.com';
 
 async function doLogin(){
   const u = document.getElementById('loginUser').value.trim();

@@ -38,6 +38,8 @@ app.use(express.static(staticDir));
 /* ── CORS ── */
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://lacomadrelola.cl',
+  'https://www.lacomadrelola.cl',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'http://localhost:3001',

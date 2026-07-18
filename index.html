@@ -1567,7 +1567,9 @@ async function initSite() {
 
   // Intentar cargar contenido publicado desde el servidor
   try {
-    const API_URL = window.location.origin;
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? window.location.origin
+      : 'https://lacomadrelola-api.onrender.com';
     const res = await fetch(API_URL + '/api/content');
     const result = await res.json();
     if (result.ok && result.data && Object.keys(result.data).length > 0) {
