@@ -73,7 +73,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 
 <script>
-const API = window.location.origin;
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? window.location.origin
+  : 'https://lacomadrelola-api.onrender.com';
 
 document.getElementById('password').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();

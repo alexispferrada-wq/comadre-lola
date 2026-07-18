@@ -17,25 +17,7 @@ if (JWT_SECRET === 'dev_secret_cambiar' && process.env.NODE_ENV === 'production'
   process.exit(1);
 }
 
-/* ── SECURITY HEADERS ── */
-app.use(helmet({ contentSecurityPolicy: false }));
-
-/* ── RATE LIMITING ── */
-const generalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
-const authLimiter    = rateLimit({ windowMs: 15 * 60 * 1000, max: 20,  standardHeaders: true, legacyHeaders: false, message: { error: 'Demasiados intentos. Intenta en 15 minutos.' } });
-const uploadLimiter  = rateLimit({ windowMs: 60 * 1000,      max: 30,  standardHeaders: true, legacyHeaders: false });
-
-// Solo aplicar límite general en producción para evitar bloqueos durante el desarrollo local
-if (process.env.NODE_ENV === 'production') {
-  app.use(generalLimiter);
-}
-
-/* ── STATIC FILES ── */
-const staticDir = process.env.STATIC_DIR || path.join(__dirname, '..');
-console.log('📁 Estaticos desde:', staticDir);
-app.use(express.static(staticDir));
-
-/* ── CORS ── */
+/* ── CORS (debe ir PRIMERO para que OPTIONS preflight funcione) ── */
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://lacomadrelola.cl',
@@ -56,6 +38,24 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json({ limit: '20mb' }));
+
+/* ── SECURITY HEADERS ── */
+app.use(helmet({ contentSecurityPolicy: false }));
+
+/* ── RATE LIMITING ── */
+const generalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false });
+const authLimiter    = rateLimit({ windowMs: 15 * 60 * 1000, max: 20,  standardHeaders: true, legacyHeaders: false, message: { error: 'Demasiados intentos. Intenta en 15 minutos.' } });
+const uploadLimiter  = rateLimit({ windowMs: 60 * 1000,      max: 30,  standardHeaders: true, legacyHeaders: false });
+
+// Solo aplicar límite general en producción para evitar bloqueos durante el desarrollo local
+if (process.env.NODE_ENV === 'production') {
+  app.use(generalLimiter);
+}
+
+/* ── STATIC FILES ── */
+const staticDir = process.env.STATIC_DIR || path.join(__dirname, '..');
+console.log('📁 Estaticos desde:', staticDir);
+app.use(express.static(staticDir));
 
 /* ── CLOUDINARY ── */
 const CLOUDINARY_FOLDER = process.env.CLOUDINARY_FOLDER || 'lacomadrelola.cl';
