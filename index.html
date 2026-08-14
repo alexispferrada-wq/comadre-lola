@@ -293,38 +293,44 @@ body{
   margin-bottom:24px;
 }
 .btn-main{
-  padding:18px 40px;
+  padding:16px 36px;
   background: var(--p);
   font-size:14px;
-  font-weight:800;
-  color:#000;
+  font-weight:900;
+  color:#000000;
   border:none;
+  border-radius: 4px;
   cursor:pointer;
-  box-shadow: var(--hard-shadow-s);
+  transform: skewX(-6deg);
+  box-shadow: 5px 5px 0px var(--s);
   transition: all var(--tr);
 }
 .btn-main:hover{
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0px var(--s);
-  background: #fff;
+  transform: skewX(-6deg) translate(-3px, -3px);
+  box-shadow: 8px 8px 0px #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 .btn-sec{
-  padding:18px 40px;
-  background: rgba(0,0,0,0.6);
-  border: 2px solid #fff;
+  padding:16px 36px;
+  background: rgba(0,0,0,0.65);
+  border: 2px solid #ffffff;
+  border-radius: 4px;
   font-size:14px;
   font-weight:800;
-  color:#fff;
+  color:#ffffff;
   cursor:pointer;
+  transform: skewX(-6deg);
+  box-shadow: 5px 5px 0px #000000;
   transition: all var(--tr);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 }
 .btn-sec:hover{
   border-color:var(--p);
   color: var(--p);
-  transform: translate(-3px, -3px);
-  box-shadow: 5px 5px 0px var(--p);
-  background: #000;
+  transform: skewX(-6deg) translate(-3px, -3px);
+  box-shadow: 8px 8px 0px var(--p);
+  background: #000000;
 }
 .hero-roses{font-size:20px;letter-spacing:10px;opacity:.6;margin-top:8px;}
 
@@ -490,8 +496,8 @@ section{
 .ev-card{
   width:100%;
   background: rgba(18, 18, 26, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px 22px 6px 22px;
   overflow:hidden;
   display:flex;
   flex-direction:column;
@@ -501,9 +507,9 @@ section{
   box-shadow: 0 10px 28px rgba(0,0,0,0.6);
 }
 .ev-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(0, 250, 221, 0.5);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 250, 221, 0.15);
+  transform: translateY(-5px) scale(1.01);
+  border-color: var(--s);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 18px rgba(225, 14, 137, 0.25);
 }
 
 .ev-flyer{
@@ -612,18 +618,19 @@ section{
   font-weight:900;
   color:#000000 !important;
   border:none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor:pointer;
+  transform: skewX(-6deg);
   transition:all 0.25s ease;
   text-transform:uppercase;
   letter-spacing:0.5px;
-  box-shadow: 0 2px 10px rgba(0, 250, 221, 0.3);
+  box-shadow: 3px 3px 0px #000000;
 }
 .ev-btn:hover{
   background: #ffffff !important;
   color: #000000 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.4);
+  transform: skewX(-6deg) translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--s);
 }
 
 /* ── MEJORES MOMENTOS (MOSAICO IRREGULAR) ── */
@@ -1876,16 +1883,16 @@ footer{
 </section>
 
 <!-- ── CARTA DIGITAL RESPONSIVE BANNER ── -->
-<section class="carta-banner-sec" id="carta" style="padding:60px 20px;background:linear-gradient(180deg,#09090d 0%,#12121c 100%);border-top:3px solid #1a1a26;border-bottom:3px solid #1a1a26;">
-  <div style="max-width:1100px;margin:0 auto;background:#181824;border:3px solid var(--p);border-radius:24px;padding:36px 28px;box-shadow:var(--hard-shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;">
-    <div style="flex:1;min-width:280px;">
-      <span class="sec-label" style="display:inline-block;margin-bottom:8px;">🍽️ Sabor, Tradición y Coctelería</span>
-      <h2 style="font-family:var(--ft);font-size:clamp(1.8rem,4vw,2.5rem);color:#fff;margin-bottom:10px;">CARTA & MENÚ <span style="color:var(--p)">DIGITAL</span></h2>
+<section class="carta-banner-sec" id="carta" style="padding:60px 20px;background:rgba(8,8,12,0.7);border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+  <div style="max-width:1100px;margin:0 auto;background:rgba(18,18,26,0.95);border:3px solid var(--s);border-radius:6px 26px 6px 26px;padding:36px 32px;box-shadow:7px 7px 0px rgba(225,14,137,0.85);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;transform:rotate(-0.5deg);">
+    <div style="flex:1;min-width:280px;transform:rotate(0.5deg);">
+      <span class="sec-label" style="display:inline-block;margin-bottom:10px;background:var(--s);color:#fff;transform:skewX(-6deg);box-shadow:3px 3px 0 #000;">🍽️ Sabor, Tradición y Coctelería</span>
+      <h2 style="font-family:var(--ft);font-size:clamp(1.8rem,4vw,2.5rem);color:#fff;margin-bottom:10px;transform:skewY(-1deg);">CARTA & MENÚ <span style="color:var(--s)">DIGITAL</span></h2>
       <p style="color:var(--tm);font-size:15px;line-height:1.6;margin-bottom:0;">Descubre nuestros tragos de autor, tablas artesanales, cocina chilena y schops helados. Puedes ver las fotos en 2 columnas y pedir directo en tu mesa.</p>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="/carta" style="text-decoration:none;"><button class="btn-main" style="box-shadow:4px 4px 0 #000;cursor:pointer;">🍽️ VER CARTA DIGITAL</button></a>
-      <button class="btn-sec" onclick="scrollToId('reservas')" style="background:#09090d;cursor:pointer;">🎉 RESERVAR MESA</button>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;transform:rotate(0.5deg);">
+      <a href="/carta" style="text-decoration:none;"><button class="btn-main" style="transform:skewX(-6deg);box-shadow:4px 4px 0 #000;cursor:pointer;">🍽️ VER CARTA DIGITAL</button></a>
+      <button class="btn-sec" onclick="scrollToId('reservas')" style="background:#09090d;transform:skewX(-6deg);box-shadow:4px 4px 0 var(--s);border-color:var(--s);color:#fff;cursor:pointer;">🎉 RESERVAR MESA</button>
     </div>
   </div>
 </section>
