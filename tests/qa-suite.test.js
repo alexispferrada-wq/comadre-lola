@@ -51,6 +51,7 @@ const criticalFiles = [
   'assets/tusitio_labs_logo_footer.svg',
   'assets/tusitio_labs_logo_main.svg',
   'assets/og_banner.jpg',
+  'assets/fondo_oficial.png',
   'backend/server.js'
 ];
 

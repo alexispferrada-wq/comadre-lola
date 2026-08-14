@@ -81,7 +81,15 @@ body{
   font-family:var(--fb);
   font-size:var(--base-size);
   line-height:var(--line-height);
-  background:var(--bg);
+  background-color: #09090d;
+  background-image: 
+    radial-gradient(ellipse at 50% 10%, rgba(9, 9, 13, 0.78) 0%, rgba(9, 9, 13, 0.95) 80%),
+    linear-gradient(rgba(9, 9, 13, 0.88), rgba(9, 9, 13, 0.94)),
+    url('assets/fondo_oficial.png');
+  background-size: auto, auto, 540px;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-attachment: scroll, scroll, fixed;
+  background-position: center top, center top, center center;
   color:var(--tx);
   min-height:100vh;
   padding-bottom:130px;
