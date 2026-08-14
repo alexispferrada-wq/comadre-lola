@@ -1,17 +1,13 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "lacomadrelola",
+  "name": "comadre-lola",
+  "pages_build_output_dir": "./",
   "compatibility_date": "2026-07-15",
-  "workers_dev": true,
-  "assets": {
-    "directory": "./",
-    "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  },
-  "routes": [
-    { "pattern": "www.lacomadrelola.cl", "custom_domain": true }
-  ],
-  "observability": {
-    "enabled": true
-  }
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lacomadrelola-db",
+      "database_id": "4f34d010-6b55-4eb5-9552-9107ac2f3c33"
+    }
+  ]
 }
