@@ -1760,12 +1760,12 @@ footer{
 <nav class="nav" id="nav">
   <div class="nav-logo" onclick="scrollTo(0,0)">🌹 La Comadre Lola</div>
   <div class="nav-links">
-    <a class="nav-link" href="/carta" style="color:var(--p);font-weight:800;">🍽️ Carta Digital</a>
+    <a class="nav-link" href="carta.html" style="color:var(--p);font-weight:800;">🍽️ Carta Digital</a>
     <a class="nav-link" onclick="scrollToId('eventos')">Eventos</a>
     <a class="nav-link" onclick="scrollToId('momentos')">Galería</a>
     <a class="nav-link" onclick="scrollToId('reservas')">Reservas</a>
-    <a class="nav-link" onclick="scrollToId('footer')">Contacto</a>
-    <button class="nav-cta" onclick="location.href='/carta'" style="background:rgba(232,145,58,0.15);border:1.5px solid var(--p);color:var(--p);">🍽️ Ver Carta</button>
+    <a class="nav-link" href="guia.html" style="color:var(--a);">📋 Guía</a>
+    <button class="nav-cta" onclick="location.href='carta.html'" style="background:rgba(232,145,58,0.15);border:1.5px solid var(--p);color:var(--p);">🍽️ Ver Carta</button>
     <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar</button>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Abrir menú">
@@ -1773,10 +1773,11 @@ footer{
   </div>
 </nav>
 <div class="nav-mobile" id="navMobile">
-  <a href="/carta" style="color:var(--p);font-weight:800;font-size:1.1rem;">🍽️ Ver Carta Digital</a>
+  <a href="carta.html" style="color:var(--p);font-weight:800;font-size:1.1rem;">🍽️ Ver Carta Digital</a>
   <a onclick="scrollToId('eventos');toggleMenu()">🎤 Cartelera de Eventos</a>
   <a onclick="scrollToId('momentos');toggleMenu()">📸 Galería de Fotos</a>
   <a onclick="scrollToId('reservas');toggleMenu()">📅 Reservar Mesa</a>
+  <a href="guia.html" style="color:var(--a);font-weight:700;">📋 Guía de Usuario & Manual</a>
   <a onclick="scrollToId('footer');toggleMenu()">📍 Ubicación y Contacto</a>
 </div>
 
@@ -1986,6 +1987,13 @@ footer{
   </div>
   <div class="footer-bot">
     <span class="footer-bot-copy">© 2026 La Comadre Lola. Todos los derechos reservados.</span>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px;">
+      <a href="guia.html" style="color:var(--a);text-decoration:none;font-weight:600;">📋 Guía de Usuario</a>
+      <span style="opacity:0.3">•</span>
+      <a href="admin.html" style="color:var(--tm);text-decoration:none;">📊 Admin</a>
+      <span style="opacity:0.3">•</span>
+      <a href="carta.html" style="color:var(--tm);text-decoration:none;">🍽️ Carta</a>
+    </div>
     <a href="https://tusitioya.cl" target="_blank" rel="noopener" class="tusitio-badge" title="Desarrollado por TuSitio Labs">
       <span class="tusitio-badge-text">Desarrollado por</span>
       <img src="assets/tusitio_labs_logo_footer.svg" alt="TuSitio Labs" class="tusitio-badge-logo">
