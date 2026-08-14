@@ -239,19 +239,27 @@ body{
 }
 .hero-h1{
   font-family:var(--ft);
-  font-size:clamp(2.3rem, 5.8vw, 4.6rem);
-  line-height:1.05;
-  margin-bottom:20px;
+  margin-bottom:24px;
   color:#fff;
-  white-space:nowrap;
   transform: skewY(-2deg);
+  line-height:0.92;
 }
-.hero-h1 span{
-  color:var(--p);
-  display: inline-block;
-  transform: rotate(1deg);
+.hero-title-line1{
+  display:block;
+  font-size:clamp(3.4rem, 8.5vw, 5.8rem);
+  color:#fff;
+  letter-spacing:4px;
   text-shadow: 4px 4px 0px #000;
-  white-space: nowrap;
+  transform: rotate(-1.5deg);
+  margin-bottom:4px;
+}
+.hero-title-line2{
+  display:block;
+  font-size:clamp(2.8rem, 7.5vw, 5.2rem);
+  color:var(--p);
+  letter-spacing:2px;
+  text-shadow: 5px 5px 0px #000;
+  transform: rotate(1deg);
 }
 .hero-sub{
   font-size:clamp(14px,2vw,17px);
@@ -1823,7 +1831,8 @@ footer{
   <div class="hero-content">
     <div class="hero-badge">Restaurant · Bar · Eventos · Quilicura</div>
     <h1 class="hero-h1">
-      <span class="hero-title-main">LA COMADRE LOLA</span>
+      <span class="hero-title-line1">LA</span>
+      <span class="hero-title-line2">COMADRELOLA</span>
     </h1>
     <p class="hero-sub">Gastronomia · Shows en Vivo · El Mejor Carrete</p>
     <div class="hero-btns">
@@ -2859,10 +2868,10 @@ function applySiteContent(data) {
   // Hero
   if (data.hero) {
     const h = data.hero;
-    const tMain = document.querySelector('.hero-title-main');
-    if (tMain) {
-      tMain.textContent = h.title || (h.title1 ? `${h.title1} ${h.title2 || ''}`.trim() : 'LA COMADRE LOLA');
-    }
+    const t1 = document.querySelector('.hero-title-line1');
+    const t2 = document.querySelector('.hero-title-line2');
+    if (t1 && h.title1) t1.textContent = h.title1;
+    if (t2 && h.title2) t2.textContent = h.title2;
     const sub = document.querySelector('.hero-sub');
     const badge = document.querySelector('.hero-badge');
     if (sub && h.subtitle) sub.textContent = h.subtitle;

@@ -589,7 +589,7 @@ const S = {
     { src: "assets/galeria_ambiente.png", caption: "Gran ambiente acogedor de noche" }
   ],
   hero:{
-    title1:'LA COMADRE', title2:'LOLA',
+    title1:'LA', title2:'COMADRELOLA',
     subtitle:'Gastronomia · Shows en Vivo · El Mejor Carrete',
     badge:'Restaurant · Bar · Eventos · Quilicura',
     btn1:'🎉 RESERVA AHORA', btn2:'🎤 Ver Eventos',
@@ -1262,7 +1262,10 @@ function renderPreview(){
         ${carouselBadge}
         <div style="position:relative;z-index:2">
           <div class="pv-badge" style="color:${p};border:1px solid ${p}38;background:${p}10">${S.hero.badge}</div>
-          <div class="pv-h1">${S.hero.title1} <span style="color:${p}">${S.hero.title2}</span></div>
+          <div class="pv-h1" style="line-height:1.05;margin-bottom:12px;">
+            <div style="font-size:1.6em;letter-spacing:2px;color:#fff;">${S.hero.title1}</div>
+            <div style="color:${p};font-size:1.4em;letter-spacing:1px;">${S.hero.title2}</div>
+          </div>
           <div class="pv-sub">${S.hero.subtitle}</div>
           <div class="pv-btns">
             <button class="pv-btn-main" style="background:linear-gradient(135deg,${p},${s});box-shadow:0 8px 28px ${p}44">${S.hero.btn1}</button>
