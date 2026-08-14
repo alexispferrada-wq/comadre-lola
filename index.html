@@ -193,18 +193,19 @@ body{
   color: var(--p);
 }
 
-/* ── HERO ASIMÉTRICO ── */
+/* ── HERO FULL SCREEN CAROUSEL ── */
 .hero{
   min-height:100vh;
-  display:grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  display:flex;
+  flex-direction:column;
   align-items:center;
-  padding:120px 80px 80px;
+  justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
   position:relative;
   overflow:hidden;
-  gap: 40px;
 }
-.hero-particles, .roses{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+.hero-particles, .roses{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;}
 .hero-particles span{
   position:absolute;border-radius:50%;
   animation:float linear infinite;opacity:0;
@@ -227,7 +228,12 @@ body{
 .hero-content{
   position:relative;
   z-index:4;
-  text-align: left;
+  text-align:center;
+  max-width:940px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 .hero-badge{
   display:inline-block;
@@ -236,15 +242,15 @@ body{
   letter-spacing:3px;
   text-transform:uppercase;
   padding:6px 18px;
-  margin-bottom:28px;
-  color:#fff;
+  margin-bottom:24px;
+  color:#000;
   background: var(--s);
   transform: rotate(-1.5deg);
   box-shadow: 3px 3px 0px #000;
 }
 .hero-h1{
   font-family:var(--ft);
-  margin-bottom:24px;
+  margin-bottom:20px;
   color:#fff;
   transform: skewY(-2deg);
   line-height:0.92;
@@ -267,20 +273,23 @@ body{
   transform: rotate(1deg);
 }
 .hero-sub{
-  font-size:clamp(14px,2vw,17px);
+  font-size:clamp(14px,2vw,18px);
   color:#fff;
-  margin-bottom:44px;
+  margin:0 auto 38px;
   line-height:1.6;
-  max-width: 580px;
-  border-left: 4px solid var(--a);
-  padding-left: 20px;
+  max-width: 620px;
+  border-left: none;
+  border-bottom: 3px solid var(--p);
+  padding: 0 0 12px;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
 }
 .hero-btns{
   display:flex;
-  gap:20px;
+  gap:18px;
   flex-wrap:wrap;
-  justify-content: flex-start;
-  margin-bottom:32px;
+  justify-content:center;
+  margin-bottom:24px;
 }
 .btn-main{
   padding:18px 40px;
@@ -300,33 +309,34 @@ body{
 }
 .btn-sec{
   padding:18px 40px;
-  background: transparent;
+  background: rgba(0,0,0,0.6);
   border: 2px solid #fff;
   font-size:14px;
   font-weight:800;
   color:#fff;
   cursor:pointer;
   transition: all var(--tr);
+  backdrop-filter: blur(4px);
 }
 .btn-sec:hover{
   border-color:var(--p);
   color: var(--p);
   transform: translate(-3px, -3px);
   box-shadow: 5px 5px 0px var(--p);
+  background: #000;
 }
-.hero-roses{font-size:20px;letter-spacing:10px;opacity:.4;margin-top:8px;}
+.hero-roses{font-size:20px;letter-spacing:10px;opacity:.6;margin-top:8px;}
 
-/* ── CAROUSEL CONTENEDOR DESALINEADO ── */
+/* ── CAROUSEL A PANTALLA COMPLETA ── */
 .hero-carousel-wrap{
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 550px;
-  background: #11111a;
-  border: 3px solid #fff;
-  transform: rotate(2deg);
-  box-shadow: var(--hard-shadow-dark);
+  height: 100%;
+  background: #000000;
+  border: none;
   overflow: hidden;
-  z-index: 3;
+  z-index: 1;
 }
 .hero-carousel{position:absolute;inset:0;}
 .hero-carousel-slide{
@@ -334,34 +344,68 @@ body{
   background-size:cover;
   background-position:center center;
   opacity:0;
-  transition:opacity 1.2s ease-in-out;
-  transform: rotate(-2deg) scale(1.1); /* Compensa rotación y agrega zoom */
+  transition:opacity 1.4s ease-in-out;
+  transform: scale(1.03);
 }
-.hero-carousel-slide.active{opacity:1;}
+.hero-carousel-slide.active{opacity:1; transform:scale(1);}
 .hero-carousel-overlay{
   position:absolute;
   inset:0;
-  z-index:1;
+  z-index:2;
   pointer-events:none;
-  background: linear-gradient(to top, rgba(9,9,13,0.8) 0%, transparent 60%);
+  background: 
+    radial-gradient(ellipse at center, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.78) 100%),
+    linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.85) 100%);
+}
+.hero-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:5;
+  background:rgba(0,0,0,0.55);
+  border:2px solid rgba(255,255,255,0.25);
+  color:#fff;
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  cursor:pointer;
+  transition:all var(--tr);
+  backdrop-filter:blur(6px);
+}
+.hero-arrow:hover{
+  background:var(--p);
+  color:#000;
+  border-color:var(--p);
+  transform:translateY(-50%) scale(1.1);
+  box-shadow: 0 0 16px var(--p);
+}
+.hero-prev{left:24px;}
+.hero-next{right:24px;}
+@media(max-width:640px){
+  .hero-arrow{display:none;}
 }
 .hero-carousel-dots{
   position:absolute;
-  bottom:24px;
-  right:24px;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
   z-index:5;
   display:flex;
-  gap:8px;
+  gap:10px;
 }
 .carousel-dot{
-  height:10px;
-  width:10px;
-  background:#fff;
+  height:8px;
+  width:16px;
+  background:rgba(255,255,255,0.4);
   border:none;
   cursor:pointer;
+  border-radius:4px;
   transition:all var(--tr);
 }
-.carousel-dot.active{background:var(--p); width:28px; transform: skewX(-15deg);}
+.carousel-dot.active{background:var(--p); width:36px;}
 
 .hero-scroll{
   position:absolute;bottom:20px;left:40px;z-index:4;
@@ -1836,10 +1880,18 @@ footer{
   <a onclick="scrollToId('footer');toggleMenu()">📍 Ubicación y Contacto</a>
 </div>
 
-<!-- ── HERO ASIMÉTRICO ── -->
+<!-- ── HERO FULL SCREEN CAROUSEL ── -->
 <section class="hero" id="inicio">
+  <div class="hero-carousel-wrap">
+    <div class="hero-carousel" id="heroCarousel"></div>
+    <div class="hero-carousel-overlay"></div>
+  </div>
   <div class="hero-particles" id="particles"></div>
   <div class="roses" id="roses"></div>
+
+  <button class="hero-arrow hero-prev" onclick="goSlide((_carouselIdx - 1 + _carouselSlides.length) % _carouselSlides.length)" aria-label="Foto anterior">‹</button>
+  <button class="hero-arrow hero-next" onclick="goSlide((_carouselIdx + 1) % _carouselSlides.length)" aria-label="Foto siguiente">›</button>
+
   <div class="hero-content">
     <div class="hero-badge">Restaurant · Bar · Eventos · Quilicura</div>
     <h1 class="hero-h1">
@@ -1854,11 +1906,8 @@ footer{
     </div>
     <div class="hero-roses">🌹🌹🌹</div>
   </div>
-  <div class="hero-carousel-wrap">
-    <div class="hero-carousel" id="heroCarousel"></div>
-    <div class="hero-carousel-overlay"></div>
-    <div class="hero-carousel-dots" id="carouselDots"></div>
-  </div>
+
+  <div class="hero-carousel-dots" id="carouselDots"></div>
   <div class="hero-scroll">
     <div class="hero-scroll-dot"></div>
     desliza
