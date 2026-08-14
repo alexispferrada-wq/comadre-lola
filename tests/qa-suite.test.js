@@ -50,6 +50,7 @@ const criticalFiles = [
   'assets/galeria_brindis.png',
   'assets/tusitio_labs_logo_footer.svg',
   'assets/tusitio_labs_logo_main.svg',
+  'assets/og_banner.jpg',
   'backend/server.js'
 ];
 
