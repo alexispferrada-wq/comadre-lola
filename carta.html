@@ -251,37 +251,90 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   box-shadow:0 4px 15px rgba(255,167,38,0.35);
 }
 
-/* ── LISTADO DE PRODUCTOS (CARDS ACCESIBLES) ── */
-.menu-list{
-  max-width:600px;
-  margin:0 auto;
-  padding:0 16px;
+/* ── BARRA DE CONTROL DE VISTA (2 COLUMNAS VS 1 COLUMNA) ── */
+.view-toggle-bar{
+  max-width:840px;
+  margin:0 auto 12px auto;
+  padding:0 14px;
   display:flex;
-  flex-direction:column;
-  gap:16px;
+  justify-content:space-between;
+  align-items:center;
 }
+.view-label{
+  font-size:0.85rem;
+  color:var(--tm);
+  font-weight:600;
+}
+.view-btn-group{
+  display:flex;
+  gap:4px;
+  background:var(--bg-card);
+  padding:3px;
+  border-radius:10px;
+  border:1.5px solid var(--bd);
+}
+.view-toggle-btn{
+  background:transparent;
+  border:none;
+  color:var(--tm);
+  padding:6px 10px;
+  border-radius:7px;
+  font-size:0.8rem;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  transition:all .2s;
+}
+.view-toggle-btn.active{
+  background:var(--p);
+  color:var(--p-text);
+  box-shadow:0 2px 8px rgba(255,167,38,0.3);
+}
+
+/* ── LISTADO DE PRODUCTOS EN 2 COLUMNAS (ALTO IMPACTO) ── */
+.menu-list{
+  max-width:840px;
+  margin:0 auto;
+  padding:0 12px 140px 12px;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:12px;
+}
+@media (min-width: 600px){
+  .menu-list{
+    gap:16px;
+    padding:0 16px 140px 16px;
+  }
+}
+
 .dish-card{
   background:var(--bg-card);
   border:2px solid var(--bd);
-  border-radius:18px;
-  padding:20px;
+  border-radius:16px;
+  padding:12px;
   display:flex;
   flex-direction:column;
-  gap:14px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.5);
+  justify-content:space-between;
+  gap:10px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.45);
   transition:border-color .2s, transform .2s;
   overflow:hidden;
+  position:relative;
 }
 .dish-card:focus-within, .dish-card:hover{
   border-color:var(--p);
 }
 .dish-img-box{
   width:100%;
-  aspect-ratio:16/9;
-  border-radius:14px;
+  aspect-ratio:4/3;
+  border-radius:12px;
   overflow:hidden;
   background:var(--bg-elevated);
-  border:1.5px solid var(--bd);
+  border:1px solid var(--bd);
+  position:relative;
   margin-bottom:2px;
 }
 .dish-img{
@@ -292,92 +345,169 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   transition:transform .3s;
 }
 .dish-card:hover .dish-img{
-  transform:scale(1.03);
+  transform:scale(1.04);
 }
 .dish-header{
   display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
+  flex-direction:column;
+  gap:4px;
+}
+.dish-badge{
+  align-self:flex-start;
+  background:rgba(255,167,38,0.18);
+  border:1.2px solid var(--p);
+  color:var(--p);
+  font-size:0.68rem;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  padding:2px 6px;
+  border-radius:6px;
+  white-space:nowrap;
+  margin-bottom:2px;
 }
 .dish-name{
   font-family:var(--ft);
-  font-size:1.25rem;
+  font-size:1.05rem;
   font-weight:800;
   color:#FFFFFF;
   line-height:1.25;
-}
-.dish-badge{
-  background:rgba(255,167,38,0.18);
-  border:1.5px solid var(--p);
-  color:var(--p);
-  font-size:0.75rem;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  padding:4px 8px;
-  border-radius:8px;
-  white-space:nowrap;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  min-height:2.5em;
 }
 .dish-desc{
-  font-size:0.95rem;
+  font-size:0.82rem;
   color:var(--tm);
-  line-height:1.55;
+  line-height:1.35;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-top:2px;
 }
 .dish-footer{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding-top:12px;
-  border-top:1.5px solid rgba(255,255,255,0.1);
+  flex-direction:column;
+  gap:8px;
+  margin-top:auto;
+  padding-top:8px;
+  border-top:1px solid rgba(255,255,255,0.08);
 }
 .dish-price{
   font-family:var(--ft);
-  font-size:1.35rem;
+  font-size:1.15rem;
   font-weight:800;
   color:var(--p);
   letter-spacing:0.5px;
 }
 
-/* Botón grande para agregar */
+/* Botón accesible para agregar */
 .btn-add-item{
-  min-height:50px;
-  padding:0 22px;
+  width:100%;
+  min-height:46px;
+  padding:0 12px;
   background:var(--p);
   color:var(--p-text);
   border:none;
-  border-radius:14px;
-  font-size:1rem;
+  border-radius:12px;
+  font-size:0.95rem;
   font-weight:800;
   font-family:var(--fb);
   cursor:pointer;
   display:flex;
   align-items:center;
-  gap:8px;
-  box-shadow:0 3px 12px rgba(255,167,38,0.3);
+  justify-content:center;
+  gap:6px;
+  box-shadow:0 3px 10px rgba(255,167,38,0.25);
 }
 .btn-add-item:active{transform:scale(0.97);}
 
 /* Stepper accesible de cantidad (+ / −) */
 .dish-stepper{
+  width:100%;
   display:flex;
   align-items:center;
+  justify-content:space-between;
   background:var(--bg-elevated);
-  border:2px solid var(--p);
-  border-radius:14px;
+  border:1.8px solid var(--p);
+  border-radius:12px;
   overflow:hidden;
-  min-height:50px;
+  min-height:46px;
 }
 .stepper-btn{
   background:transparent;
   border:none;
   color:var(--tx);
-  width:48px;
-  height:48px;
-  font-size:1.4rem;
+  width:42px;
+  height:46px;
+  font-size:1.3rem;
   font-weight:900;
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.stepper-btn:active{background:rgba(255,255,255,0.15);}
+.stepper-value{
+  font-size:1.1rem;
+  font-weight:800;
+  color:#FFFFFF;
+  min-width:26px;
+  text-align:center;
+}
+
+/* ── MODO 1 COLUMNA (LISTA EXPANDIDA) ── */
+.menu-list.list-1col{
+  max-width:620px;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.menu-list.list-1col .dish-card{
+  padding:18px;
+  gap:12px;
+}
+.menu-list.list-1col .dish-img-box{
+  aspect-ratio:16/9;
+}
+.menu-list.list-1col .dish-header{
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+.menu-list.list-1col .dish-name{
+  font-size:1.25rem;
+  -webkit-line-clamp:unset;
+  min-height:auto;
+}
+.menu-list.list-1col .dish-desc{
+  font-size:0.95rem;
+  -webkit-line-clamp:unset;
+}
+.menu-list.list-1col .dish-footer{
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:12px;
+}
+.menu-list.list-1col .dish-price{
+  font-size:1.35rem;
+}
+.menu-list.list-1col .btn-add-item{
+  width:auto;
+  min-height:50px;
+  padding:0 22px;
+}
+.menu-list.list-1col .dish-stepper{
+  width:auto;
+  min-height:50px;
+}
+.menu-list.list-1col .stepper-btn{
+  width:48px;
+  height:50px;
+}
   display:flex;
   align-items:center;
   justify-content:center;
@@ -876,6 +1006,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   <button class="cat-btn" onclick="filterCategory('postres_bebidas', this)">🍨 Bebidas & Postres</button>
 </nav>
 
+<!-- ── BARRA DE CONTROL DE VISTA (2 COLUMNAS VS 1 COLUMNA) ── -->
+<div class="view-toggle-bar">
+  <span class="view-label" id="viewCountLabel">Mostrando productos</span>
+  <div class="view-btn-group" role="group" aria-label="Modo de visualización de la carta">
+    <button class="view-toggle-btn active" id="btnGrid2" onclick="setMenuLayout('grid2')" title="Vista 2 Columnas" aria-label="Vista 2 Columnas">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+      <span>2 Col</span>
+    </button>
+    <button class="view-toggle-btn" id="btnGrid1" onclick="setMenuLayout('grid1')" title="Vista 1 Columna" aria-label="Vista 1 Columna">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+      <span>1 Col</span>
+    </button>
+  </div>
+</div>
+
 <!-- ── LISTADO DE PLATOS / TRAGOS ── -->
 <main class="menu-list" id="menuCardsContainer" role="main"></main>
 
@@ -1073,6 +1218,31 @@ function saveState() {
   updateCartIndicators();
 }
 
+/* ── CONTROL DE LAYOUT (2 COLUMNAS / 1 COLUMNA) ── */
+let _menuLayout = localStorage.getItem('lola_carta_layout') || 'grid2';
+
+function setMenuLayout(layout) {
+  _menuLayout = layout;
+  localStorage.setItem('lola_carta_layout', layout);
+  applyMenuLayout();
+}
+
+function applyMenuLayout() {
+  const container = document.getElementById('menuCardsContainer');
+  const btn2 = document.getElementById('btnGrid2');
+  const btn1 = document.getElementById('btnGrid1');
+  if (!container) return;
+  if (_menuLayout === 'grid1') {
+    container.classList.add('list-1col');
+    if (btn1) btn1.classList.add('active');
+    if (btn2) btn2.classList.remove('active');
+  } else {
+    container.classList.remove('list-1col');
+    if (btn2) btn2.classList.add('active');
+    if (btn1) btn1.classList.remove('active');
+  }
+}
+
 /* ── RENDER DE CARDS DE LA CARTA ── */
 function renderMenuCards() {
   const container = document.getElementById('menuCardsContainer');
@@ -1084,9 +1254,14 @@ function renderMenuCards() {
     return matchCat && matchQ;
   });
 
+  const countEl = document.getElementById('viewCountLabel');
+  if (countEl) countEl.textContent = `${filtered.length} ${filtered.length === 1 ? 'producto' : 'productos'}`;
+
+  applyMenuLayout();
+
   if (!filtered.length) {
     container.innerHTML = `
-      <div style="text-align:center;padding:40px 20px;background:var(--bg-card);border:2px solid var(--bd);border-radius:18px;">
+      <div style="grid-column:1/-1;text-align:center;padding:40px 20px;background:var(--bg-card);border:2px solid var(--bd);border-radius:18px;">
         <span style="font-size:2.5rem;display:block;margin-bottom:8px;">🍽️</span>
         <p style="font-size:1.1rem;font-weight:700;color:#FFFFFF;">No se encontraron productos</p>
         <p style="font-size:0.95rem;color:var(--tm);">Intenta con otro término o categoría.</p>
