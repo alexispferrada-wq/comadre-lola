@@ -382,13 +382,19 @@ section{
   position:relative;
 }
 .eventos-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(255px,1fr));
-  gap:28px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:32px 28px;
+  max-width:980px;
+  margin:0 auto;
   padding-bottom:48px;
   perspective: 1000px;
 }
 .ev-card{
+  flex:0 1 280px;
+  width:280px;
+  max-width:100%;
   background: #11111a;
   border: 2.5px solid #1c1c2b;
   border-radius: 6px 28px 6px 28px;
@@ -1060,7 +1066,8 @@ footer{
   .lightbox-next{right:8px;}
   .lightbox-img{max-width:96vw;max-height:78vh;}
   .momentos-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
-  .eventos-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto;gap:22px;}
+  .eventos-grid{gap:20px;}
+  .ev-card{flex:1 1 100%;max-width:320px;}
   .nl-form{flex-direction:column;align-items:stretch;}
   .nl-input,.nl-btn{width:100%;}
 }
