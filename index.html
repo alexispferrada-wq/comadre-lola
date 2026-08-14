@@ -37,12 +37,12 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
 :root{
-  --p:#ff4013;
-  --s:#96d35f;
-  --a:#4ECDC4;
-  --bg:#09090d;
+  --p:#00fadd;
+  --s:#0aff47;
+  --a:#e10e89;
+  --bg:#000000;
   --tx:#fdfdfd;
-  --tm:#7b7b90;
+  --tm:#a5a5c0;
   --tr:.4s cubic-bezier(0.16, 1, 0.3, 1);
   --ft:'BudmoJiggler',cursive;
   --fb:'Inter',sans-serif;
@@ -51,8 +51,8 @@
   /* Asymmetric Styles */
   --skew-val: -1.5deg;
   --card-border: 2px solid #1a1a26;
-  --hard-shadow: 6px 6px 0px rgba(255, 64, 19, 0.9);
-  --hard-shadow-s: 6px 6px 0px rgba(150, 211, 95, 0.9);
+  --hard-shadow: 6px 6px 0px rgba(0, 250, 221, 0.9);
+  --hard-shadow-s: 6px 6px 0px rgba(10, 255, 71, 0.9);
   --hard-shadow-dark: 8px 8px 0px rgba(0,0,0,0.85);
 }
 
@@ -60,12 +60,12 @@ html{scroll-behavior:smooth;}
 
 body{
   font-family:var(--fb);
-  background-color: #09090d;
+  background-color: #000000;
   background-image: 
-    radial-gradient(ellipse at 50% 15%, rgba(9, 9, 13, 0.76) 0%, rgba(9, 9, 13, 0.94) 75%),
-    linear-gradient(rgba(9, 9, 13, 0.88), rgba(9, 9, 13, 0.94)),
+    radial-gradient(ellipse at 50% 15%, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.68) 80%),
+    linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.62)),
     url('assets/fondo_oficial.png');
-  background-size: auto, auto, 540px;
+  background-size: auto, auto, 480px;
   background-repeat: no-repeat, no-repeat, repeat;
   background-attachment: scroll, scroll, fixed;
   background-position: center top, center top, center center;
@@ -412,10 +412,10 @@ section{
 
 /* ── EVENTOS (GRILLA 4X2 COMPACTA Y MODERNA) ── */
 .eventos{
-  background: rgba(9, 9, 13, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-top: 3px solid #1a1a26;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-top: 3px solid rgba(255,255,255,0.08);
   padding:64px 0 40px;
   position:relative;
 }
@@ -619,10 +619,10 @@ section{
 
 /* ── MEJORES MOMENTOS (MOSAICO IRREGULAR) ── */
 .momentos{
-  background: rgba(9, 9, 13, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-top: 3px solid #1a1a26;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-top: 3px solid rgba(255,255,255,0.08);
 }
 .momentos-grid{
   display:grid;
@@ -719,10 +719,10 @@ section{
 
 /* ── RESERVAS (DIAGONAL / OFFSETS) ── */
 .reservas{
-  background: rgba(9, 9, 13, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-top: 3px solid #1a1a26;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-top: 3px solid rgba(255,255,255,0.08);
   position: relative;
 }
 /* Divisor asimétrico */
