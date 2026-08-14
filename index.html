@@ -856,10 +856,42 @@ footer{
   justify-content:space-between;
   padding-top:24px;
   border-top:2px solid #1a1a26;
-  font-size:11px;
-  color:#444855;
+  font-size:12px;
+  color:#666680;
+  flex-wrap:wrap;
+  gap:16px;
 }
-.footer-bot span{color:var(--p);font-weight:800;}
+.footer-bot-copy{color:#888899;font-weight:600;}
+.tusitio-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(0,229,255,0.03);
+  border:1px solid rgba(0,229,255,0.25);
+  border-radius:12px;
+  padding:6px 14px;
+  text-decoration:none;
+  transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:0 0 10px rgba(0,229,255,0.05);
+}
+.tusitio-badge:hover{
+  background:rgba(0,229,255,0.1);
+  border-color:#00e5ff;
+  box-shadow:0 0 20px rgba(0,229,255,0.35);
+  transform:translateY(-2px);
+}
+.tusitio-badge-text{
+  font-size:10.5px;
+  font-weight:700;
+  color:#a0a0b8;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+}
+.tusitio-badge-logo{
+  height:24px;
+  width:auto;
+  display:block;
+}
 
 /* ── TOAST ── */
 .toast{
@@ -1953,8 +1985,11 @@ footer{
     </div>
   </div>
   <div class="footer-bot">
-    <span>© 2026 La Comadre Lola. Todos los derechos reservados.</span>
-    <span>Diseño y Desarrollo Web por <a href="https://tusitioya.cl" target="_blank" rel="noopener" style="color:var(--p);text-decoration:none;font-weight:700">TuSitioYa.cl 🚀</a></span>
+    <span class="footer-bot-copy">© 2026 La Comadre Lola. Todos los derechos reservados.</span>
+    <a href="https://tusitioya.cl" target="_blank" rel="noopener" class="tusitio-badge" title="Desarrollado por TuSitio Labs">
+      <span class="tusitio-badge-text">Desarrollado por</span>
+      <img src="assets/tusitio_labs_logo_footer.svg" alt="TuSitio Labs" class="tusitio-badge-logo">
+    </a>
   </div>
 </footer>
 

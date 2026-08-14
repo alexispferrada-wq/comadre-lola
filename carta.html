@@ -587,7 +587,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   white-space:nowrap;
 }
 .toast-msg.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.toast-msg.err{background:#C62828;}
+.tusitio-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(0,229,255,0.03);
+  border:1px solid rgba(0,229,255,0.25);
+  border-radius:12px;
+  padding:6px 14px;
+  text-decoration:none;
+  transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:0 0 10px rgba(0,229,255,0.05);
+}
+.tusitio-badge:hover{
+  background:rgba(0,229,255,0.1);
+  border-color:#00e5ff;
+  box-shadow:0 0 20px rgba(0,229,255,0.35);
+  transform:translateY(-2px);
+}
+.tusitio-badge-text{
+  font-size:10.5px;
+  font-weight:700;
+  color:#a0a0b8;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+}
+.tusitio-badge-logo{
+  height:22px;
+  width:auto;
+  display:block;
+}
 </style>
 </head>
 <body>
@@ -684,9 +713,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <footer style="text-align:center;padding:40px 20px 60px;background:#08080C;border-top:2px solid var(--bd);margin-top:40px;">
   <div style="font-family:var(--flogo);font-size:1.5rem;color:var(--p);margin-bottom:8px;">🌹 La Comadre Lola</div>
   <p style="font-size:0.95rem;color:var(--tm);margin-bottom:16px;">Manuel Antonio Matta 1269, Quilicura · A pasos del Metro Lo Cruzat (L3)</p>
-  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
     <a href="/" style="color:#FFFFFF;text-decoration:none;font-weight:700;padding:8px 16px;background:var(--bg-elevated);border-radius:10px;border:1px solid var(--bd);">🏠 Volver al Inicio</a>
     <a href="/#reservas" style="color:#000;background:var(--p);text-decoration:none;font-weight:900;padding:8px 16px;border-radius:10px;">🎉 Reservar Mesa</a>
+  </div>
+  <div style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;">
+    <a href="https://tusitioya.cl" target="_blank" rel="noopener" class="tusitio-badge" title="Desarrollado por TuSitio Labs">
+      <span class="tusitio-badge-text">Desarrollado por</span>
+      <img src="assets/tusitio_labs_logo_footer.svg" alt="TuSitio Labs" class="tusitio-badge-logo">
+    </a>
   </div>
 </footer>
 
