@@ -32,6 +32,9 @@ graphify-out/
 # Dependencies
 node_modules/
 backend/node_modules/
+.env
+.wrangler/
+dist/node_modules/
 
 # Local uploads
 assets/uploads/
