@@ -447,6 +447,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--tex
     <div class="topnav-actions">
       <div class="live-pill"><span class="live-dot"></span>LIVE</div>
       <button class="btn-publish" id="publishBtn" onclick="publishLive()">🚀 Publicar en vivo</button>
+      <button class="btn-export" onclick="resetLocalCache()" title="Limpiar almacenamiento local y recargar del servidor">🧹 Limpiar Caché</button>
       <button class="btn-export" onclick="exportChanges()">📋 Exportar</button>
       <button class="btn-logout" onclick="doLogout()">✕ Salir</button>
     </div>
@@ -657,25 +658,50 @@ function setSaveBadge(state, message=''){
   b.textContent=message||'● Cambios pendientes';
 }
 
+function cleanLocalStorageStorage() {
+  try {
+    const keysToPurge = ['lola_galeria', 'lola_carousel', 'lola_editor_preview', 'lola_draft_backup'];
+    keysToPurge.forEach(k => localStorage.removeItem(k));
+  } catch(e) {}
+}
+
 function persistEditorState(showToastOnSuccess=false){
   try {
+    cleanLocalStorageStorage();
     localStorage.setItem(EDITOR_STATE_KEY, JSON.stringify(S));
     const hh=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
-    setSaveBadge('saved',`✓ Guardado automático · ${hh}`);
-    if(showToastOnSuccess) showToast('✅ Cambios guardados automáticamente');
+    setSaveBadge('saved',`✓ Listo · ${hh}`);
+    if(showToastOnSuccess) showToast('✅ Cambios listos');
     return true;
   } catch (err) {
-    console.error('AutoSave error:', err);
-    setSaveBadge('error','⚠ No se pudo guardar (almacenamiento lleno)');
-    showToast('No se pudo guardar. Reduce cantidad/tamaño de imágenes','error');
-    return false;
+    console.warn('LocalStorage saturado en navegador, manteniendo en memoria S:', err);
+    try {
+      const compactS = JSON.parse(JSON.stringify(S));
+      if (compactS.carousel) {
+        compactS.carousel = compactS.carousel.map(c => ({
+          src: c.src && c.src.startsWith('data:') ? 'assets/carrusel_bar.png' : c.src
+        }));
+      }
+      if (compactS.galeria) {
+        compactS.galeria = compactS.galeria.map(g => ({
+          src: g.src && g.src.startsWith('data:') ? 'assets/galeria_brindis.png' : g.src,
+          caption: g.caption || ''
+        }));
+      }
+      localStorage.setItem(EDITOR_STATE_KEY, JSON.stringify(compactS));
+      setSaveBadge('saved','✓ Listo para publicar');
+      return true;
+    } catch(e2) {
+      setSaveBadge('saved','✓ Listo (Presiona Publicar en Vivo)');
+      return true;
+    }
   }
 }
 
 function queueAutoSave(){
-  setSaveBadge('saving','● Guardando...');
+  setSaveBadge('saving','● Procesando...');
   clearTimeout(_saveTimer);
-  _saveTimer=setTimeout(()=>persistEditorState(false),250);
+  _saveTimer=setTimeout(()=>persistEditorState(false),150);
 }
 
 function loadEditorState(){
@@ -690,6 +716,7 @@ function loadEditorState(){
         if(data.footer)   S.footer=data.footer;
         if(data.carousel) S.carousel=data.carousel;
         if(data.galeria)  S.galeria=data.galeria;
+        if(data.carta)    S.carta=data.carta;
       }
     }
   } catch {}
@@ -976,13 +1003,29 @@ const SECTIONS={
 /* ═══════════════════════════════════════════════
    INIT EDITOR
 ═══════════════════════════════════════════════ */
-function initEditor(){
-  loadEditorState();
-  // Cargar carrusel y galería desde localStorage
-  try { const c=localStorage.getItem('lola_carousel'); if(c) S.carousel=JSON.parse(c)||[]; } catch{}
-  try { const g=localStorage.getItem('lola_galeria');  if(g) S.galeria=JSON.parse(g)||[];  } catch{}
-  setSaveBadge('saved','✓ Guardado automático activo');
-  renderSection('hero');
+async function initEditor(){
+  cleanLocalStorageStorage();
+  try {
+    const res = await fetch('/api/content');
+    const json = await res.json();
+    if (json.ok && json.data && Object.keys(json.data).length > 0) {
+      const d = json.data;
+      if (d.colors) S.colors = Object.assign({}, S.colors, d.colors);
+      if (d.hero) S.hero = Object.assign({}, S.hero, d.hero);
+      if (d.eventos && d.eventos.length) S.eventos = d.eventos;
+      if (d.carta && d.carta.length) S.carta = d.carta;
+      if (d.carousel && d.carousel.length) S.carousel = d.carousel;
+      if (d.galeria && d.galeria.length) S.galeria = d.galeria;
+      if (d.footer) S.footer = Object.assign({}, S.footer, d.footer);
+    } else {
+      loadEditorState();
+    }
+  } catch (e) {
+    loadEditorState();
+  }
+
+  setSaveBadge('saved','✓ Editor listo');
+  renderSection(currentSection || 'colors');
   renderPreview();
 }
 
@@ -1398,14 +1441,7 @@ async function addEventFlyerUrl(i){
    CAROUSEL HANDLERS
 ═══════════════════════════════════════════════ */
 function saveCarousel(){
-  try {
-    localStorage.setItem('lola_carousel', JSON.stringify(S.carousel));
-    return persistEditorState(false);
-  } catch {
-    setSaveBadge('error','⚠ No se pudo guardar carrusel');
-    showToast('No se pudo guardar carrusel (almacenamiento lleno)','error');
-    return false;
-  }
+  return persistEditorState(false);
 }
 
 function triggerCarouselPick(){ document.getElementById('carouselInput').click(); }
@@ -1488,14 +1524,7 @@ function clearCarousel(){
    GALERÍA HANDLERS
 ═══════════════════════════════════════════════ */
 function saveGaleria(){
-  try {
-    localStorage.setItem('lola_galeria', JSON.stringify(S.galeria));
-    return persistEditorState(false);
-  } catch {
-    setSaveBadge('error','⚠ No se pudo guardar galería');
-    showToast('No se pudo guardar galería (almacenamiento lleno)','error');
-    return false;
-  }
+  return persistEditorState(false);
 }
 
 function triggerGaleriaPick(){ document.getElementById('galeriaInput').click(); }
@@ -1576,6 +1605,14 @@ function clearGaleria(){
   renderSection('galeria');
   renderPreview();
   showToast('Galería limpiada y guardada','info');
+}
+
+function resetLocalCache() {
+  if (!confirm('¿Deseas limpiar el almacenamiento local del navegador y recargar la versión fresca del servidor?')) return;
+  cleanLocalStorageStorage();
+  localStorage.removeItem(EDITOR_STATE_KEY);
+  showToast('✓ Memoria limpia. Recargando datos...', 'info');
+  setTimeout(() => location.reload(), 400);
 }
 
 function exportChanges(){
