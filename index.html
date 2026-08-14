@@ -1572,22 +1572,24 @@ footer{
 <nav class="nav" id="nav">
   <div class="nav-logo" onclick="scrollTo(0,0)">🌹 La Comadre Lola</div>
   <div class="nav-links">
+    <a class="nav-link" href="/carta" style="color:var(--p);font-weight:800;">🍽️ Carta Digital</a>
     <a class="nav-link" onclick="scrollToId('eventos')">Eventos</a>
     <a class="nav-link" onclick="scrollToId('momentos')">Galería</a>
     <a class="nav-link" onclick="scrollToId('reservas')">Reservas</a>
     <a class="nav-link" onclick="scrollToId('footer')">Contacto</a>
-    <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar Mesa</button>
+    <button class="nav-cta" onclick="location.href='/carta'" style="background:rgba(232,145,58,0.15);border:1.5px solid var(--p);color:var(--p);">🍽️ Ver Carta</button>
+    <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar</button>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Abrir menú">
     <span></span><span></span><span></span>
   </div>
 </nav>
 <div class="nav-mobile" id="navMobile">
+  <a href="/carta" style="color:var(--p);font-weight:800;font-size:1.1rem;">🍽️ Ver Carta Digital</a>
   <a onclick="scrollToId('eventos');toggleMenu()">🎤 Cartelera de Eventos</a>
   <a onclick="scrollToId('momentos');toggleMenu()">📸 Galería de Fotos</a>
   <a onclick="scrollToId('reservas');toggleMenu()">📅 Reservar Mesa</a>
   <a onclick="scrollToId('footer');toggleMenu()">📍 Ubicación y Contacto</a>
-  <a onclick="scrollToId('reservas');toggleMenu()" style="color:var(--s)">🎉 Reservar Mesa Ahora</a>
 </div>
 
 <!-- ── HERO ASIMÉTRICO ── -->
@@ -1602,9 +1604,9 @@ footer{
     </h1>
     <p class="hero-sub">Gastronomia · Shows en Vivo · El Mejor Carrete</p>
     <div class="hero-btns">
-      <button class="btn-main" id="heroBtn1" onclick="scrollToId('reservas')">🎉 RESERVA TU MESA</button>
-      <button class="btn-sec" id="heroBtn2" onclick="scrollToId('eventos')">🎤 Ver Eventos</button>
-      <button class="btn-sec" id="heroBtn3" onclick="scrollToId('momentos')">📸 Galería</button>
+      <button class="btn-main" id="heroBtn1" onclick="location.href='/carta'">🍽️ VER CARTA DIGITAL</button>
+      <button class="btn-sec" id="heroBtn2" onclick="scrollToId('reservas')">🎉 Reservar Mesa</button>
+      <button class="btn-sec" id="heroBtn3" onclick="scrollToId('eventos')">🎤 Eventos</button>
     </div>
     <div class="hero-roses">🌹🌹🌹</div>
   </div>

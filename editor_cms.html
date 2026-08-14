@@ -597,12 +597,32 @@ const S = {
     particles:true, roses:true,
   },
   carta: [
-    { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO' },
-    { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA' },
-    { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO' },
-    { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA' },
-    { id:'cv1', cat:'cervezas', nombre:'Schop Kross Golden 500cc', desc:'Cerveza artesanal rubia en barril bien helada con espuma cremosa.', precio:4200, badge:'BARRIL' },
-    { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO' }
+    { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal dulce, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO', foto:'https://res.cloudinary.com/dqsz4ua73/image/upload/v1782942627/IMG_2304_kcpvka.jpg' },
+    { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA', foto:'assets/carrusel_bar.png' },
+    { id:'t3', cat:'tragos', nombre:'Terremoto Tradicional', desc:'El clásico campesino con pipeño dulce, helado de piña y jarabe de granadina.', precio:4900, badge:'CLÁSICO', foto:'' },
+    { id:'t4', cat:'tragos', nombre:'Mojito Chileno de Pisco', desc:'Pisco blanco chileno, limón sutil, hierbabuena fresca, azúcar y toque de ginger ale.', precio:5900, badge:'', foto:'' },
+    { id:'t5', cat:'tragos', nombre:'Piscola Mistral / Alto 35°', desc:'Vaso largo con abundante hielo, 2 medidas de pisco y bebida Coca-Cola o Sprite.', precio:4500, badge:'FAVORITO', foto:'' },
+    { id:'t6', cat:'tragos', nombre:'Pisco Sour Artesanal', desc:'Limón de pica fresco, pisco aromático chileno, goma y gotas de amargo de angostura.', precio:4900, badge:'', foto:'' },
+
+    { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO', foto:'assets/carrusel_comida.png' },
+    { id:'tb2', cat:'tablas', nombre:'Pichanga Caliente', desc:'Carne mechada, vienesas del sur, queso mantecoso fundido, huevo duro, aceitunas y papas fritas.', precio:14900, badge:'', foto:'' },
+    { id:'tb3', cat:'tablas', nombre:'Chorrillana Porteña Tradicional', desc:'Lomo salteado a la plancha con cebolla caramelizada, huevos fritos y base de papas crujientes.', precio:15500, badge:'IMPERDIBLE', foto:'' },
+    { id:'tb4', cat:'tablas', nombre:'Tabla de Empanaditas (6 un.)', desc:'3 de pino de vacuno bien jugoso y 3 de queso fundido con camarón.', precio:8900, badge:'', foto:'' },
+
+    { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA', foto:'assets/carrusel_show.png' },
+    { id:'c2', cat:'cocina', nombre:'Pastel de Choclo Tradicional', desc:'Choclo tierno pastelero, pino de vacuno, presa de pollo, aceitunas y huevo duro gratinado.', precio:10900, badge:'TRADICIÓN', foto:'' },
+    { id:'c3', cat:'cocina', nombre:'Cazuela de Vacuno', desc:'Corte de osobuco tierno, choclo dulce, zapallo camote, porotos verdes y caldo humeante.', precio:9900, badge:'', foto:'' },
+    { id:'c4', cat:'cocina', nombre:'Reineta a la Plancha', desc:'Pescado fresco sellado a la plancha con agregado a elección (papas fritas, arroz o ensalada chilena).', precio:11900, badge:'', foto:'' },
+
+    { id:'cv1', cat:'cervezas', nombre:'Schop Kross Golden 500cc', desc:'Cerveza artesanal rubia en barril bien helada con espuma cremosa.', precio:4200, badge:'BARRIL', foto:'assets/carrusel_bar.png' },
+    { id:'cv2', cat:'cervezas', nombre:'Schop Austral Calafate 500cc', desc:'La clásica patagónica con sabor a calafate recién tirada de schopera.', precio:4500, badge:'BARRIL', foto:'' },
+    { id:'cv3', cat:'cervezas', nombre:'Corona Extra 330cc', desc:'Botella individual servida con rodaja de limón sutil.', precio:3200, badge:'', foto:'' },
+    { id:'cv4', cat:'cervezas', nombre:'Kunstmann Torobayo 330cc', desc:'Cerveza ámbar artesanal valdiviana con notas a caramelo y malta tostada.', precio:3800, badge:'', foto:'' },
+
+    { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO', foto:'' },
+    { id:'p2', cat:'postres_bebidas', nombre:'Leche Asada de la Casa', desc:'Receta de la abuela con abundante caramelo rubio brillante y vainilla.', precio:3800, badge:'CASERO', foto:'' },
+    { id:'p3', cat:'postres_bebidas', nombre:'Bebida en Lata 350cc', desc:'Coca-Cola, Coca-Cola Zero, Sprite o Fanta bien fría.', precio:2000, badge:'', foto:'' },
+    { id:'p4', cat:'postres_bebidas', nombre:'Agua Mineral 500cc', desc:'Con o sin gas.', precio:1800, badge:'', foto:'' }
   ],
   eventos:[
     {flyer:'',name:'Sexual Democracia',     genero:'Rock Chileno · En Vivo',        fecha:'Sábado 25 Jul',   hora:'21:00',price:'Ver Passline', badge:'IMPERDIBLE', tag:'música',   desc:'La gira "El Auténtico Rock Chileno" llega a Quilicura. Prepárate para corear himnos y vivir el rock nacional del bueno.',        btn:'Entradas Passline',   link:'https://www.passline.com/eventos/sexual-democracia-en-comadre-lola-quilicura-529589'},
@@ -717,7 +737,7 @@ const SECTIONS={
       if(!S.carta) S.carta = [];
       return `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <span style="font-size:12px;color:var(--text-muted);">Edita platos, tragos y precios de la carta.</span>
+          <span style="font-size:12px;color:var(--text-muted);">Edita fotos, platos, tragos y precios de la carta.</span>
           <button onclick="addCartaItem()" style="padding:7px 14px;background:var(--primary);border:none;border-radius:8px;color:#000;font-weight:700;font-family:var(--fb);cursor:pointer;">+ Añadir Producto</button>
         </div>
         ${S.carta.map((item,i)=>`
@@ -725,6 +745,27 @@ const SECTIONS={
             <span>PRODUCTO #${i+1}</span>
             <button onclick="removeCartaItem(${i})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:11px;font-weight:700;">✕ Eliminar</button>
           </div>
+
+          <!-- FOTO DEL PRODUCTO -->
+          <div class="fld-group">
+            <div class="fld-label">📷 Foto del Plato o Trago</div>
+            <div style="margin-bottom:6px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="fld-input" id="cartaFotoUrlInput${i}" placeholder="https://..." value="${item.foto||item.img||''}" style="flex:1">
+                <button onclick="addCartaFotoUrl(${i})" style="padding:9px 14px;background:rgba(232,145,58,.2);border:1px solid var(--primary);border-radius:9px;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap">+ Link</button>
+              </div>
+            </div>
+            <div style="text-align:center;font-size:10px;color:var(--text-muted);padding:2px 0">— o —</div>
+            <div class="flyer-upload-area" onclick="triggerCartaFotoPick(${i})" style="min-height:90px;aspect-ratio:16/9;margin-top:6px;cursor:pointer;">
+              ${(item.foto || item.img)
+                ? `<img src="${item.foto || item.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`
+                : `<div class="flyer-placeholder" style="padding:8px 16px"><span style="font-size:24px">📁</span><span style="font-size:12px;color:var(--text-muted);margin-top:4px">Subir foto desde computador</span></div>`
+              }
+            </div>
+            <input type="file" id="cartaFotoInput${i}" accept="image/*" style="display:none" onchange="handleCartaFotoUpload(${i},this)">
+            ${(item.foto || item.img) ? `<button class="flyer-remove-btn" onclick="removeCartaFoto(${i})" style="margin-top:6px;">✕ Quitar foto</button>` : ''}
+          </div>
+
           <div class="fld-group"><div class="fld-label">Nombre del Producto / Trago</div><input class="fld-input" data-k="carta.${i}.nombre" value="${item.nombre||''}"></div>
           <div class="grid-2">
             <div class="fld-group"><div class="fld-label">Categoría</div>
@@ -970,7 +1011,8 @@ window.addCartaItem = function() {
     nombre: 'Nuevo Producto / Trago',
     desc: 'Descripción con ingredientes o detalles...',
     precio: 5000,
-    badge: ''
+    badge: '',
+    foto: ''
   });
   renderSection('carta');
   setSaveBadge('show', '● Cambios pendientes');
@@ -983,6 +1025,57 @@ window.removeCartaItem = function(idx) {
   renderSection('carta');
   setSaveBadge('show', '● Cambios pendientes');
   queueAutoSave();
+};
+
+window.triggerCartaFotoPick = function(i) {
+  const inp = document.getElementById('cartaFotoInput' + i);
+  if (inp) inp.click();
+};
+
+window.addCartaFotoUrl = async function(i) {
+  const inp = document.getElementById('cartaFotoUrlInput' + i);
+  const url = (inp?.value || '').trim();
+  if (!url) { showToast('Ingresa una URL de imagen', 'error'); return; }
+  if (S.carta && S.carta[i]) {
+    S.carta[i].foto = url;
+    renderSection('carta');
+    setSaveBadge('show', '● Cambios pendientes');
+    queueAutoSave();
+    showToast('✓ Foto del producto vinculada');
+  }
+};
+
+window.handleCartaFotoUpload = async function(i, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('El archivo supera los 5MB', 'error'); return; }
+  if (!file.type.startsWith('image/')) { showToast('Solo se permiten imágenes', 'error'); return; }
+  try {
+    setSaveBadge('saving', '● Subiendo foto...');
+    const cloudUrl = await uploadImageViaApi({ file, target: 'carta' });
+    if (S.carta && S.carta[i]) {
+      S.carta[i].foto = cloudUrl;
+      renderSection('carta');
+      setSaveBadge('show', '● Cambios pendientes');
+      queueAutoSave();
+      showToast('✓ Foto subida y guardada');
+    }
+  } catch(err) {
+    setSaveBadge('error', '⚠ Error de subida');
+    showToast(err.message || 'Error al subir foto', 'error');
+  } finally {
+    input.value = '';
+  }
+};
+
+window.removeCartaFoto = function(i) {
+  if (S.carta && S.carta[i]) {
+    S.carta[i].foto = '';
+    renderSection('carta');
+    setSaveBadge('show', '● Cambios pendientes');
+    queueAutoSave();
+    showToast('Foto eliminada');
+  }
 };
 
 
