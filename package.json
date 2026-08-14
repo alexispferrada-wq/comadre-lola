@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "node --test tests/qa-suite.test.js",
+    "deploy": "wrangler deploy",
+    "dev:cf": "wrangler dev",
     "postinstall": "npm --prefix backend install",
     "start": "npm --prefix backend start",
     "dev": "npm --prefix backend run dev",

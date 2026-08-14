@@ -433,9 +433,7 @@ body{
 <script src="js/html5-qrcode.min.js"></script>
 
 <script>
-const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? window.location.origin
-  : 'https://lacomadrelola-api.onrender.com';
+const API = window.location.origin;
 
 let _html5QrCode = null;
 let _isScanning = false;

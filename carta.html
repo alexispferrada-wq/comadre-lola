@@ -917,9 +917,7 @@ async function initApp() {
 
   // Cargar catálogo actualizado desde CMS si está disponible
   try {
-    const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? window.location.origin
-      : 'https://lacomadrelola-api.onrender.com';
+    const API = window.location.origin;
     const res = await fetch(API + '/api/content');
     const result = await res.json();
     if (result.ok && result.data && result.data.carta && result.data.carta.length > 0) {
