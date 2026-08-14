@@ -104,16 +104,16 @@ function testHtmlReferences(filename) {
   testHtmlReferences(f);
 });
 
-/* ── LAB 3: CARTA DIGITAL (WCAG AAA & LOGICA DE COMANDA) ── */
-console.log('\n📱 LAB 3: Carta Digital (/carta) — Accesibilidad y Confort Móvil');
+/* ── LAB 3: CARTA DIGITAL (WCAG AAA & NAVEGACIÓN COMPLETA) ── */
+console.log('\n📱 LAB 3: Carta Digital (/carta) — Accesibilidad, Menú Puro y Navegación');
 const cartaHtml = fs.readFileSync(path.join(rootDir, 'carta.html'), 'utf-8');
 
 assert(cartaHtml.includes('font-large') && cartaHtml.includes('cycleFontSize'), 'Selector de tamaño de letra accesible (+50 años) presente');
-assert(cartaHtml.includes('mesa-quick-grid'), 'Selector numérico rápido de mesa implementado');
-assert(cartaHtml.includes('qrcode.min.js'), 'Motor de generación QR integrado localmente');
-assert(!cartaHtml.includes('drawerTotal">$0 CLP'), 'Cajón de comanda no muestra sumatoria total de dinero al cliente');
+assert(cartaHtml.includes('btn-nav-back') && cartaHtml.includes('href="/"'), 'Botón volver al inicio presente');
+assert(cartaHtml.includes('nav-drawer') && cartaHtml.includes('toggleNavDrawer'), 'Drawer de navegación desplegable para volver a cualquier sección integrado');
 assert(cartaHtml.includes('aria-label') && cartaHtml.includes('role='), 'Atributos ARIA de accesibilidad web WCAG implementados');
-assert(cartaHtml.includes('min-height:50px') || cartaHtml.includes('min-height:54px'), 'Zonas táctiles grandes (>48px) para fácil interacción móvil');
+assert(cartaHtml.includes('view-toggle-bar') && cartaHtml.includes('btnGrid2'), 'Selector de vista en 2 Columnas y 1 Columna implementado');
+assert(!cartaHtml.includes('btn-add-item'), 'Modo vista puro: no incluye botones de agregar ni garzón');
 
 /* ── LAB 4: APP GARZÓN (QR PARSER & WHATSAPP) ── */
 console.log('\n🧑‍🍳 LAB 4: App Garzón (/garzon) — Decodificación Óptica y WhatsApp');

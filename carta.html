@@ -117,15 +117,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .top-controls{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
 }
 
-/* Botón accesible A- / A+ */
+/* Botón Volver al Inicio */
+.btn-nav-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid var(--bd);
+  color:#FFFFFF;
+  padding:8px 14px;
+  border-radius:12px;
+  font-size:0.88rem;
+  font-weight:800;
+  text-decoration:none;
+  transition:all .2s;
+}
+.btn-nav-back:hover{
+  background:var(--p);
+  color:#000;
+  border-color:var(--p);
+}
+
+/* Botón Accesible A+ */
 .btn-a11y{
   background:var(--bg-elevated);
   border:2px solid var(--bd);
   color:var(--tx);
-  min-height:44px;
+  min-height:42px;
   padding:0 12px;
   border-radius:10px;
   font-size:0.85rem;
@@ -136,185 +157,324 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   align-items:center;
   justify-content:center;
   gap:4px;
+  transition:all .2s;
 }
+.btn-a11y:hover{border-color:var(--p);color:var(--p);}
 .btn-a11y:active{background:var(--p);color:#000;}
 
-/* Badge de Mesa Actual */
-.mesa-pill{
+/* Botón Menú Hamburguesa */
+.btn-burger-menu{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4.5px;
+  cursor:pointer;
+  padding:0;
+  transition:all .2s;
+}
+.btn-burger-menu span{
+  display:block;
+  width:18px;
+  height:2.5px;
+  background:#FFFFFF;
+  border-radius:2px;
+  transition:all .2s;
+}
+.btn-burger-menu:hover{
+  border-color:var(--p);
+  background:rgba(255,167,38,0.15);
+}
+.btn-burger-menu:hover span{
   background:var(--p);
-  color:var(--p-text);
-  border:none;
-  min-height:44px;
-  padding:0 14px;
-  border-radius:12px;
-  font-size:0.9rem;
-  font-weight:800;
+}
+
+/* ── DRAWER DE NAVEGACIÓN DESPLEGABLE ── */
+.nav-drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  z-index:99990;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.nav-drawer-backdrop.open{
+  opacity:1;
+  pointer-events:auto;
+}
+.nav-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  width:85%;
+  max-width:320px;
+  background:#111118;
+  border-left:2px solid var(--bd);
+  z-index:99995;
+  padding:24px 20px;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:-10px 0 40px rgba(0,0,0,0.8);
+}
+.nav-drawer.open{
+  transform:translateX(0);
+}
+.nav-drawer-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  margin-bottom:20px;
+}
+.nav-drawer-close{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
   cursor:pointer;
   display:flex;
   align-items:center;
-  gap:6px;
-  box-shadow:0 3px 10px rgba(255,167,38,0.3);
+  justify-content:center;
+  transition:all .2s;
+}
+.nav-drawer-close:hover{
+  background:#f44336;
+  border-color:#f44336;
+}
+.nav-drawer-links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.nav-drawer-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.04);
+  color:#FFFFFF;
+  font-size:1rem;
+  font-weight:700;
+  text-decoration:none;
+  border:1px solid transparent;
+  transition:all .2s;
+}
+.nav-drawer-link:hover{
+  background:rgba(255,167,38,0.12);
+  border-color:var(--p);
+  color:var(--p);
+  transform:translateX(4px);
+}
+.nav-drawer-link.active{
+  background:var(--p);
+  color:#000;
+  font-weight:900;
+}
+.nav-drawer-footer{
+  margin-top:auto;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.btn-drawer-reserva{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg, var(--p), var(--s));
+  color:#000;
+  font-weight:900;
+  border-radius:14px;
+  text-decoration:none;
+  font-size:1rem;
+  box-shadow:0 4px 15px rgba(232,145,58,0.3);
 }
 
 /* ── CABECERA / BIENVENIDA ── */
 .header-hero{
-  padding:24px 18px 16px;
+  padding:24px 20px 16px;
   text-align:center;
-  max-width:600px;
+  max-width:800px;
   margin:0 auto;
 }
 .header-title{
   font-family:var(--ft);
-  font-size:clamp(1.5rem, 5.5vw, 2.2rem);
+  font-size:clamp(1.8rem, 6vw, 2.4rem);
   font-weight:800;
+  letter-spacing:1px;
   color:#FFFFFF;
-  line-height:1.2;
-  margin-bottom:8px;
 }
 .header-title span{color:var(--p);}
 .header-desc{
   font-size:0.95rem;
   color:var(--tm);
-  line-height:1.5;
+  margin-top:6px;
+  line-height:1.45;
 }
 
-/* ── BARRA DE BÚSQUEDA Y CATEGORÍAS ── */
+/* ── BUSCADOR ACCESIBLE ── */
 .search-container{
-  max-width:600px;
-  margin:0 auto 16px;
-  padding:0 16px;
+  max-width:650px;
+  margin:0 auto;
+  padding:0 16px 14px;
 }
 .search-field{
   position:relative;
-  width:100%;
+  display:flex;
+  align-items:center;
 }
 .search-icon{
   position:absolute;
-  left:16px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:1.2rem;
-  color:var(--tm);
+  left:18px;
+  font-size:1.15rem;
   pointer-events:none;
 }
 .search-input{
   width:100%;
-  min-height:54px;
-  padding:12px 18px 12px 48px;
   background:var(--bg-card);
-  border:2.5px solid var(--bd);
-  border-radius:14px;
+  border:2px solid var(--bd);
   color:#FFFFFF;
-  font-size:1rem;
-  font-weight:600;
+  font-size:0.98rem;
   font-family:var(--fb);
-  transition:border-color .2s;
+  padding:14px 18px 14px 48px;
+  border-radius:16px;
+  outline:none;
+  transition:border-color .2s, box-shadow .2s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 .search-input:focus{
-  outline:none;
   border-color:var(--p);
-  background:var(--bg-elevated);
+  box-shadow:0 0 0 3px rgba(255,167,38,0.25);
 }
 
-/* Categorías (Pills grandes táctiles) */
+/* ── CATEGORÍAS (SLIDER) ── */
 .categories-slider{
   display:flex;
   gap:10px;
   overflow-x:auto;
-  padding:6px 16px 14px;
+  padding:0 16px 14px;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 }
 .categories-slider::-webkit-scrollbar{display:none;}
 .cat-btn{
-  min-height:52px;
-  padding:0 20px;
+  flex-shrink:0;
+  min-height:46px;
+  padding:0 18px;
   background:var(--bg-card);
   border:2px solid var(--bd);
-  color:var(--tx);
+  color:#FFFFFF;
   border-radius:14px;
-  font-size:0.95rem;
-  font-weight:700;
+  font-size:0.92rem;
+  font-weight:800;
   font-family:var(--fb);
   cursor:pointer;
   white-space:nowrap;
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
   transition:all .2s;
 }
+.cat-btn:hover{border-color:var(--p);}
 .cat-btn.active{
   background:var(--p);
   color:var(--p-text);
   border-color:var(--p);
-  font-weight:800;
-  box-shadow:0 4px 15px rgba(255,167,38,0.35);
+  box-shadow:0 4px 14px rgba(255,167,38,0.35);
 }
 
-/* ── BARRA DE CONTROL DE VISTA (2 COLUMNAS VS 1 COLUMNA) ── */
+/* ── CONTROL DE LAYOUT (2 COLUMNAS VS 1 COLUMNA) ── */
 .view-toggle-bar{
-  max-width:840px;
-  margin:0 auto 12px auto;
-  padding:0 14px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  padding:4px 16px 14px;
+  max-width:1200px;
+  margin:0 auto;
 }
 .view-label{
   font-size:0.85rem;
+  font-weight:700;
   color:var(--tm);
-  font-weight:600;
 }
 .view-btn-group{
   display:flex;
-  gap:4px;
-  background:var(--bg-card);
-  padding:3px;
-  border-radius:10px;
+  background:var(--bg-elevated);
   border:1.5px solid var(--bd);
+  border-radius:10px;
+  padding:2px;
+  gap:2px;
 }
 .view-toggle-btn{
   background:transparent;
   border:none;
   color:var(--tm);
-  padding:6px 10px;
-  border-radius:7px;
-  font-size:0.8rem;
+  padding:5px 10px;
+  border-radius:8px;
+  font-size:0.78rem;
   font-weight:800;
   font-family:var(--fb);
   cursor:pointer;
   display:flex;
   align-items:center;
-  gap:5px;
+  gap:4px;
   transition:all .2s;
 }
 .view-toggle-btn.active{
   background:var(--p);
   color:var(--p-text);
-  box-shadow:0 2px 8px rgba(255,167,38,0.3);
 }
 
-/* ── LISTADO DE PRODUCTOS EN 2 COLUMNAS (ALTO IMPACTO) ── */
+/* ── GRID DE PRODUCTOS (2 COLUMNAS POR DEFECTO) ── */
 .menu-list{
-  max-width:840px;
-  margin:0 auto;
-  padding:0 12px 140px 12px;
   display:grid;
   grid-template-columns:repeat(2, 1fr);
-  gap:12px;
+  gap:14px;
+  padding:0 16px 80px;
+  max-width:1200px;
+  margin:0 auto;
 }
-@media (min-width: 600px){
+.menu-list.list-1col{
+  grid-template-columns:1fr;
+  max-width:700px;
+}
+@media(min-width:768px){
   .menu-list{
-    gap:16px;
-    padding:0 16px 140px 16px;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+}
+@media(min-width:1100px){
+  .menu-list{
+    grid-template-columns:repeat(4, 1fr);
+    gap:22px;
   }
 }
 
+/* ── DISH CARD ── */
 .dish-card{
   background:var(--bg-card);
   border:2px solid var(--bd);
-  border-radius:16px;
-  padding:12px;
+  border-radius:18px;
+  padding:14px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -324,8 +484,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   overflow:hidden;
   position:relative;
 }
-.dish-card:focus-within, .dish-card:hover{
+.dish-card:hover{
   border-color:var(--p);
+  transform:translateY(-2px);
 }
 .dish-img-box{
   width:100%;
@@ -390,550 +551,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .dish-footer{
   display:flex;
-  flex-direction:column;
-  gap:8px;
+  align-items:center;
+  justify-content:space-between;
   margin-top:auto;
-  padding-top:8px;
+  padding-top:10px;
   border-top:1px solid rgba(255,255,255,0.08);
 }
 .dish-price{
   font-family:var(--ft);
-  font-size:1.15rem;
-  font-weight:800;
+  font-size:1.25rem;
+  font-weight:900;
   color:var(--p);
   letter-spacing:0.5px;
 }
-
-/* Botón accesible para agregar */
-.btn-add-item{
-  width:100%;
-  min-height:46px;
-  padding:0 12px;
-  background:var(--p);
-  color:var(--p-text);
-  border:none;
-  border-radius:12px;
-  font-size:0.95rem;
-  font-weight:800;
-  font-family:var(--fb);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  box-shadow:0 3px 10px rgba(255,167,38,0.25);
-}
-.btn-add-item:active{transform:scale(0.97);}
-
-/* Stepper accesible de cantidad (+ / −) */
-.dish-stepper{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:var(--bg-elevated);
-  border:1.8px solid var(--p);
-  border-radius:12px;
-  overflow:hidden;
-  min-height:46px;
-}
-.stepper-btn{
-  background:transparent;
-  border:none;
-  color:var(--tx);
-  width:42px;
-  height:46px;
-  font-size:1.3rem;
-  font-weight:900;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.stepper-btn:active{background:rgba(255,255,255,0.15);}
-.stepper-value{
-  font-size:1.1rem;
-  font-weight:800;
-  color:#FFFFFF;
-  min-width:26px;
-  text-align:center;
-}
-
-/* ── MODO 1 COLUMNA (LISTA EXPANDIDA) ── */
-.menu-list.list-1col{
-  max-width:620px;
-  grid-template-columns:1fr;
-  gap:16px;
-}
-.menu-list.list-1col .dish-card{
-  padding:18px;
-  gap:12px;
-}
-.menu-list.list-1col .dish-img-box{
-  aspect-ratio:16/9;
-}
-.menu-list.list-1col .dish-header{
-  flex-direction:row;
-  justify-content:space-between;
-  align-items:flex-start;
-}
-.menu-list.list-1col .dish-name{
-  font-size:1.25rem;
-  -webkit-line-clamp:unset;
-  min-height:auto;
-}
-.menu-list.list-1col .dish-desc{
-  font-size:0.95rem;
-  -webkit-line-clamp:unset;
-}
-.menu-list.list-1col .dish-footer{
-  flex-direction:row;
-  justify-content:space-between;
-  align-items:center;
-  padding-top:12px;
-}
-.menu-list.list-1col .dish-price{
-  font-size:1.35rem;
-}
-.menu-list.list-1col .btn-add-item{
-  width:auto;
-  min-height:50px;
-  padding:0 22px;
-}
-.menu-list.list-1col .dish-stepper{
-  width:auto;
-  min-height:50px;
-}
-.menu-list.list-1col .stepper-btn{
-  width:48px;
-  height:50px;
-}
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.stepper-btn:active{background:rgba(255,167,38,0.25);}
-.stepper-value{
-  min-width:36px;
-  text-align:center;
-  font-size:1.15rem;
-  font-weight:800;
-  color:var(--p);
-}
-
-/* ── BARRA FLOTANTE DE COMANDA (ALTO IMPACTO) ── */
-.floating-order-bar{
-  position:fixed;
-  bottom:16px;
-  left:16px;
-  right:16px;
-  max-width:568px;
-  margin:0 auto;
-  z-index:900;
-  background:var(--bg-card);
-  border:3px solid var(--p);
-  border-radius:20px;
-  padding:12px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.9), 0 0 25px rgba(255,167,38,0.3);
-  transform:translateY(120px);
-  opacity:0;
-  pointer-events:none;
-  transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
-}
-.floating-order-bar.visible{
-  transform:translateY(0);
-  opacity:1;
-  pointer-events:auto;
-}
-.fob-left{
-  display:flex;
-  flex-direction:column;
-}
-.fob-tag{
-  font-size:0.75rem;
-  font-weight:800;
-  color:var(--p);
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-.fob-items-count{
-  font-size:1rem;
-  font-weight:800;
-  color:#FFFFFF;
-}
-.btn-fob-action{
-  min-height:52px;
-  padding:0 20px;
-  background:var(--p);
-  color:var(--p-text);
-  border:none;
-  border-radius:14px;
-  font-size:1rem;
-  font-weight:800;
-  font-family:var(--fb);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  white-space:nowrap;
-  box-shadow:0 4px 15px rgba(255,167,38,0.4);
-}
-.btn-fob-action:active{transform:scale(0.97);}
-
-/* ── MODAL SELECCIÓN DE MESA (GRANDE Y CONFORTABLE) ── */
-.mesa-modal{
-  position:fixed;
-  inset:0;
-  z-index:9990;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(8px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .3s;
-}
-.mesa-modal.open{
-  opacity:1;
-  pointer-events:auto;
-}
-.mesa-card{
-  background:var(--bg-card);
-  border:3px solid var(--p);
-  border-radius:26px;
-  max-width:480px;
-  width:100%;
-  padding:32px 24px;
-  text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,0.9);
-}
-.mesa-icon{font-size:2.8rem;margin-bottom:8px;}
-.mesa-title{
-  font-family:var(--ft);
-  font-size:1.6rem;
-  font-weight:800;
-  color:#FFFFFF;
-  margin-bottom:8px;
-}
-.mesa-desc{
-  font-size:0.95rem;
-  color:var(--tm);
-  margin-bottom:20px;
-}
-/* Selector numérico rápido para personas mayores */
-.mesa-quick-grid{
-  display:grid;
-  grid-template-columns:repeat(5, 1fr);
-  gap:8px;
-  margin-bottom:18px;
-}
-.mesa-quick-btn{
-  min-height:50px;
-  background:var(--bg-elevated);
-  border:2px solid var(--bd);
-  color:#FFFFFF;
-  font-size:1.15rem;
-  font-weight:800;
-  border-radius:12px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.mesa-quick-btn:active, .mesa-quick-btn.selected{
-  background:var(--p);
-  color:var(--p-text);
-  border-color:var(--p);
-}
-.mesa-manual-inp{
-  width:100%;
-  min-height:54px;
-  padding:0 16px;
-  background:var(--bg-elevated);
-  border:2.5px solid var(--bd);
-  border-radius:14px;
-  color:#FFFFFF;
-  font-size:1.1rem;
-  font-weight:700;
-  text-align:center;
-  margin-bottom:20px;
-}
-.mesa-manual-inp:focus{outline:none;border-color:var(--p);}
-.btn-mesa-confirm{
-  width:100%;
-  min-height:56px;
-  background:var(--p);
-  color:var(--p-text);
-  border:none;
-  border-radius:16px;
-  font-size:1.15rem;
-  font-weight:800;
-  font-family:var(--fb);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  box-shadow:0 6px 20px rgba(255,167,38,0.4);
-}
-
-/* ── CAJÓN DE COMANDA / DRAWER (ALTO CONFORT) ── */
-.drawer-backdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.8);
-  backdrop-filter:blur(6px);
-  z-index:9800;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .3s;
-}
-.drawer-backdrop.open{opacity:1;pointer-events:auto;}
-
-.comanda-drawer{
-  position:fixed;
-  top:0;
-  right:0;
-  bottom:0;
-  width:100%;
-  max-width:500px;
-  background:var(--bg-card);
-  border-left:3px solid var(--p);
-  z-index:9850;
-  display:flex;
-  flex-direction:column;
-  transform:translateX(100%);
-  transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.comanda-drawer.open{transform:translateX(0);}
-
-.drawer-header{
-  padding:20px 22px;
-  background:var(--bg-elevated);
-  border-bottom:2px solid var(--bd);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.drawer-header-title{
-  font-family:var(--ft);
-  font-size:1.35rem;
-  font-weight:800;
-  color:#FFFFFF;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.btn-close-drawer{
-  width:48px;
-  height:48px;
-  background:rgba(255,255,255,0.08);
-  border:2px solid var(--bd);
-  color:#FFFFFF;
-  border-radius:12px;
-  font-size:1.3rem;
-  font-weight:800;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.drawer-content{
-  flex:1;
-  overflow-y:auto;
-  padding:22px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-.drawer-label{
-  font-size:0.85rem;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  color:var(--p);
-  margin-bottom:6px;
-  display:block;
-}
-.drawer-items-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.drawer-item-card{
-  background:var(--bg-elevated);
-  border:2px solid var(--bd);
-  border-radius:16px;
-  padding:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.d-item-name{
-  font-family:var(--ft);
-  font-size:1.1rem;
-  font-weight:800;
-  color:#FFFFFF;
-}
-.drawer-notes-input{
-  width:100%;
-  min-height:90px;
-  padding:14px;
-  background:var(--bg-elevated);
-  border:2px solid var(--bd);
-  border-radius:14px;
-  color:#FFFFFF;
-  font-size:1rem;
-  font-family:var(--fb);
-  line-height:1.5;
-  resize:vertical;
-}
-.drawer-notes-input:focus{outline:none;border-color:var(--p);}
-
-.drawer-footer{
-  padding:20px 22px;
-  background:var(--bg-elevated);
-  border-top:2px solid var(--bd);
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-.d-footer-info{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.d-footer-count{
-  font-size:1.1rem;
-  font-weight:800;
-  color:#FFFFFF;
-}
-.btn-generate-qr{
-  width:100%;
-  min-height:60px;
-  background:var(--p);
-  color:var(--p-text);
-  border:none;
-  border-radius:16px;
-  font-size:1.15rem;
-  font-weight:900;
-  font-family:var(--fb);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  box-shadow:0 6px 20px rgba(255,167,38,0.4);
-}
-
-/* ── MODAL QR CODE (PANTALLA DE ATENCIÓN) ── */
-.qr-modal{
-  position:fixed;
-  inset:0;
-  z-index:9995;
-  background:rgba(0,0,0,0.92);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .3s;
-}
-.qr-modal.open{opacity:1;pointer-events:auto;}
-.qr-card{
-  background:var(--bg-card);
-  border:3px solid var(--p);
-  border-radius:28px;
-  max-width:440px;
-  width:100%;
-  padding:28px 20px;
-  text-align:center;
-  position:relative;
-  box-shadow:0 25px 80px rgba(0,0,0,0.95);
-}
-.btn-close-qr{
-  position:absolute;
-  top:16px;
-  right:16px;
-  width:44px;
-  height:44px;
-  background:var(--bg-elevated);
-  border:2px solid var(--bd);
-  color:#FFFFFF;
-  border-radius:50%;
-  font-size:1.2rem;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.qr-mesa-tag{
-  display:inline-block;
-  background:var(--p);
-  color:var(--p-text);
-  font-size:1.25rem;
-  font-weight:900;
-  padding:8px 24px;
-  border-radius:25px;
-  margin-bottom:12px;
-  letter-spacing:1px;
-}
-.qr-heading{
-  font-family:var(--ft);
-  font-size:1.35rem;
-  font-weight:800;
-  color:#FFFFFF;
-  margin-bottom:6px;
-}
-.qr-subtext{
-  font-size:0.95rem;
-  color:var(--tm);
-  margin-bottom:16px;
-  line-height:1.4;
-}
-.qr-display-box{
-  background:#FFFFFF;
-  padding:18px;
-  border-radius:20px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:16px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.8);
-}
-.qr-items-summary{
-  background:var(--bg-elevated);
-  border:2px solid var(--bd);
-  border-radius:14px;
-  padding:12px 16px;
-  text-align:left;
-  font-size:0.95rem;
-  font-weight:600;
-  max-height:120px;
-  overflow-y:auto;
-  margin-bottom:16px;
-}
-.btn-modify-order{
-  width:100%;
-  min-height:50px;
-  background:transparent;
-  border:2px solid var(--bd);
-  color:#FFFFFF;
-  border-radius:14px;
-  font-size:0.95rem;
-  font-weight:800;
-  font-family:var(--fb);
-  cursor:pointer;
 }
 
 /* ── TOAST ACCESIBLE ── */
@@ -962,30 +592,56 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </head>
 <body>
 
-<!-- ── TOPBAR ── -->
+<!-- ── TOPBAR NAVEGABLE ── -->
 <header class="topbar" role="banner">
-  <div class="brand-wrap">
-    <div class="brand-title">🌹 La Comadre Lola</div>
-    <div class="brand-sub">Carta Digital en Mesa</div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="/" class="btn-nav-back" title="Volver al inicio" aria-label="Volver al inicio">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span>Inicio</span>
+    </a>
+    <a href="/" class="brand-wrap" style="text-decoration:none;">
+      <div class="brand-title">🌹 La Comadre Lola</div>
+      <div class="brand-sub">Menú & Carta Digital</div>
+    </a>
   </div>
 
   <div class="top-controls">
     <!-- Selector de Tamaño de Letra Accesible (+50 años) -->
-    <button class="btn-a11y" id="btnFontSize" onclick="cycleFontSize()" aria-label="Cambiar tamaño de letra">
+    <button class="btn-a11y" id="btnFontSize" onclick="cycleFontSize()" title="Aumentar tamaño de letra" aria-label="Cambiar tamaño de letra">
       <span>A</span><span style="font-size:1.15rem;font-weight:900;">+</span>
     </button>
 
-    <!-- Botón / Badge de Mesa -->
-    <button class="mesa-pill" id="btnMesaTop" onclick="openMesaModal()" aria-label="Asignar o cambiar número de mesa">
-      <span id="txtMesaTop">📍 Mesa: ?</span>
+    <!-- Botón Menú Hamburguesa -->
+    <button class="btn-burger-menu" onclick="toggleNavDrawer()" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
+<!-- ── DRAWER DE NAVEGACIÓN DESPLEGABLE ── -->
+<div class="nav-drawer-backdrop" id="navDrawerBackdrop" onclick="toggleNavDrawer()"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Menú principal">
+  <div class="nav-drawer-header">
+    <div style="font-family:var(--ft);font-size:1.3rem;color:var(--p);font-weight:800;">🌹 Menú Navegación</div>
+    <button class="nav-drawer-close" onclick="toggleNavDrawer()" aria-label="Cerrar menú">✕</button>
+  </div>
+  <div class="nav-drawer-links">
+    <a href="/" class="nav-drawer-link"><span>🏠</span> Inicio</a>
+    <a href="/carta" class="nav-drawer-link active"><span>🍽️</span> Carta Digital</a>
+    <a href="/#eventos" class="nav-drawer-link"><span>🎤</span> Cartelera de Eventos</a>
+    <a href="/#momentos" class="nav-drawer-link"><span>📸</span> Galería & Fotos</a>
+    <a href="/#reservas" class="nav-drawer-link" style="color:var(--s);font-weight:800;"><span>📅</span> Reservar Mesa</a>
+    <a href="/#footer" class="nav-drawer-link"><span>📍</span> Ubicación & Contacto</a>
+  </div>
+  <div class="nav-drawer-footer">
+    <a href="/#reservas" class="btn-drawer-reserva">🎉 Reservar Mesa</a>
+  </div>
+</aside>
+
 <!-- ── CABECERA / BIENVENIDA ── -->
 <section class="header-hero">
   <h1 class="header-title">NUESTRA <span>CARTA</span></h1>
-  <p class="header-desc">Selecciona tus platos y tragos favoritos. Al finalizar, genera el código QR para que el garzón tome tu orden.</p>
+  <p class="header-desc">Explora nuestros tragos de autor, tablas para compartir, cocina tradicional campesina y cervezas bien heladas.</p>
 </section>
 
 <!-- ── BUSCADOR ACCESIBLE ── -->
@@ -1024,100 +680,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <!-- ── LISTADO DE PLATOS / TRAGOS ── -->
 <main class="menu-list" id="menuCardsContainer" role="main"></main>
 
-<!-- ── BARRA FLOTANTE DE COMANDA ── -->
-<aside class="floating-order-bar" id="floatingBar" aria-label="Resumen de pedido flotante">
-  <div class="fob-left">
-    <span class="fob-tag">Comanda Lista</span>
-    <span class="fob-items-count" id="fobItemsText">0 productos seleccionados</span>
+<!-- ── FOOTER ELEGANTE ── -->
+<footer style="text-align:center;padding:40px 20px 60px;background:#08080C;border-top:2px solid var(--bd);margin-top:40px;">
+  <div style="font-family:var(--flogo);font-size:1.5rem;color:var(--p);margin-bottom:8px;">🌹 La Comadre Lola</div>
+  <p style="font-size:0.95rem;color:var(--tm);margin-bottom:16px;">Manuel Antonio Matta 1269, Quilicura · A pasos del Metro Lo Cruzat (L3)</p>
+  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="color:#FFFFFF;text-decoration:none;font-weight:700;padding:8px 16px;background:var(--bg-elevated);border-radius:10px;border:1px solid var(--bd);">🏠 Volver al Inicio</a>
+    <a href="/#reservas" style="color:#000;background:var(--p);text-decoration:none;font-weight:900;padding:8px 16px;border-radius:10px;">🎉 Reservar Mesa</a>
   </div>
-  <button class="btn-fob-action" onclick="openComandaDrawer()" aria-label="Abrir resumen y generar QR">
-    <span>Ver Pedido</span> <span>➔</span>
-  </button>
-</aside>
-
-<!-- ── MODAL ELECCIÓN DE MESA (ACCESIBLE Y GRANDE) ── -->
-<div class="mesa-modal" id="mesaModal" role="dialog" aria-modal="true" aria-labelledby="mesaModalTitle">
-  <div class="mesa-card">
-    <div class="mesa-icon" aria-hidden="true">📍</div>
-    <h2 class="mesa-title" id="mesaModalTitle">¿En qué mesa te encuentras?</h2>
-    <p class="mesa-desc">Toca el número de tu mesa para que el garzón identifique tu pedido rápidamente:</p>
-
-    <!-- Botones táctiles rápidos del 1 al 15 -->
-    <div class="mesa-quick-grid" id="mesaQuickGrid">
-      <!-- Inyectados por JS (1 a 15) -->
-    </div>
-
-    <input type="text" class="mesa-manual-inp" id="mesaManualInp" placeholder="O escribe el número aquí..." aria-label="Número de mesa manual" oninput="highlightQuickBtn(this.value)">
-
-    <button class="btn-mesa-confirm" onclick="confirmMesaSelection()">
-      <span>✅ Confirmar Mesa</span>
-    </button>
-  </div>
-</div>
-
-<!-- ── CAJÓN DE COMANDA / DRAWER ── -->
-<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeComandaDrawer()"></div>
-<div class="comanda-drawer" id="comandaDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
-  <div class="drawer-header">
-    <div class="drawer-header-title" id="drawerTitle">
-      <span>🛍️</span> <span>Tu Pedido</span>
-    </div>
-    <button class="btn-close-drawer" onclick="closeComandaDrawer()" aria-label="Cerrar comanda">✕</button>
-  </div>
-
-  <div class="drawer-content">
-    <div>
-      <span class="drawer-label">Mesa Seleccionada</span>
-      <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:2px solid var(--bd);border-radius:14px;padding:12px 16px;">
-        <span style="font-size:1.15rem;font-weight:800;color:var(--p);" id="drawerMesaText">📍 Mesa ?</span>
-        <button onclick="openMesaModal()" style="background:transparent;border:none;color:#FFFFFF;font-weight:700;cursor:pointer;text-decoration:underline;">Cambiar</button>
-      </div>
-    </div>
-
-    <div>
-      <span class="drawer-label">Platos y Tragos Seleccionados</span>
-      <div class="drawer-items-list" id="drawerList"></div>
-    </div>
-
-    <div>
-      <label class="drawer-label" for="drawerNotes">Observaciones para Cocina / Barra (Opcional)</label>
-      <textarea class="drawer-notes-input" id="drawerNotes" placeholder="Ejemplo: Sin hielo, carne a punto, salsas aparte..." oninput="saveNotes(this.value)"></textarea>
-    </div>
-  </div>
-
-  <div class="drawer-footer">
-    <div class="d-footer-info">
-      <span style="font-size:0.95rem;color:var(--tm);">Total Seleccionado:</span>
-      <span class="d-footer-count" id="drawerItemCount">0 productos</span>
-    </div>
-    <button class="btn-generate-qr" onclick="generateOrderQR()">
-      <span>📲 GENERAR CÓDIGO QR</span>
-    </button>
-  </div>
-</div>
-
-<!-- ── MODAL QR CODE ACCESIBLE ── -->
-<div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
-  <div class="qr-card">
-    <button class="btn-close-qr" onclick="closeQRModal()" aria-label="Cerrar código QR">✕</button>
-    <div class="qr-mesa-tag" id="qrMesaTag">MESA 1</div>
-    <h2 class="qr-heading" id="qrTitle">Muestra este código al Garzón</h2>
-    <p class="qr-subtext">El garzón lo escaneará con su teléfono para despachar tu pedido a cocina y barra al instante.</p>
-
-    <div class="qr-display-box" id="qrCanvasBox"></div>
-
-    <div class="qr-items-summary" id="qrItemsList"></div>
-
-    <button class="btn-modify-order" onclick="closeQRModal(); openComandaDrawer();">
-      ✏️ Modificar o Agregar más productos
-    </button>
-  </div>
-</div>
+</footer>
 
 <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
-
-<!-- QR Generator Engine -->
-<script src="js/qrcode.min.js"></script>
 
 <script>
 /* ── CATÁLOGO CARTA ── */
@@ -1159,14 +732,12 @@ const CARTA_DEFAULT = [
 let _menuItems = [...CARTA_DEFAULT];
 let _currentCat = 'todos';
 let _searchQuery = '';
-let _cart = [];
-let _table = '';
-let _notes = '';
 
 function formatCLP(n) { return '$' + Number(n).toLocaleString('es-CL'); }
 
 function toast(msg, isErr=false) {
   const el = document.getElementById('toastMsg');
+  if (!el) return;
   el.textContent = msg;
   el.className = 'toast-msg show' + (isErr ? ' err' : '');
   if (navigator.vibrate) navigator.vibrate(40);
@@ -1192,15 +763,6 @@ function cycleFontSize() {
 /* ── PERSISTENCIA LOCALSTORAGE ── */
 function loadSavedState() {
   try {
-    const savedCart = localStorage.getItem('lola_pedido_actual');
-    if (savedCart) _cart = JSON.parse(savedCart) || [];
-
-    const savedTable = localStorage.getItem('lola_mesa_actual');
-    if (savedTable) _table = savedTable;
-
-    const savedNotes = localStorage.getItem('lola_pedido_nota');
-    if (savedNotes) _notes = savedNotes;
-
     const savedFont = localStorage.getItem('lola_font_size');
     if (savedFont && FONT_CLASSES.includes(savedFont)) {
       document.documentElement.classList.remove(...FONT_CLASSES);
@@ -1210,13 +772,21 @@ function loadSavedState() {
   } catch(e) {}
 }
 
-function saveState() {
-  try {
-    localStorage.setItem('lola_pedido_actual', JSON.stringify(_cart));
-    if (_table) localStorage.setItem('lola_mesa_actual', _table);
-    if (_notes) localStorage.setItem('lola_pedido_nota', _notes);
-  } catch(e) {}
-  updateCartIndicators();
+/* ── NAVEGACIÓN: DRAWER HAMBURGUESA ── */
+function toggleNavDrawer() {
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navDrawerBackdrop');
+  if (!drawer) return;
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    drawer.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  } else {
+    drawer.classList.add('open');
+    if (backdrop) backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
 /* ── CONTROL DE LAYOUT (2 COLUMNAS / 1 COLUMNA) ── */
@@ -1244,7 +814,7 @@ function applyMenuLayout() {
   }
 }
 
-/* ── RENDER DE CARDS DE LA CARTA ── */
+/* ── RENDER DE CARDS DE LA CARTA (VISTA PURA) ── */
 function renderMenuCards() {
   const container = document.getElementById('menuCardsContainer');
   const filtered = _menuItems.filter(item => {
@@ -1272,7 +842,6 @@ function renderMenuCards() {
   }
 
   container.innerHTML = filtered.map(item => {
-    const inCart = _cart.find(c => c.id === item.id);
     const photoUrl = item.foto || item.img || '';
     return `
       <article class="dish-card" aria-label="${item.nombre}">
@@ -1288,17 +857,6 @@ function renderMenuCards() {
         <p class="dish-desc">${item.desc || ''}</p>
         <div class="dish-footer">
           <span class="dish-price">${formatCLP(item.precio)}</span>
-          ${inCart ? `
-            <div class="dish-stepper" role="group" aria-label="Cantidad de ${item.nombre}">
-              <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', -1)" aria-label="Disminuir cantidad">−</button>
-              <span class="stepper-value" aria-live="polite">${inCart.cant}</span>
-              <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', 1)" aria-label="Aumentar cantidad">+</button>
-            </div>
-          ` : `
-            <button class="btn-add-item" onclick="addItemToOrder('${item.id}')" aria-label="Agregar ${item.nombre} al pedido">
-              <span style="font-size:1.2rem;font-weight:900;">+</span> <span>Agregar</span>
-            </button>
-          `}
         </div>
       </article>
     `;
@@ -1317,221 +875,9 @@ function handleMenuSearch(val) {
   renderMenuCards();
 }
 
-/* ── ACCIONES DE SELECCIÓN ── */
-function addItemToOrder(id) {
-  const item = _menuItems.find(i => i.id === id);
-  if (!item) return;
-
-  const existing = _cart.find(c => c.id === id);
-  if (existing) {
-    existing.cant += 1;
-  } else {
-    _cart.push({ id: item.id, nombre: item.nombre, cant: 1 });
-  }
-
-  saveState();
-  renderMenuCards();
-  toast(`Agregado: ${item.nombre}`);
-}
-
-function updateItemQuantity(id, delta) {
-  const existing = _cart.find(c => c.id === id);
-  if (!existing) return;
-
-  existing.cant += delta;
-  if (existing.cant <= 0) {
-    _cart = _cart.filter(c => c.id !== id);
-  }
-
-  saveState();
-  renderMenuCards();
-}
-
-function saveNotes(val) {
-  _notes = val.trim();
-  localStorage.setItem('lola_pedido_nota', _notes);
-}
-
-/* ── ACTUALIZACIÓN DE INDICADORES Y CAJÓN ── */
-function updateCartIndicators() {
-  const totalCount = _cart.reduce((sum, item) => sum + item.cant, 0);
-
-  // Topbar
-  document.getElementById('txtMesaTop').textContent = _table ? `📍 ${_table}` : '📍 Asignar Mesa';
-
-  // Floating Bar
-  const fob = document.getElementById('floatingBar');
-  const fobText = document.getElementById('fobItemsText');
-  if (totalCount > 0) {
-    fob.classList.add('visible');
-    fobText.textContent = `${totalCount} ${totalCount === 1 ? 'producto en pedido' : 'productos en pedido'}`;
-  } else {
-    fob.classList.remove('visible');
-  }
-
-  // Drawer
-  document.getElementById('drawerMesaText').textContent = _table ? `📍 ${_table}` : '📍 Mesa no asignada';
-  document.getElementById('drawerItemCount').textContent = `${totalCount} ${totalCount === 1 ? 'producto' : 'productos'}`;
-  const notesEl = document.getElementById('drawerNotes');
-  if (notesEl) notesEl.value = _notes || '';
-
-  const drawerList = document.getElementById('drawerList');
-  if (!totalCount) {
-    drawerList.innerHTML = `
-      <div style="text-align:center;padding:30px 10px;color:var(--tm);">
-        🛒 Tu pedido está vacío.<br>Agrega platos o tragos de la carta.
-      </div>
-    `;
-  } else {
-    drawerList.innerHTML = _cart.map(item => `
-      <div class="drawer-item-card">
-        <div class="d-item-name"><b>${item.cant}x</b> ${item.nombre}</div>
-        <div class="dish-stepper">
-          <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', -1)" aria-label="Quitar uno">−</button>
-          <span class="stepper-value">${item.cant}</span>
-          <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', 1)" aria-label="Agregar uno">+</button>
-        </div>
-      </div>
-    `).join('');
-  }
-}
-
-/* ── MODAL SELECCIÓN DE MESA ── */
-function initMesaGrid() {
-  const grid = document.getElementById('mesaQuickGrid');
-  let html = '';
-  for (let i = 1; i <= 15; i++) {
-    html += `<button class="mesa-quick-btn" onclick="selectQuickMesa(${i})">${i}</button>`;
-  }
-  grid.innerHTML = html;
-}
-
-function selectQuickMesa(num) {
-  const inp = document.getElementById('mesaManualInp');
-  inp.value = `Mesa ${num}`;
-  highlightQuickBtn(`Mesa ${num}`);
-}
-
-function highlightQuickBtn(val) {
-  const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
-  document.querySelectorAll('.mesa-quick-btn').forEach((btn, idx) => {
-    if (idx + 1 === num) btn.classList.add('selected');
-    else btn.classList.remove('selected');
-  });
-}
-
-function openMesaModal() {
-  document.getElementById('mesaModal').classList.add('open');
-  if (_table) {
-    document.getElementById('mesaManualInp').value = _table;
-    highlightQuickBtn(_table);
-  }
-}
-
-function closeMesaModal() {
-  document.getElementById('mesaModal').classList.remove('open');
-}
-
-function confirmMesaSelection() {
-  const inp = document.getElementById('mesaManualInp');
-  let val = inp.value.trim();
-  if (!val) {
-    toast('Por favor selecciona o escribe tu mesa', true);
-    inp.focus();
-    return;
-  }
-  if (!val.toLowerCase().startsWith('mesa')) {
-    val = `Mesa ${val}`;
-  }
-  _table = val;
-  saveState();
-  closeMesaModal();
-  toast(`¡Mesa asignada: ${_table}!`);
-}
-
-/* ── CAJÓN DE COMANDA ── */
-function openComandaDrawer() {
-  if (!_table) {
-    openMesaModal();
-    return;
-  }
-  updateCartIndicators();
-  document.getElementById('comandaDrawer').classList.add('open');
-  document.getElementById('drawerBackdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeComandaDrawer() {
-  document.getElementById('comandaDrawer').classList.remove('open');
-  document.getElementById('drawerBackdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* ── GENERACIÓN QR ── */
-function generateOrderQR() {
-  if (!_cart.length) {
-    toast('Agrega al menos un producto a tu pedido', true);
-    return;
-  }
-  if (!_table) {
-    toast('Por favor selecciona tu número de mesa primero', true);
-    openMesaModal();
-    return;
-  }
-
-  const payload = {
-    app: 'comadre_lola',
-    type: 'pedido',
-    mesa: _table,
-    ts: Date.now(),
-    items: _cart.map(i => ({ id: i.id, n: i.nombre, c: i.cant })),
-    nota: _notes || ''
-  };
-
-  const container = document.getElementById('qrCanvasBox');
-  container.innerHTML = '';
-
-  new QRCode(container, {
-    text: JSON.stringify(payload),
-    width: 220,
-    height: 220,
-    colorDark: '#000000',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-
-  document.getElementById('qrMesaTag').textContent = _table.toUpperCase();
-  document.getElementById('qrItemsList').innerHTML = _cart.map(i => `
-    <div style="display:flex;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-      <span style="color:var(--p);font-weight:800;margin-right:8px;">${i.cant}x</span>
-      <span>${i.nombre}</span>
-    </div>
-  `).join('') + (_notes ? `<div style="margin-top:8px;color:var(--p);font-style:italic;">Nota: "${_notes}"</div>` : '');
-
-  closeComandaDrawer();
-  document.getElementById('qrModal').classList.add('open');
-  toast('¡Código QR generado con éxito!');
-}
-
-function closeQRModal() {
-  document.getElementById('qrModal').classList.remove('open');
-}
-
 /* ── INICIALIZACIÓN ── */
 async function initApp() {
   loadSavedState();
-  initMesaGrid();
-
-  // Detectar parámetro ?mesa=X en la URL
-  const params = new URLSearchParams(window.location.search);
-  const paramMesa = params.get('mesa') || params.get('table');
-  if (paramMesa) {
-    _table = `Mesa ${paramMesa.replace(/[^0-9a-zA-Z]/g, '')}`;
-    saveState();
-  } else if (!_table) {
-    // Si no tiene mesa configurada, abrir el selector suavemente
-    setTimeout(() => openMesaModal(), 400);
-  }
 
   // Cargar catálogo actualizado desde CMS si está disponible
   try {
@@ -1546,7 +892,6 @@ async function initApp() {
   } catch(e) {}
 
   renderMenuCards();
-  updateCartIndicators();
 }
 
 initApp();
