@@ -1621,31 +1621,19 @@ footer{
   </div>
 </section>
 
-<!-- ── CARTA DIGITAL & PEDIDO EXPRESS ── -->
-<section class="carta" id="carta">
-  <div class="carta-header">
-    <span class="sec-label">🍽️ Sabor y Tradición</span>
-    <h2 class="sec-title">CARTA & <span>COCTELERÍA</span></h2>
-    <p class="sec-desc">Tragos de autor, coctelería clásica, tablas artesanales y lo mejor de la gastronomía chilena.</p>
-    <div class="sec-divider"></div>
-  </div>
-
-  <div class="carta-controls">
-    <div class="carta-cats" id="cartaCats">
-      <button class="cat-btn active" onclick="filterCarta('todos', this)">🌟 Todos</button>
-      <button class="cat-btn" onclick="filterCarta('tragos', this)">🍹 Tragos de la Casa</button>
-      <button class="cat-btn" onclick="filterCarta('tablas', this)">🥩 Tablas & Piqueos</button>
-      <button class="cat-btn" onclick="filterCarta('cocina', this)">🍲 Cocina Chilena</button>
-      <button class="cat-btn" onclick="filterCarta('cervezas', this)">🍺 Cervezas & Schops</button>
-      <button class="cat-btn" onclick="filterCarta('postres_bebidas', this)">🍨 Bebidas & Postres</button>
+<!-- ── CARTA DIGITAL RESPONSIVE BANNER ── -->
+<section class="carta-banner-sec" id="carta" style="padding:60px 20px;background:linear-gradient(180deg,#09090d 0%,#12121c 100%);border-top:3px solid #1a1a26;border-bottom:3px solid #1a1a26;">
+  <div style="max-width:1100px;margin:0 auto;background:#181824;border:3px solid var(--p);border-radius:24px;padding:36px 28px;box-shadow:var(--hard-shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;">
+    <div style="flex:1;min-width:280px;">
+      <span class="sec-label" style="display:inline-block;margin-bottom:8px;">🍽️ Sabor, Tradición y Coctelería</span>
+      <h2 style="font-family:var(--ft);font-size:clamp(1.8rem,4vw,2.5rem);color:#fff;margin-bottom:10px;">CARTA & MENÚ <span style="color:var(--p)">DIGITAL</span></h2>
+      <p style="color:var(--tm);font-size:15px;line-height:1.6;margin-bottom:0;">Descubre nuestros tragos de autor, tablas artesanales, cocina chilena y schops helados. Puedes ver las fotos en 2 columnas y pedir directo en tu mesa.</p>
     </div>
-    <div class="carta-search-box">
-      <span class="carta-search-icon">🔍</span>
-      <input type="text" class="carta-search-input" id="cartaSearch" placeholder="Buscar plato o trago..." oninput="handleCartaSearch(this.value)">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="/carta" style="text-decoration:none;"><button class="btn-main" style="box-shadow:4px 4px 0 #000;cursor:pointer;">🍽️ VER CARTA DIGITAL</button></a>
+      <button class="btn-sec" onclick="scrollToId('reservas')" style="background:#09090d;cursor:pointer;">🎉 RESERVAR MESA</button>
     </div>
   </div>
-
-  <div class="carta-grid" id="cartaGrid"></div>
 </section>
 
 <!-- ── EVENTOS ── -->
