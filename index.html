@@ -395,29 +395,40 @@ section{
   transform: skewX(-15deg);
 }
 
-/* ── EVENTOS (CARTELERA ULTRA-ASIMÉTRICA VANGUARDISTA - 80% SCALE) ── */
+/* ── EVENTOS (GRILLA 4X2 COMPACTA Y MODERNA) ── */
 .eventos{
   background:#09090d;
-  padding:64px 0;
+  padding:64px 0 40px;
   position:relative;
 }
 .eventos-grid{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:32px 28px;
-  max-width:980px;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:24px 18px;
+  max-width:1280px;
   margin:0 auto;
-  padding-bottom:48px;
+  padding:0 24px 48px;
   perspective: 1000px;
 }
+@media(max-width:1150px){
+  .eventos-grid{
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+  }
+}
+@media(max-width:640px){
+  .eventos-grid{
+    grid-template-columns:1fr;
+    gap:18px;
+    padding:0 16px 36px;
+  }
+}
+
 .ev-card{
-  flex:0 1 280px;
-  width:280px;
-  max-width:100%;
+  width:100%;
   background: #11111a;
-  border: 2.5px solid #1c1c2b;
-  border-radius: 6px 28px 6px 28px;
+  border: 2px solid #1c1c2b;
+  border-radius: 6px 20px 6px 20px;
   overflow:hidden;
   display:flex;
   flex-direction:column;
@@ -425,44 +436,46 @@ section{
   cursor:pointer;
   position: relative;
 }
-/* Rotaciones asimétricas alternadas y sombras duras neón */
-.ev-card:nth-child(3n+1) {
-  transform: rotate(-1.5deg) translateY(0);
-  box-shadow: 5px 5px 0px var(--p); /* Sombra naranja */
+/* Rotaciones sutiles y sombras duras neón */
+.ev-card:nth-child(4n+1) {
+  transform: rotate(-1deg) translateY(0);
+  box-shadow: 4px 4px 0px var(--p);
 }
-.ev-card:nth-child(3n+2) {
-  transform: rotate(2deg) translateY(12px);
-  box-shadow: 5px 5px 0px var(--s); /* Sombra rosa */
+.ev-card:nth-child(4n+2) {
+  transform: rotate(1deg) translateY(4px);
+  box-shadow: 4px 4px 0px var(--s);
 }
-.ev-card:nth-child(3n+3) {
-  transform: rotate(-0.8deg) translateY(-8px);
-  box-shadow: 5px 5px 0px var(--a); /* Sombra turquesa */
+.ev-card:nth-child(4n+3) {
+  transform: rotate(-0.8deg) translateY(-2px);
+  box-shadow: 4px 4px 0px var(--a);
+}
+.ev-card:nth-child(4n+4) {
+  transform: rotate(1.2deg) translateY(3px);
+  box-shadow: 4px 4px 0px var(--p);
 }
 
 .ev-card:hover {
   border-color: #fff;
   z-index: 10;
 }
-.ev-card:nth-child(3n+1):hover {
-  transform: rotate(-0.5deg) translate(-4px, -4px) scale(1.02);
-  box-shadow: 9px 9px 0px var(--p);
+.ev-card:hover {
+  transform: rotate(0deg) translate(-3px, -3px) scale(1.02);
+  box-shadow: 7px 7px 0px var(--p);
 }
-.ev-card:nth-child(3n+2):hover {
-  transform: rotate(0.5deg) translateY(8px) translate(-4px, -4px) scale(1.02);
-  box-shadow: 9px 9px 0px var(--s);
+.ev-card:nth-child(4n+2):hover {
+  box-shadow: 7px 7px 0px var(--s);
 }
-.ev-card:nth-child(3n+3):hover {
-  transform: rotate(0deg) translateY(-12px) translate(-4px, -4px) scale(1.02);
-  box-shadow: 9px 9px 0px var(--a);
+.ev-card:nth-child(4n+3):hover {
+  box-shadow: 7px 7px 0px var(--a);
 }
 
 .ev-flyer{
   width:100%;
-  aspect-ratio:3/4;
+  aspect-ratio:16/10;
   position:relative;
   overflow:hidden;
   flex-shrink:0;
-  border-bottom: 2.5px solid #1c1c2b;
+  border-bottom: 2px solid #1c1c2b;
   background:#09090d;
 }
 .ev-flyer img{width:100%;height:100%;object-fit:cover;transition:transform var(--tr);}
@@ -558,17 +571,17 @@ section{
 .ev-tag.carrete{border:1.8px solid #000; background:var(--s); color:#fff; box-shadow: 2.5px 2.5px 0px #000;}
 .ev-tag.especial{border:1.8px solid #000; background:var(--a); color:#000; box-shadow: 2.5px 2.5px 0px #000;}
 
-.ev-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px;flex:1;position:relative;z-index:3;background:#11111a;}
-.ev-name{font-family:'BudmoJiggler',cursive;font-size:17px;color:#fff;line-height:1.08;margin-bottom:2px;}
-.ev-genero{font-size:9.5px;color:var(--tm);font-weight:700;letter-spacing:0.8px;text-transform:uppercase;}
-.ev-meta{display:flex;flex-direction:column;gap:3px;font-size:10.5px;color:var(--tm);line-height:1.45;}
-.ev-desc{font-size:10.5px;color:#7a7a93;line-height:1.4;}
-.ev-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px;border-top:1.8px solid #1c1c2b;}
-.ev-price{font-size:15px;font-weight:900;color:var(--p);font-family:'Inter',sans-serif;letter-spacing:-0.5px;}
+.ev-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1;position:relative;z-index:3;background:#11111a;}
+.ev-name{font-family:'BudmoJiggler',cursive;font-size:14.5px;color:#fff;line-height:1.15;margin-bottom:1px;}
+.ev-genero{font-size:8.5px;color:var(--tm);font-weight:700;letter-spacing:0.8px;text-transform:uppercase;}
+.ev-meta{display:flex;flex-direction:column;gap:2px;font-size:9.5px;color:var(--tm);line-height:1.35;}
+.ev-desc{font-size:9.5px;color:#7a7a93;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ev-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:8px;border-top:1.5px solid #1c1c2b;}
+.ev-price{font-size:13px;font-weight:800;color:var(--p);font-family:'Inter',sans-serif;}
 .ev-btn{
-  padding:7px 18px;
+  padding:5px 12px;
   background: var(--s);
-  font-size:9px;
+  font-size:8px;
   font-weight:900;
   color:#fff;
   border:none;
@@ -2488,13 +2501,16 @@ setTimeout(() => {
   }
 }, 1200);
 
-/* ── Eventos data ── */
+/* ── Eventos data (8 Eventos Grilla 4x2) ── */
 const EVENTOS = [
-  { name:'Black Dog (Led Zeppelin Experience)', genero:'Rock Clásico · Tributo En Vivo', fecha:'Viernes 14 Ago', hora:'21:30', price:'Ver FilaCero', badge:'¡HOY EN VIVO!', tag:'música', desc:'Toda la potencia de Led Zeppelin en Quilicura: Stairway to Heaven, Whole Lotta Love y Kashmir en una noche inolvidable.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_show.png' },
-  { name:'DISCO 80\' 90\' & 2000 (Sandy & Papo + Maluco)', genero:'Fiesta Retro · Show En Vivo', fecha:'Sábado 29 Ago', hora:'22:00', price:'Ver FilaCero', badge:'FIESTA RETRO', tag:'carrete', desc:'La mejor fiesta retro de la zona norte. Sandy & Papo Live Experience junto a Maluco prendiendo la pista de baile.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_bar.png' },
-  { name:'Piare con Pe', genero:'Stand-Up Comedy · En Vivo', fecha:'Viernes 11 Sep', hora:'21:00', price:'Ver FilaCero', badge:'CONFIRMADO', tag:'especial', desc:'Una de las comediantes más queridas de Chile llega a desatar risas sin filtro. Una noche de humor, coctelería y gastronomía.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/galeria_brindis.png' },
-  { name:'Despecho: La Terapia Perfecta', genero:'Karaoke & Fiesta · Despecho Chile', fecha:'Sábados de Despecho', hora:'22:00', price:'Ver Ticketera', badge:'CLÁSICO LOLA', tag:'carrete', desc:'Cantar a todo pulmón los himnos del corazón. Karaoke interactivo, animación en vivo y promociones en tragos de la casa.', btn:'Más Info en Instagram', link:'https://www.instagram.com/lacomadrelola__/', flyer:'assets/galeria_ambiente.png' },
-  { name:'Revive Soda (Tributo Soda Stereo)', genero:'Rock Latino · En Vivo', fecha:'Próximamente', hora:'21:30', price:'Ver FilaCero', badge:'MUY PRONTO', tag:'música', desc:'El homenaje definitivo a Gustavo Cerati y Soda Stereo con la banda tributo más elogiada de Chile: De Música Ligera, Persiana Americana y más.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_comida.png' }
+  { name:'Black Dog (Led Zeppelin Exp.)', genero:'Rock Clásico · Tributo En Vivo', fecha:'Viernes 14 Ago', hora:'21:30', price:'Ver FilaCero', badge:'¡HOY EN VIVO!', tag:'musica', desc:'Toda la potencia de Led Zeppelin en Quilicura: Stairway to Heaven, Whole Lotta Love y Kashmir.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_show.png' },
+  { name:'DISCO 80\' 90\' & 2000s', genero:'Fiesta Retro · Sandy & Papo + Maluco', fecha:'Sábado 29 Ago', hora:'22:00', price:'Ver FilaCero', badge:'FIESTA RETRO', tag:'carrete', desc:'La fiesta retro más prendida de la zona norte con Sandy & Papo y Maluco en vivo.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_bar.png' },
+  { name:'Piare con Pe', genero:'Stand-Up Comedy · En Vivo', fecha:'Viernes 11 Sep', hora:'21:00', price:'Ver FilaCero', badge:'CONFIRMADO', tag:'especial', desc:'Una de las comediantes más queridas de Chile llega a desatar risas y humor sin filtro.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/galeria_brindis.png' },
+  { name:'Despecho: La Terapia', genero:'Karaoke & Fiesta · Despecho Chile', fecha:'Sábados de Despecho', hora:'22:00', price:'Ver Ticketera', badge:'CLÁSICO LOLA', tag:'carrete', desc:'Cantar a todo pulmón los grandes himnos con animación en vivo y promo en tragos.', btn:'Más Info en Instagram', link:'https://www.instagram.com/lacomadrelola__/', flyer:'assets/galeria_ambiente.png' },
+  { name:'Revive Soda (Soda Stereo)', genero:'Rock Latino · Tributo Oficial', fecha:'Viernes 25 Sep', hora:'21:30', price:'Ver FilaCero', badge:'MUY PRONTO', tag:'musica', desc:'El homenaje definitivo a Gustavo Cerati: De Música Ligera, Persiana Americana y más.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_comida.png' },
+  { name:'Noche de Cumbia & Cueca', genero:'Folclor & Bohemia Popular', fecha:'Jueves Criollos', hora:'20:30', price:'Entrada Liberada', badge:'BOHEMIA CHILENA', tag:'musica', desc:'Música chilena en vivo, cueca brava, terremotos y gastronomía tradicional campesina.', btn:'Reservar Mesa', link:'index.html#reservas', flyer:'assets/og_banner.jpg' },
+  { name:'Hits 90s & 2000s Night', genero:'DJ Set & Show Bailable', fecha:'Viernes de Fiesta', hora:'22:30', price:'Ver FilaCero', badge:'BAILABLE', tag:'carrete', desc:'Los mejores himnos bailables de los 90s y 2000s mezclados en vivo con sorpresas.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_bar.png' },
+  { name:'Tributo Mon Laferte & Bunkers', genero:'Rock & Balada Chilena', fecha:'Sábado 03 Oct', hora:'21:30', price:'Ver FilaCero', badge:'SHOW ESTELAR', tag:'especial', desc:'Una velada íntima y apasionada con los mayores éxitos de la música chilena contemporánea.', btn:'Entradas FilaCero', link:'https://www.filacero.com/', flyer:'assets/carrusel_show.png' }
 ];
 
 /* ── Render eventos ── */
