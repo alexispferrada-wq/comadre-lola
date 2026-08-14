@@ -40,6 +40,23 @@ async function createTables() {
     `);
     console.log('✅ Tabla newsletter creada');
 
+    // Crear tabla de pedidos / comandas
+    console.log('📋 Creando tabla orders...');
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id SERIAL PRIMARY KEY,
+        mesa VARCHAR(50) NOT NULL,
+        cliente VARCHAR(255),
+        items JSONB NOT NULL DEFAULT '[]',
+        total INTEGER NOT NULL DEFAULT 0,
+        nota TEXT,
+        estado VARCHAR(30) DEFAULT 'recibido' CHECK (estado IN ('recibido', 'en_cocina', 'listo', 'entregado', 'cancelado')),
+        garzon VARCHAR(100),
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
+    console.log('✅ Tabla orders creada');
+
     // Verificar
     const tablesRes = await client.query(`
       SELECT table_name FROM information_schema.tables

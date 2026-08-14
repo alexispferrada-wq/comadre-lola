@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta Digital & Pedido Express — La Comadre Lola</title>
+<meta name="description" content="Carta digital y pedidos express para La Comadre Lola. Coctelería de autor, tablas, platos tradicionales chilenos y schops.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --p:#E8913A;
+  --s:#D4547B;
+  --a:#4ECDC4;
+  --bg:#09090d;
+  --bg-card:rgba(18, 18, 26, 0.98);
+  --tx:#fdfdfd;
+  --tm:#8a8aa0;
+  --bd:rgba(255,255,255,0.08);
+  --tr:.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --ft:'BudmoJiggler',cursive;
+  --fb:'Inter',sans-serif;
+  --bg-pattern:url('assets/fondo-adjunto.png');
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:var(--fb);
+  background: linear-gradient(rgba(9, 9, 13, 0.94), rgba(9, 9, 13, 0.94)), var(--bg-pattern), var(--bg);
+  background-size:auto,cover,auto;
+  background-position:center center;
+  background-attachment:fixed;
+  color:var(--tx);
+  min-height:100vh;
+  padding-bottom:110px;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:66px;
+  background:rgba(12, 12, 18, 0.96);
+  border-bottom:2px solid var(--p);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+}
+.brand{
+  font-family:var(--ft);
+  font-size:20px;
+  color:var(--p);
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.brand span{
+  font-family:var(--fb);
+  font-size:11px;
+  font-weight:700;
+  background:rgba(232,145,58,0.15);
+  border:1px solid rgba(232,145,58,0.3);
+  color:var(--p);
+  padding:2px 8px;
+  border-radius:6px;
+  letter-spacing:1px;
+}
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.top-table-badge{
+  font-size:12px;
+  font-weight:700;
+  color:var(--a);
+  background:rgba(78,205,196,0.12);
+  border:1px solid rgba(78,205,196,0.25);
+  padding:6px 12px;
+  border-radius:20px;
+  cursor:pointer;
+}
+.top-btn-cart{
+  background:linear-gradient(135deg, var(--p), var(--s));
+  color:#fff;
+  border:none;
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 4px 15px rgba(232,145,58,0.3);
+}
+
+/* ── HEADER BANNER ── */
+.carta-banner{
+  text-align:center;
+  padding:36px 20px 20px;
+  max-width:800px;
+  margin:0 auto;
+}
+.banner-badge{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--p);
+  margin-bottom:8px;
+  display:inline-block;
+}
+.banner-h1{
+  font-family:var(--ft);
+  font-size:clamp(2rem, 6vw, 2.8rem);
+  color:#fff;
+  line-height:1.1;
+  margin-bottom:8px;
+}
+.banner-h1 span{color:var(--p);}
+.banner-sub{
+  font-size:14px;
+  color:var(--tm);
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+/* ── CONTROLES & CATEGORÍAS ── */
+.controls-wrap{
+  max-width:1200px;
+  margin:0 auto 28px;
+  padding:0 20px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.search-box{
+  position:relative;
+  width:100%;
+}
+.search-icon{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--tm);
+  font-size:15px;
+  pointer-events:none;
+}
+.search-input{
+  width:100%;
+  padding:12px 18px 12px 44px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:30px;
+  color:#fff;
+  font-size:14px;
+  font-family:var(--fb);
+  transition:border-color .2s;
+}
+.search-input:focus{
+  outline:none;
+  border-color:var(--p);
+  background:rgba(232,145,58,0.04);
+}
+
+.cats-bar{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  scrollbar-width:none;
+}
+.cats-bar::-webkit-scrollbar{display:none;}
+.cat-chip{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--tm);
+  padding:9px 18px;
+  border-radius:30px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all var(--tr);
+}
+.cat-chip:hover{
+  border-color:var(--p);
+  color:#fff;
+}
+.cat-chip.active{
+  background:var(--p);
+  color:#000;
+  border-color:var(--p);
+  font-weight:800;
+  box-shadow:0 4px 15px rgba(232,145,58,0.35);
+}
+
+/* ── GRID DE PRODUCTOS ── */
+.carta-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+}
+.carta-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:20px;
+}
+.dish-card{
+  background:var(--bg-card);
+  border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:all var(--tr);
+  position:relative;
+  box-shadow:0 8px 24px rgba(0,0,0,0.6);
+}
+.dish-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--p);
+  box-shadow:0 12px 30px rgba(232,145,58,0.2);
+}
+.dish-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:10px;
+}
+.dish-name{
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+  line-height:1.3;
+}
+.dish-badge{
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  padding:3px 8px;
+  border-radius:6px;
+  background:rgba(232,145,58,0.15);
+  color:var(--p);
+  border:1px solid rgba(232,145,58,0.3);
+  white-space:nowrap;
+}
+.dish-desc{
+  font-size:13px;
+  color:var(--tm);
+  line-height:1.5;
+  margin-bottom:16px;
+  flex-grow:1;
+}
+.dish-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.dish-price{
+  font-size:18px;
+  font-weight:800;
+  color:var(--p);
+}
+.btn-add{
+  background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;
+  border:none;
+  padding:8px 16px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:700;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:all .2s;
+}
+.btn-add:hover{
+  transform:scale(1.04);
+}
+.stepper{
+  display:flex;
+  align-items:center;
+  background:rgba(255,255,255,0.08);
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.15);
+  overflow:hidden;
+}
+.stepper-btn{
+  background:transparent;
+  border:none;
+  color:#fff;
+  width:28px;
+  height:28px;
+  cursor:pointer;
+  font-weight:800;
+  font-size:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.stepper-btn:hover{background:rgba(232,145,58,0.3);}
+.stepper-val{
+  padding:0 8px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--p);
+}
+
+/* ── BARRA FLOTANTE INFERIOR ── */
+.floating-bar{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(120px);
+  z-index:950;
+  background:rgba(14,14,22,0.97);
+  border:2px solid var(--p);
+  border-radius:50px;
+  padding:10px 22px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.8),0 0 30px rgba(232,145,58,0.3);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.floating-bar.show{
+  transform:translateX(-50%) translateY(0);
+}
+.fb-info{
+  display:flex;
+  flex-direction:column;
+}
+.fb-count{
+  font-size:10px;
+  font-weight:800;
+  color:var(--tm);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.fb-total{
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
+}
+.fb-btn{
+  background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:30px;
+  font-size:13px;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:transform .2s;
+}
+.fb-btn:hover{transform:scale(1.04);}
+
+/* ── ONBOARDING MODAL ── */
+.onboarding-modal{
+  position:fixed;
+  inset:0;
+  z-index:9990;
+  background:rgba(5,5,8,0.88);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s;
+}
+.onboarding-modal.open{
+  opacity:1;
+  pointer-events:auto;
+}
+.onboarding-card{
+  background:rgba(18,18,26,0.98);
+  border:2px solid var(--p);
+  border-radius:24px;
+  max-width:460px;
+  width:100%;
+  padding:36px 28px;
+  text-align:center;
+  box-shadow:0 25px 80px rgba(0,0,0,0.9),0 0 50px rgba(232,145,58,0.2);
+  transform:scale(0.92);
+  transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.onboarding-modal.open .onboarding-card{transform:scale(1);}
+.ob-icon{font-size:44px;margin-bottom:12px;}
+.ob-title{font-family:var(--ft);font-size:24px;color:var(--p);margin-bottom:8px;}
+.ob-sub{font-size:14px;color:var(--tm);margin-bottom:20px;line-height:1.4;}
+.ob-table-pill{
+  display:inline-block;
+  background:rgba(78,205,196,0.12);
+  border:1px solid rgba(78,205,196,0.3);
+  color:var(--a);
+  font-size:13px;
+  font-weight:700;
+  padding:6px 16px;
+  border-radius:20px;
+  margin-bottom:24px;
+}
+.ob-btns{display:flex;flex-direction:column;gap:12px;}
+.ob-btn{
+  padding:15px;
+  border-radius:14px;
+  font-size:14px;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all .2s;
+}
+.ob-btn.primary{
+  background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;
+  box-shadow:0 6px 20px rgba(232,145,58,0.35);
+}
+.ob-btn.secondary{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--tx);
+}
+
+/* ── ORDER DRAWER ── */
+.order-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  max-width:440px;
+  background:#0e0e16;
+  border-left:2px solid var(--p);
+  z-index:9900;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:-10px 0 50px rgba(0,0,0,0.8);
+}
+.order-drawer.open{transform:translateX(0);}
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(4px);
+  z-index:9890;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s;
+}
+.drawer-backdrop.open{opacity:1;pointer-events:auto;}
+
+.drawer-hdr{
+  padding:18px 22px;
+  background:rgba(18,18,28,0.98);
+  border-bottom:1px solid var(--bd);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.drawer-title{font-size:16px;font-weight:800;color:var(--p);display:flex;align-items:center;gap:8px;}
+.drawer-close{
+  background:rgba(255,255,255,0.06);border:none;color:var(--tm);width:32px;height:32px;
+  border-radius:8px;font-size:16px;cursor:pointer;
+}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 22px;}
+.drawer-label{
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);
+  margin-bottom:8px;display:block;
+}
+.table-inp{
+  width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);
+  border-radius:12px;color:#fff;font-size:15px;font-weight:700;margin-bottom:20px;
+}
+.table-inp:focus{outline:none;border-color:var(--p);}
+.order-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.order-row{
+  display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;
+}
+.order-row-info{flex:1;margin-right:10px;}
+.order-row-name{font-size:14px;font-weight:700;color:#fff;}
+.order-row-price{font-size:12px;color:var(--p);font-weight:600;}
+.order-note{
+  width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);
+  border-radius:12px;color:#fff;font-size:13px;font-family:var(--fb);resize:vertical;min-height:70px;
+  margin-bottom:16px;
+}
+.order-note:focus{outline:none;border-color:var(--p);}
+
+.drawer-foot{
+  padding:18px 22px;background:rgba(18,18,28,0.98);border-top:1px solid var(--bd);
+}
+.foot-total-row{
+  display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:800;
+  color:#fff;margin-bottom:14px;
+}
+.foot-total-row span:last-child{color:var(--p);font-size:20px;}
+.btn-gen-qr{
+  width:100%;padding:15px;background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;
+  border-radius:14px;font-size:15px;font-weight:800;font-family:var(--fb);cursor:pointer;
+  box-shadow:0 6px 20px rgba(232,145,58,0.4);
+}
+
+/* ── QR MODAL ── */
+.qr-modal{
+  position:fixed;inset:0;z-index:9995;background:rgba(5,5,8,0.92);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;
+  transition:opacity 0.3s;
+}
+.qr-modal.open{opacity:1;pointer-events:auto;}
+.qr-card{
+  background:#111118;border:3px solid var(--p);border-radius:28px;max-width:420px;width:100%;
+  padding:32px 24px;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,0.9),0 0 60px rgba(232,145,58,0.25);
+  position:relative;
+}
+.qr-close{
+  position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;color:#fff;
+  width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;
+}
+.qr-mesa-badge{
+  display:inline-block;background:var(--p);color:#000;font-size:15px;font-weight:800;padding:6px 20px;
+  border-radius:20px;margin-bottom:14px;letter-spacing:1px;
+}
+.qr-box{
+  background:#fff;padding:16px;border-radius:18px;display:inline-flex;align-items:center;
+  justify-content:center;margin:12px 0 16px;
+}
+.qr-instruction{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.qr-subtext{font-size:12px;color:var(--tm);margin-bottom:16px;}
+.qr-summary{
+  background:rgba(255,255,255,0.04);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;
+  font-size:12px;text-align:left;max-height:110px;overflow-y:auto;margin-bottom:16px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;
+  font-weight:700;opacity:0;transform:translateY(10px);pointer-events:none;transition:all .3s;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{background:#4CAF50;color:#fff;}
+.toast.err{background:#f44336;color:#fff;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="/" class="brand">
+    🌹 La Comadre Lola <span>CARTA</span>
+  </a>
+  <div class="top-actions">
+    <div class="top-table-badge" id="topTableBadge" onclick="openOrderDrawer()">
+      📍 Mesa: ?
+    </div>
+    <button class="top-btn-cart" onclick="openOrderDrawer()">
+      <span id="topCartCount">⚡ Mi Pedido (0)</span>
+    </button>
+  </div>
+</header>
+
+<!-- BANNER -->
+<section class="carta-banner">
+  <span class="banner-badge">🍽️ Sabor y Tradición · Quilicura</span>
+  <h1 class="banner-h1">CARTA & <span>COCTELERÍA</span></h1>
+  <p class="banner-sub">Explora nuestra carta digital, arma tu comanda y genera el código QR para que el garzón te atienda en segundos.</p>
+</section>
+
+<!-- BUSCADOR Y CATEGORÍAS -->
+<div class="controls-wrap">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Buscar plato, trago, cerveza..." oninput="handleSearch(this.value)">
+  </div>
+  <div class="cats-bar" id="catsBar">
+    <button class="cat-chip active" onclick="filterCat('todos',this)">🌟 Todos</button>
+    <button class="cat-chip" onclick="filterCat('tragos',this)">🍹 Tragos de la Casa</button>
+    <button class="cat-chip" onclick="filterCat('tablas',this)">🥩 Tablas & Piqueos</button>
+    <button class="cat-chip" onclick="filterCat('cocina',this)">🍲 Cocina Chilena</button>
+    <button class="cat-chip" onclick="filterCat('cervezas',this)">🍺 Cervezas & Schops</button>
+    <button class="cat-chip" onclick="filterCat('postres_bebidas',this)">🍨 Bebidas & Postres</button>
+  </div>
+</div>
+
+<!-- GRID CARTA -->
+<main class="carta-container">
+  <div class="carta-grid" id="cartaGrid"></div>
+</main>
+
+<!-- BARRA FLOTANTE -->
+<div class="floating-bar" id="floatingBar">
+  <div class="fb-info">
+    <span class="fb-count" id="fbCount">0 ITEMS</span>
+    <span class="fb-total" id="fbTotal">$0 CLP</span>
+  </div>
+  <button class="fb-btn" onclick="openOrderDrawer()">
+    <span>⚡ Ver Comanda / QR</span>
+  </button>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="onboarding-modal" id="welcomeModal" onclick="if(event.target===this)closeWelcomeModal()">
+  <div class="onboarding-card">
+    <div class="ob-icon">🌹</div>
+    <h2 class="ob-title">¡HOLA, BIENVENIDO!</h2>
+    <p class="ob-sub">Elige cómo deseas iniciar tu experiencia hoy en La Comadre Lola</p>
+    <div class="ob-table-pill" id="obTablePill">📍 Mesa: Sin asignar</div>
+    <div class="ob-btns">
+      <button class="ob-btn primary" onclick="startOrder()">
+        <span>⚡ Hacer Pedido de Inmediato</span>
+      </button>
+      <button class="ob-btn secondary" onclick="closeWelcomeModal()">
+        <span>📖 Explorar la Carta Digital</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER DRAWER -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeOrderDrawer()"></div>
+<div class="order-drawer" id="orderDrawer">
+  <div class="drawer-hdr">
+    <div class="drawer-title">⚡ <span>Tu Pedido / Comanda</span></div>
+    <button class="drawer-close" onclick="closeOrderDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <label class="drawer-label">📍 Número de Mesa</label>
+    <input type="text" class="table-inp" id="tableInp" placeholder="Ej: Mesa 4" oninput="saveTable(this.value)">
+
+    <label class="drawer-label">🍽️ Productos Seleccionados</label>
+    <div class="order-list" id="drawerOrderList"></div>
+
+    <label class="drawer-label">📝 Observaciones para Cocina / Barra</label>
+    <textarea class="order-note" id="noteInp" placeholder="Ej: Sin hielo, carne a punto, salsas aparte..." oninput="saveNote(this.value)"></textarea>
+  </div>
+  <div class="drawer-foot">
+    <div class="foot-total-row">
+      <span>RESUMEN COMANDA:</span>
+      <span id="drawerTotal" style="color:var(--p);font-size:15px;">0 productos</span>
+    </div>
+    <button class="btn-gen-qr" onclick="generateQR()">
+      📲 Generar Código QR de Pedido
+    </button>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="qr-modal" id="qrModal" onclick="if(event.target===this)closeQRModal()">
+  <div class="qr-card">
+    <button class="qr-close" onclick="closeQRModal()">✕</button>
+    <div class="qr-mesa-badge" id="qrMesa">MESA 1</div>
+    <div class="qr-instruction">Muestra este código a tu Garzón</div>
+    <div class="qr-subtext">El garzón lo escaneará con su teléfono y enviará la comanda a cocina y barra al instante.</div>
+    <div class="qr-box" id="qrContainer"></div>
+    <div class="qr-summary" id="qrSummary"></div>
+    <button class="ob-btn secondary" style="width:100%" onclick="closeQRModal(); openOrderDrawer();">
+      ✏️ Modificar Pedido
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- QR ENGINE -->
+<script src="js/qrcode.min.js"></script>
+
+<script>
+const CARTA_ITEMS_INIT = [
+  // TRAGOS DE LA CASA
+  { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO', popular:true },
+  { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA', popular:true },
+  { id:'t3', cat:'tragos', nombre:'Terremoto Tradicional', desc:'El clásico campesino con pipeño dulce, helado de piña y jarabe de granadina.', precio:4900, badge:'CLÁSICO' },
+  { id:'t4', cat:'tragos', nombre:'Mojito Chileno de Pisco', desc:'Pisco blanco chileno, limón sutil, hierbabuena fresca, azúcar y un toque de ginger ale.', precio:5900, badge:'' },
+  { id:'t5', cat:'tragos', nombre:'Piscola Mistral 35° / Alto 35°', desc:'Vaso largo con harto hielo, 2 medidas de pisco y bebida Coca-Cola o Sprite.', precio:4500, badge:'FAVORITO' },
+  { id:'t6', cat:'tragos', nombre:'Pisco Sour Artesanal', desc:'Limón de pica fresco, pisco aromático, goma y gotas de amargo de angostura.', precio:4900, badge:'' },
+
+  // TABLAS & PIQUEOS
+  { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO', popular:true },
+  { id:'tb2', cat:'tablas', nombre:'Pichanga Caliente', desc:'Carne mechada, vienesas del sur, queso mantecoso fundido, huevo duro, aceitunas y papas fritas.', precio:14900, badge:'' },
+  { id:'tb3', cat:'tablas', nombre:'Chorrillana Porteña Tradicional', desc:'Lomo salteado a la plancha con cebolla caramelizada, huevos fritos y base de papas crujientes.', precio:15500, badge:'IMPERDIBLE', popular:true },
+  { id:'tb4', cat:'tablas', nombre:'Tabla de Empanaditas (6 unidades)', desc:'3 de pino de vacuno bien jugoso y 3 de queso fundido con camarón.', precio:8900, badge:'' },
+
+  // COCINA CHILENA
+  { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA', popular:true },
+  { id:'c2', cat:'cocina', nombre:'Pastel de Choclo Tradicional', desc:'Choclo tierno pastelero, pino de vacuno, presa de pollo, aceitunas y huevo duro gratinado.', precio:10900, badge:'TRADICIÓN' },
+  { id:'c3', cat:'cocina', nombre:'Cazuela de Vacuno', desc:'Corte de osobuco, choclo dulce, zapallo camote, porotos verdes y caldo humeante concentrado.', precio:9900, badge:'' },
+  { id:'c4', cat:'cocina', nombre:'Reineta a la Plancha', desc:'Pescado fresco sellado a la plancha con agregado a elección (papas fritas, arroz o chilena).', precio:11900, badge:'' },
+
+  // CERVEZAS & SCHOPS
+  { id:'cv1', cat:'cervezas', nombre:'Schop Kross Golden 500cc', desc:'Cerveza artesanal rubia en barril bien helada con espuma cremosa.', precio:4200, badge:'BARRIL' },
+  { id:'cv2', cat:'cervezas', nombre:'Schop Austral Calafate 500cc', desc:'La clásica patagónica con sabor a calafate recién tirada de schopera.', precio:4500, badge:'BARRIL', popular:true },
+  { id:'cv3', cat:'cervezas', nombre:'Corona Extra 330cc', desc:'Botella individual con rodaja de limón sutil.', precio:3200, badge:'' },
+  { id:'cv4', cat:'cervezas', nombre:'Kunstmann Torobayo 330cc', desc:'Cerveza ámbar artesanal valdiviana con notas a caramelo.', precio:3800, badge:'' },
+
+  // BEBIDAS & POSTRES
+  { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO', popular:true },
+  { id:'p2', cat:'postres_bebidas', nombre:'Leche Asada de la Casa', desc:'Receta de la abuela con abundante caramelo rubio brillante.', precio:3800, badge:'CASERO' },
+  { id:'p3', cat:'postres_bebidas', nombre:'Bebida en Lata 350cc', desc:'Coca-Cola, Coca-Cola Zero, Sprite o Fanta bien fría.', precio:2000, badge:'' },
+  { id:'p4', cat:'postres_bebidas', nombre:'Agua Mineral 500cc', desc:'Con o sin gas.', precio:1800, badge:'' }
+];
+
+let _items = [...CARTA_ITEMS_INIT];
+let _cat = 'todos';
+let _q = '';
+let _cart = [];
+let _table = '';
+let _note = '';
+
+function formatCLP(v) { return '$' + Number(v).toLocaleString('es-CL'); }
+
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── PERSISTENCIA ── */
+function loadStorage() {
+  try {
+    const c = localStorage.getItem('lola_pedido_actual');
+    if (c) _cart = JSON.parse(c) || [];
+    const tbl = localStorage.getItem('lola_mesa_actual');
+    if (tbl) _table = tbl;
+    const n = localStorage.getItem('lola_pedido_nota');
+    if (n) _note = n;
+  } catch(e) {}
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem('lola_pedido_actual', JSON.stringify(_cart));
+    if (_table) localStorage.setItem('lola_mesa_actual', _table);
+    if (_note) localStorage.setItem('lola_pedido_nota', _note);
+  } catch(e) {}
+  updateUI();
+}
+
+/* ── RENDER CARTA ── */
+function renderGrid() {
+  const grid = document.getElementById('cartaGrid');
+  const filtered = _items.filter(it => {
+    const matchCat = _cat === 'todos' || it.cat === _cat;
+    const matchQ = !_q || it.nombre.toLowerCase().includes(_q) || (it.desc && it.desc.toLowerCase().includes(_q));
+    return matchCat && matchQ;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--tm);">🍽️ No se encontraron productos con ese criterio.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(it => {
+    const inCart = _cart.find(c => c.id === it.id);
+    return `
+      <div class="dish-card">
+        <div>
+          <div class="dish-top">
+            <div class="dish-name">${it.nombre}</div>
+            ${it.badge ? `<div class="dish-badge">${it.badge}</div>` : ''}
+          </div>
+          <div class="dish-desc">${it.desc || ''}</div>
+        </div>
+        <div class="dish-foot">
+          <div class="dish-price">${formatCLP(it.precio)}</div>
+          ${inCart ? `
+            <div class="stepper">
+              <button class="stepper-btn" onclick="updateQty('${it.id}', -1)">−</button>
+              <span class="stepper-val">${inCart.cant}</span>
+              <button class="stepper-btn" onclick="updateQty('${it.id}', 1)">+</button>
+            </div>
+          ` : `
+            <button class="btn-add" onclick="addItem('${it.id}')">
+              <span>+ Agregar</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterCat(cat, btn) {
+  _cat = cat;
+  document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderGrid();
+}
+
+function handleSearch(val) {
+  _q = val.trim().toLowerCase();
+  renderGrid();
+}
+
+/* ── ACCIONES CARRITO ── */
+function addItem(id) {
+  const it = _items.find(i => i.id === id);
+  if (!it) return;
+  const inCart = _cart.find(c => c.id === id);
+  if (inCart) inCart.cant += 1;
+  else _cart.push({ id: it.id, nombre: it.nombre, precio: it.precio, cant: 1 });
+  saveStorage();
+  renderGrid();
+  toast(`Agregado: ${it.nombre}`);
+}
+
+function updateQty(id, delta) {
+  const inCart = _cart.find(c => c.id === id);
+  if (!inCart) return;
+  inCart.cant += delta;
+  if (inCart.cant <= 0) _cart = _cart.filter(c => c.id !== id);
+  saveStorage();
+  renderGrid();
+}
+
+function saveTable(val) {
+  _table = val.trim();
+  localStorage.setItem('lola_mesa_actual', _table);
+  updateUI();
+}
+
+function saveNote(val) {
+  _note = val.trim();
+  localStorage.setItem('lola_pedido_nota', _note);
+}
+
+function updateUI() {
+  const count = _cart.reduce((s, i) => s + i.cant, 0);
+
+  // Topbar
+  document.getElementById('topCartCount').textContent = `⚡ Mi Pedido (${count})`;
+  document.getElementById('topTableBadge').textContent = _table ? `📍 ${_table}` : '📍 Asignar Mesa';
+
+  // Floating Bar
+  const fb = document.getElementById('floatingBar');
+  if (count > 0) {
+    fb.classList.add('show');
+    document.getElementById('fbCount').textContent = '⚡ COMANDA EN CURSO';
+    document.getElementById('fbTotal').textContent = `${count} ${count === 1 ? 'item seleccionado' : 'items seleccionados'}`;
+  } else {
+    fb.classList.remove('show');
+  }
+
+  // Drawer
+  const listEl = document.getElementById('drawerOrderList');
+  document.getElementById('drawerTotal').textContent = `${count} ${count === 1 ? 'producto seleccionado' : 'productos seleccionados'}`;
+  if (document.getElementById('tableInp')) document.getElementById('tableInp').value = _table || '';
+  if (document.getElementById('noteInp')) document.getElementById('noteInp').value = _note || '';
+
+  if (!count) {
+    listEl.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--tm);">🛒 Tu comanda está vacía.<br>Agrega platos o tragos de la carta.</div>';
+  } else {
+    listEl.innerHTML = _cart.map(it => `
+      <div class="order-row">
+        <div class="order-row-info">
+          <div class="order-row-name"><b>${it.cant}x</b> ${it.nombre}</div>
+        </div>
+        <div class="stepper">
+          <button class="stepper-btn" onclick="updateQty('${it.id}', -1)">−</button>
+          <span class="stepper-val">${it.cant}</span>
+          <button class="stepper-btn" onclick="updateQty('${it.id}', 1)">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+/* ── DRAWER & MODALS ── */
+function openOrderDrawer() {
+  updateUI();
+  document.getElementById('orderDrawer').classList.add('open');
+  document.getElementById('drawerBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderDrawer() {
+  document.getElementById('orderDrawer').classList.remove('open');
+  document.getElementById('drawerBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openWelcomeModal() {
+  document.getElementById('obTablePill').textContent = _table ? `📍 ${_table}` : '📍 Mesa: Sin asignar';
+  document.getElementById('welcomeModal').classList.add('open');
+}
+
+function closeWelcomeModal() {
+  document.getElementById('welcomeModal').classList.remove('open');
+}
+
+function startOrder() {
+  closeWelcomeModal();
+  openOrderDrawer();
+}
+
+/* ── GENERACIÓN QR ── */
+function generateQR() {
+  if (!_cart.length) {
+    toast('Agrega al menos un producto a tu pedido', 'err');
+    return;
+  }
+  const tableVal = document.getElementById('tableInp').value.trim();
+  if (!tableVal) {
+    toast('Por favor escribe tu número de mesa', 'err');
+    document.getElementById('tableInp').focus();
+    return;
+  }
+  _table = tableVal;
+  saveStorage();
+
+  const payload = {
+    app: 'comadre_lola',
+    type: 'pedido',
+    mesa: _table,
+    ts: Date.now(),
+    items: _cart.map(i => ({ id: i.id, n: i.nombre, c: i.cant })),
+    nota: _note || ''
+  };
+
+  const container = document.getElementById('qrContainer');
+  container.innerHTML = '';
+
+  new QRCode(container, {
+    text: JSON.stringify(payload),
+    width: 220,
+    height: 220,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  document.getElementById('qrMesa').textContent = _table.toUpperCase();
+  document.getElementById('qrSummary').innerHTML = _cart.map(i => `
+    <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <span><b>• ${i.cant}x</b> ${i.nombre}</span>
+    </div>
+  `).join('') + (_note ? `<div style="margin-top:6px;color:var(--p);font-style:italic;">Nota: "${_note}"</div>` : '');
+
+  closeOrderDrawer();
+  document.getElementById('qrModal').classList.add('open');
+  toast('¡Código QR generado con éxito!');
+}
+
+function closeQRModal() {
+  document.getElementById('qrModal').classList.remove('open');
+}
+
+/* ── INIT CARTA ── */
+async function initCarta() {
+  loadStorage();
+
+  // Detectar URL params (ej: /carta?mesa=4)
+  const params = new URLSearchParams(window.location.search);
+  const m = params.get('mesa') || params.get('table');
+  if (m) {
+    _table = `Mesa ${m.replace(/[^0-9a-zA-Z]/g, '')}`;
+    saveTable(_table);
+    setTimeout(() => openWelcomeModal(), 400);
+  } else if (!localStorage.getItem('lola_carta_visited')) {
+    setTimeout(() => openWelcomeModal(), 500);
+    localStorage.setItem('lola_carta_visited', '1');
+  }
+
+  // Cargar contenido actualizado desde API si existe
+  try {
+    const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? window.location.origin
+      : 'https://lacomadrelola-api.onrender.com';
+    const res = await fetch(API + '/api/content');
+    const result = await res.json();
+    if (result.ok && result.data && result.data.carta && result.data.carta.length > 0) {
+      _items = result.data.carta;
+    }
+  } catch(e) {}
+
+  renderGrid();
+  updateUI();
+}
+
+initCarta();
+</script>
+</body>
+</html>

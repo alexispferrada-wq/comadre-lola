@@ -437,6 +437,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--tex
     <div class="topnav-logo">🌹 <span>La Comadre Lola — Editor CMS</span></div>
     <div class="topnav-sections" id="secTabs">
       <button class="sec-btn active" onclick="gotoSection('hero',this)">🏠 Hero</button>
+      <button class="sec-btn" onclick="gotoSection('carta',this)">🍽️ Carta</button>
       <button class="sec-btn" onclick="gotoSection('carrusel',this)">🖼 Carrusel</button>
       <button class="sec-btn" onclick="gotoSection('galeria',this)">📸 Galería</button>
       <button class="sec-btn" onclick="gotoSection('eventos',this)">🎤 Eventos</button>
@@ -595,6 +596,14 @@ const S = {
     btn1:'🎉 RESERVA AHORA', btn2:'🎤 Ver Eventos',
     particles:true, roses:true,
   },
+  carta: [
+    { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO' },
+    { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA' },
+    { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO' },
+    { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA' },
+    { id:'cv1', cat:'cervezas', nombre:'Schop Kross Golden 500cc', desc:'Cerveza artesanal rubia en barril bien helada con espuma cremosa.', precio:4200, badge:'BARRIL' },
+    { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO' }
+  ],
   eventos:[
     {flyer:'',name:'Sexual Democracia',     genero:'Rock Chileno · En Vivo',        fecha:'Sábado 25 Jul',   hora:'21:00',price:'Ver Passline', badge:'IMPERDIBLE', tag:'música',   desc:'La gira "El Auténtico Rock Chileno" llega a Quilicura. Prepárate para corear himnos y vivir el rock nacional del bueno.',        btn:'Entradas Passline',   link:'https://www.passline.com/eventos/sexual-democracia-en-comadre-lola-quilicura-529589'},
     {flyer:'',name:'Luis Slimming',         genero:'Stand-Up · Don Comedia',        fecha:'Jueves 30 Jul',   hora:'21:00',price:'Ver Ticketplus', badge:'CONFIRMADO',  tag:'especial', desc:'Don Comedia se sube al escenario a probar material nuevo y desatar carcajadas en Quilicura. Comedia en su forma más pura.',  btn:'Entradas Ticketplus', link:'https://ticketplus.cl/'},
@@ -701,6 +710,40 @@ const SECTIONS={
       <div class="toggle-row"><span class="toggle-label">✨ Partículas brillantes</span><label class="sw"><input type="checkbox" data-k="hero.particles" ${S.hero.particles?'checked':''}><span class="sw-track"></span></label></div>
       <div class="toggle-row"><span class="toggle-label">🌹 Rosas cayendo</span><label class="sw"><input type="checkbox" data-k="hero.roses" ${S.hero.roses?'checked':''}><span class="sw-track"></span></label></div>
     `
+  },
+  carta:{
+    title:'🍽️ Carta & Menú Digital',
+    html:()=>{
+      if(!S.carta) S.carta = [];
+      return `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <span style="font-size:12px;color:var(--text-muted);">Edita platos, tragos y precios de la carta.</span>
+          <button onclick="addCartaItem()" style="padding:7px 14px;background:var(--primary);border:none;border-radius:8px;color:#000;font-weight:700;font-family:var(--fb);cursor:pointer;">+ Añadir Producto</button>
+        </div>
+        ${S.carta.map((item,i)=>`
+          <div class="fld-section" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>PRODUCTO #${i+1}</span>
+            <button onclick="removeCartaItem(${i})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:11px;font-weight:700;">✕ Eliminar</button>
+          </div>
+          <div class="fld-group"><div class="fld-label">Nombre del Producto / Trago</div><input class="fld-input" data-k="carta.${i}.nombre" value="${item.nombre||''}"></div>
+          <div class="grid-2">
+            <div class="fld-group"><div class="fld-label">Categoría</div>
+              <select class="fld-select" data-k="carta.${i}.cat">
+                <option value="tragos" ${item.cat==='tragos'?'selected':''}>🍹 Tragos de la Casa</option>
+                <option value="tablas" ${item.cat==='tablas'?'selected':''}>🥩 Tablas & Piqueos</option>
+                <option value="cocina" ${item.cat==='cocina'?'selected':''}>🍲 Cocina Chilena</option>
+                <option value="cervezas" ${item.cat==='cervezas'?'selected':''}>🍺 Cervezas & Schops</option>
+                <option value="postres_bebidas" ${item.cat==='postres_bebidas'?'selected':''}>🍨 Bebidas & Postres</option>
+              </select>
+            </div>
+            <div class="fld-group"><div class="fld-label">Precio ($ CLP)</div><input class="fld-input" type="number" data-k="carta.${i}.precio" value="${item.precio||0}"></div>
+          </div>
+          <div class="fld-group"><div class="fld-label">Descripción / Ingredientes</div><textarea class="fld-textarea" data-k="carta.${i}.desc" rows="2">${item.desc||''}</textarea></div>
+          <div class="fld-group"><div class="fld-label">Badge Destacado (opcional)</div><input class="fld-input" data-k="carta.${i}.badge" value="${item.badge||''}" placeholder="DESTACADO, POPULAR..."></div>
+          <div class="fld-div"></div>
+        `).join('')}
+      `;
+    }
   },
   eventos:{
     title:'🎤 Cartelera de Eventos',
@@ -918,6 +961,30 @@ function renderSection(name){
   document.getElementById('editorBody').innerHTML=SECTIONS[name].html();
   bindInputs();
 }
+
+window.addCartaItem = function() {
+  if (!S.carta) S.carta = [];
+  S.carta.push({
+    id: 'prod_' + Date.now(),
+    cat: 'tragos',
+    nombre: 'Nuevo Producto / Trago',
+    desc: 'Descripción con ingredientes o detalles...',
+    precio: 5000,
+    badge: ''
+  });
+  renderSection('carta');
+  setSaveBadge('show', '● Cambios pendientes');
+  queueAutoSave();
+};
+
+window.removeCartaItem = function(idx) {
+  if (!confirm('¿Eliminar este producto de la carta?')) return;
+  S.carta.splice(idx, 1);
+  renderSection('carta');
+  setSaveBadge('show', '● Cambios pendientes');
+  queueAutoSave();
+};
+
 
 /* ═══════════════════════════════════════════════
    BIND INPUTS

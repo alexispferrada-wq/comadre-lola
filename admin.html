@@ -130,7 +130,9 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <div class="topbar-right">
     <span class="tb-user" id="tbUser"></span>
     <button class="tb-btn site" onclick="location.href='/'">Ver Sitio</button>
+    <button class="tb-btn" style="background:rgba(232,145,58,0.15);border:1px solid var(--p);color:var(--p);" onclick="location.href='/garzon'">📱 App Garzón</button>
     <button class="tb-btn editor" onclick="location.href='/editor'">Editor CMS</button>
+    <button class="tb-btn" style="background:rgba(78,205,196,0.15);border:1px solid var(--a);color:var(--a);" onclick="testEmailConnection()">✉️ Probar Gmail</button>
     <button class="tb-btn logout" onclick="doLogout()">Salir</button>
   </div>
 </div>
@@ -140,13 +142,15 @@ tr:hover td{background:rgba(255,255,255,.02);}
   <!-- STATS -->
   <div class="stats" id="statsRow">
     <div class="stat-card primary"><div class="stat-label">Total Reservas</div><div class="stat-value" id="stTotal">—</div></div>
-    <div class="stat-card secondary"><div class="stat-label">Pendientes</div><div class="stat-value" id="stPend">—</div></div>
-    <div class="stat-card accent"><div class="stat-label">Newsletter</div><div class="stat-value" id="stNl">—</div></div>
+    <div class="stat-card secondary"><div class="stat-label">Reservas Pendientes</div><div class="stat-value" id="stPend">—</div></div>
+    <div class="stat-card accent"><div class="stat-label">Comandas Activas</div><div class="stat-value" id="stOrders">—</div></div>
+    <div class="stat-card ok"><div class="stat-label">Newsletter</div><div class="stat-value" id="stNl">—</div></div>
   </div>
 
   <!-- TABS -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('reservas',this)">📅 Reservas</button>
+    <button class="tab" onclick="switchTab('comandas',this)">🛎️ Comandas y Pedidos</button>
     <button class="tab" onclick="switchTab('newsletter',this)">📬 Newsletter</button>
   </div>
 
@@ -159,6 +163,26 @@ tr:hover td{background:rgba(255,255,255,.02);}
       </div>
       <div id="reservasBody"><div class="loading">Cargando...</div></div>
       <div class="pagination" id="resPag" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- COMANDAS Y PEDIDOS -->
+  <div class="tab-panel" id="panel-comandas">
+    <div class="tbl-wrap">
+      <div class="tbl-head">
+        <div class="tbl-title">Comandas y Pedidos en Vivo</div>
+        <div style="display:flex;gap:8px;">
+          <select id="filterOrderStatus" class="tbl-search" style="width:140px;" onchange="loadOrders()">
+            <option value="todos">Todos los estados</option>
+            <option value="recibido">Recibidos</option>
+            <option value="en_cocina">En Cocina / Barra</option>
+            <option value="listo">Listos para entrega</option>
+            <option value="entregado">Entregados</option>
+          </select>
+          <input class="tbl-search" id="searchOrders" placeholder="Buscar mesa o plato..." oninput="filterOrders()">
+        </div>
+      </div>
+      <div id="ordersBody"><div class="loading">Cargando comandas...</div></div>
     </div>
   </div>
 
@@ -182,6 +206,7 @@ const API = window.location.origin;
 let TOKEN = localStorage.getItem('lola_token');
 let allReservas = [];
 let allNewsletter = [];
+let allOrders = [];
 let resPage = 1;
 const RES_PER_PAGE = 15;
 
@@ -212,12 +237,14 @@ function switchTab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'comandas') loadOrders();
 }
 
 /* ── LOAD ── */
 async function loadAll() {
   loadStats();
   loadReservas();
+  loadOrders();
   loadNewsletter();
 }
 
@@ -229,6 +256,9 @@ async function loadStats() {
     document.getElementById('stTotal').textContent = d.totalReservas;
     document.getElementById('stPend').textContent  = d.pendientes;
     document.getElementById('stNl').textContent    = d.newsletter;
+    if (document.getElementById('stOrders')) {
+      document.getElementById('stOrders').textContent = d.ordersPendientes !== undefined ? d.ordersPendientes : (d.totalOrders || 0);
+    }
   } catch {}
 }
 
@@ -252,6 +282,124 @@ async function loadNewsletter() {
     allNewsletter = d.data;
     renderNewsletter();
   } catch {}
+}
+
+/* ── COMANDAS Y PEDIDOS ── */
+async function loadOrders() {
+  const status = document.getElementById('filterOrderStatus') ? document.getElementById('filterOrderStatus').value : 'todos';
+  try {
+    const url = status && status !== 'todos'
+      ? `${API}/api/admin/orders?estado=${status}&limit=100`
+      : `${API}/api/admin/orders?limit=100`;
+    const r = await fetch(url, { headers: auth() });
+    const d = await r.json();
+    if (!d.ok) return;
+    allOrders = d.data;
+    renderOrders();
+  } catch {
+    document.getElementById('ordersBody').innerHTML = '<div class="empty"><div class="empty-ico">⚠️</div>Error al cargar comandas.</div>';
+  }
+}
+
+function filterOrders() { renderOrders(); }
+
+function renderOrders() {
+  const q = (document.getElementById('searchOrders') ? document.getElementById('searchOrders').value : '').toLowerCase();
+  const list = allOrders.filter(o =>
+    (o.mesa && o.mesa.toLowerCase().includes(q)) ||
+    (o.nota && o.nota.toLowerCase().includes(q)) ||
+    (o.items && o.items.some(it => (it.nombre || '').toLowerCase().includes(q)))
+  );
+
+  const tbody = document.getElementById('ordersBody');
+  if (!list.length) {
+    tbody.innerHTML = '<div class="empty"><div class="empty-ico">🛎️</div>Sin comandas activas con ese criterio.</div>';
+    return;
+  }
+
+  tbody.innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Mesa</th><th>Hora</th><th>Comanda / Items</th>
+        <th>Total</th><th>Observaciones</th><th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody>
+        ${list.map(o => `
+          <tr id="order-${o._id}">
+            <td><b style="color:var(--p); font-size:15px;">${esc(o.mesa)}</b></td>
+            <td style="white-space:nowrap;">${new Date(o.createdAt).toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'})}</td>
+            <td>
+              <div style="font-size:12px; line-height:1.4;">
+                ${(o.items || []).map(it => `<div><b>${it.cant || 1}x</b> ${esc(it.nombre)} <span style="color:var(--tm)">($${(it.precio*it.cant).toLocaleString('es-CL')})</span></div>`).join('')}
+              </div>
+            </td>
+            <td><b style="color:var(--p); font-size:14px;">$${Number(o.total || 0).toLocaleString('es-CL')}</b></td>
+            <td style="font-size:12px; color:var(--tm); max-width:180px;">${o.nota ? `<span style="color:var(--warn); font-style:italic;">"${esc(o.nota)}"</span>` : '—'}</td>
+            <td><span class="badge ${o.estado}">${o.estado}</span></td>
+            <td>
+              <div class="actions">
+                ${o.estado !== 'en_cocina' ? `<button class="btn-sm confirm" style="background:rgba(78,205,196,0.15); color:var(--a);" onclick="setOrderStatus('${o._id}','en_cocina')">Cocina</button>` : ''}
+                ${o.estado !== 'listo' ? `<button class="btn-sm confirm" style="background:rgba(255,152,0,0.15); color:var(--warn);" onclick="setOrderStatus('${o._id}','listo')">Listo</button>` : ''}
+                ${o.estado !== 'entregado' ? `<button class="btn-sm confirm" onclick="setOrderStatus('${o._id}','entregado')">Entregado</button>` : ''}
+                <button class="btn-sm del" onclick="deleteOrder('${o._id}')">Borrar</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function setOrderStatus(id, estado) {
+  try {
+    const r = await fetch(API + '/api/admin/orders/' + id, {
+      method: 'PATCH',
+      headers: { ...auth(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado }),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      const idx = allOrders.findIndex(o => o._id === id);
+      if (idx >= 0) allOrders[idx].estado = estado;
+      renderOrders();
+      loadStats();
+      toast(`Comanda actualizada a "${estado}"`, 'ok');
+    }
+  } catch { toast('Error al actualizar comanda', 'err'); }
+}
+
+async function deleteOrder(id) {
+  if (!confirm('¿Eliminar esta comanda?')) return;
+  try {
+    await fetch(API + '/api/admin/orders/' + id, { method: 'DELETE', headers: auth() });
+    allOrders = allOrders.filter(o => o._id !== id);
+    renderOrders();
+    loadStats();
+    toast('Comanda eliminada', 'info');
+  } catch { toast('Error al eliminar', 'err'); }
+}
+
+/* ── PROBAR CONEXIÓN GMAIL ── */
+async function testEmailConnection() {
+  toast('Enviando correo de prueba...', 'info');
+  try {
+    const r = await fetch(API + '/api/admin/test-email', {
+      method: 'POST',
+      headers: auth(),
+    });
+    const d = await r.json();
+    if (d.ok) {
+      alert(`✅ ¡Prueba de Gmail exitosa!\n\n${d.message}`);
+      toast('Correo enviado correctamente', 'ok');
+    } else {
+      alert(`⚠️ Error al enviar correo de prueba:\n\n${d.error || 'Verifica EMAIL_USER y EMAIL_PASS en tu configuración.'}`);
+      toast('Error al enviar correo', 'err');
+    }
+  } catch (err) {
+    alert('Error de conexión con el servidor.');
+    toast('Error de conexión', 'err');
+  }
 }
 
 /* ── RENDER RESERVAS ── */

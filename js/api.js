@@ -28,3 +28,13 @@ export async function submitNewsletter(email) {
   });
   return res.json();
 }
+
+export async function submitOrder(orderData) {
+  const res = await fetch(`${API_BASE}/api/orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData),
+  });
+  return res.json();
+}
+

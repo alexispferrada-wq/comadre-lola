@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garzón Express — La Comadre Lola</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --p:#E8913A;
+  --s:#D4547B;
+  --a:#4ECDC4;
+  --bg:#09090d;
+  --bg-card:rgba(18,18,26,0.98);
+  --tx:#fdfdfd;
+  --tm:#8a8aa0;
+  --bd:rgba(255,255,255,0.08);
+  --ok:#4CAF50;
+  --err:#f44336;
+  --warn:#ff9800;
+  --ft:'BudmoJiggler',cursive;
+  --fb:'Inter',sans-serif;
+}
+body{
+  font-family:var(--fb);
+  background:var(--bg);
+  color:var(--tx);
+  min-height:100vh;
+  padding-bottom:80px;
+}
+
+/* ── HEADER ── */
+.hdr{
+  background:rgba(14,14,22,0.95);
+  border-bottom:2px solid var(--p);
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(10px);
+}
+.hdr-brand{
+  font-family:var(--ft);
+  font-size:18px;
+  color:var(--p);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.hdr-badge{
+  font-family:var(--fb);
+  font-size:11px;
+  font-weight:800;
+  background:rgba(232,145,58,0.2);
+  color:var(--p);
+  padding:3px 8px;
+  border-radius:6px;
+  border:1px solid rgba(232,145,58,0.3);
+}
+.hdr-actions{
+  display:flex;
+  gap:8px;
+}
+.hdr-btn{
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--bd);
+  color:var(--tx);
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration:none;
+}
+.hdr-btn:hover{border-color:var(--p);}
+
+/* ── CONTAINER ── */
+.main-wrap{
+  max-width:600px;
+  margin:0 auto;
+  padding:20px 16px;
+}
+
+/* ── TABS ── */
+.garzon-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:20px;
+}
+.g-tab{
+  flex:1;
+  padding:12px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--bd);
+  color:var(--tm);
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  text-align:center;
+  transition:all .2s;
+}
+.g-tab.active{
+  background:rgba(232,145,58,0.15);
+  border-color:var(--p);
+  color:var(--p);
+}
+
+/* ── SCANNER CARD ── */
+.scanner-card{
+  background:var(--bg-card);
+  border:2px solid var(--bd);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+.scanner-title{
+  font-size:15px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:6px;
+}
+.scanner-desc{
+  font-size:12px;
+  color:var(--tm);
+  margin-bottom:16px;
+}
+#qrReader{
+  width:100%;
+  border-radius:14px;
+  overflow:hidden;
+  border:2px dashed rgba(232,145,58,0.4);
+  background:#000;
+  margin-bottom:16px;
+}
+.scanner-btn{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  border:none;
+  transition:all .2s;
+}
+.scanner-btn.start{
+  background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;
+  box-shadow:0 4px 15px rgba(232,145,58,0.3);
+}
+.scanner-btn.stop{
+  background:rgba(244,67,54,0.15);
+  border:1px solid rgba(244,67,54,0.3);
+  color:#ff6b6b;
+}
+
+/* ── RESULTADO DE COMANDA ESCANEADA ── */
+.comanda-card{
+  display:none;
+  background:var(--bg-card);
+  border:2px solid var(--p);
+  border-radius:20px;
+  padding:24px 20px;
+  margin-bottom:20px;
+  box-shadow:0 15px 40px rgba(232,145,58,0.25);
+  animation:popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.comanda-card.show{display:block;}
+
+@keyframes popIn{
+  0%{transform:scale(0.95);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+.comanda-hdr{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--bd);
+  padding-bottom:14px;
+  margin-bottom:16px;
+}
+.comanda-mesa{
+  font-size:20px;
+  font-weight:800;
+  color:var(--p);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.comanda-time{
+  font-size:11px;
+  color:var(--tm);
+}
+.comanda-items{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:18px;
+}
+.ci-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 12px;
+  background:rgba(255,255,255,0.03);
+  border-radius:10px;
+  font-size:14px;
+}
+.ci-cant{
+  display:inline-block;
+  background:var(--p);
+  color:#000;
+  font-weight:800;
+  font-size:12px;
+  padding:2px 7px;
+  border-radius:6px;
+  margin-right:8px;
+}
+.ci-price{
+  font-weight:700;
+  color:var(--tx);
+}
+.comanda-nota{
+  background:rgba(232,145,58,0.08);
+  border-left:3px solid var(--p);
+  padding:10px 14px;
+  border-radius:6px;
+  font-size:13px;
+  color:#f0f0f0;
+  margin-bottom:18px;
+}
+.comanda-total-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+  border-top:1px dashed var(--bd);
+  padding-top:14px;
+  margin-bottom:20px;
+}
+.comanda-total-row span:last-child{
+  color:var(--p);
+  font-size:22px;
+}
+
+.comanda-actions{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.btn-action{
+  padding:14px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all .2s;
+}
+.btn-action.confirm{
+  background:linear-gradient(135deg,#4CAF50,#2E7D32);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(76,175,80,0.3);
+}
+.btn-action.wsp{
+  background:#25D366;
+  color:#000;
+  font-weight:800;
+}
+.btn-action.next{
+  background:rgba(255,255,255,0.08);
+  color:var(--tx);
+}
+
+/* ── HISTORIAL DE COMANDAS ── */
+.historial-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.hist-item{
+  background:var(--bg-card);
+  border:1px solid var(--bd);
+  border-radius:14px;
+  padding:16px;
+}
+.hist-hdr{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+.hist-mesa{
+  font-weight:800;
+  color:var(--p);
+  font-size:15px;
+}
+.hist-badge{
+  font-size:10px;
+  font-weight:800;
+  padding:3px 8px;
+  border-radius:6px;
+  text-transform:uppercase;
+}
+.hist-badge.recibido{background:rgba(255,152,0,0.15);color:var(--warn);}
+.hist-badge.en_cocina{background:rgba(78,205,196,0.15);color:var(--a);}
+.hist-badge.entregado{background:rgba(76,175,80,0.15);color:var(--ok);}
+.hist-total{
+  font-size:13px;
+  font-weight:700;
+  color:#fff;
+  margin-top:6px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(30px);
+  padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;
+  pointer-events:none;transition:all .3s;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.8);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{background:#4CAF50;color:#fff;}
+.toast.err{background:#f44336;color:#fff;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">
+    🌹 La Comadre Lola <span class="hdr-badge">GARZÓN</span>
+  </div>
+  <div class="hdr-actions">
+    <a href="/" class="hdr-btn">Ver Carta</a>
+    <a href="/admin" class="hdr-btn">Admin</a>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+  <div class="garzon-tabs">
+    <button class="g-tab active" id="tabScanner" onclick="switchGarzonTab('scanner')">📷 Escáner QR</button>
+    <button class="g-tab" id="tabHistorial" onclick="switchGarzonTab('historial')">📋 Comandas Activas</button>
+  </div>
+
+  <!-- PANEL SCANNER -->
+  <div id="panelScanner">
+    <div class="scanner-card">
+      <div class="scanner-title">Escaneo de Comanda Express</div>
+      <div class="scanner-desc">Apunta la cámara al código QR que te muestra el cliente en su teléfono</div>
+      
+      <div id="qrReader"></div>
+
+      <button class="scanner-btn start" id="btnToggleCam" onclick="toggleCamera()">
+        📷 Iniciar Cámara
+      </button>
+
+      <!-- Entrada de prueba manual por si no hay cámara -->
+      <div style="margin-top:16px; text-align:center;">
+        <button style="background:transparent;border:none;color:var(--tm);font-size:11px;cursor:pointer;text-decoration:underline;" onclick="testOrderMock()">
+          Simular escaneo de prueba (Mesa 4)
+        </button>
+      </div>
+    </div>
+
+    <!-- TARJETA DE COMANDA ESCANEADA -->
+    <div class="comanda-card" id="comandaCard">
+      <div class="comanda-hdr">
+        <div class="comanda-mesa" id="cMesa">📍 MESA 1</div>
+        <div class="comanda-time" id="cTime">12:30 hrs</div>
+      </div>
+
+      <div class="comanda-items" id="cItemsList">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <div id="cNotaBox" class="comanda-nota" style="display:none;"></div>
+
+      <div class="comanda-total-row">
+        <span>TOTAL COMANDA:</span>
+        <span id="cTotal">$0 CLP</span>
+      </div>
+
+      <div class="comanda-actions">
+        <button class="btn-action confirm" id="btnConfirmOrder" onclick="confirmCurrentOrder()">
+          ✅ Confirmar e Ingresar a Cocina/Barra
+        </button>
+        <button class="btn-action wsp" onclick="shareOrderWhatsApp()">
+          💬 Enviar Comanda a WhatsApp de Cocina
+        </button>
+        <button class="btn-action next" onclick="resetScanner()">
+          🔄 Escanear Siguiente Mesa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL HISTORIAL -->
+  <div id="panelHistorial" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <h3 style="font-size:15px;font-weight:700;">Comandas del Turno</h3>
+      <button class="hdr-btn" onclick="loadHistorial()">🔄 Actualizar</button>
+    </div>
+    <div class="historial-list" id="historialList">
+      <div style="text-align:center;padding:40px 20px;color:var(--tm);">Cargando comandas...</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ── HTML5 QR CODE SCANNER LIBRARY ── -->
+<script src="js/html5-qrcode.min.js"></script>
+
+<script>
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? window.location.origin
+  : 'https://lacomadrelola-api.onrender.com';
+
+let _html5QrCode = null;
+let _isScanning = false;
+let _currentScannedPayload = null;
+let _localOrdersHistory = [];
+
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function formatCLP(val) {
+  return '$' + Number(val).toLocaleString('es-CL');
+}
+
+/* ── CAMBIO DE TABS ── */
+function switchGarzonTab(tab) {
+  document.getElementById('tabScanner').classList.toggle('active', tab === 'scanner');
+  document.getElementById('tabHistorial').classList.toggle('active', tab === 'historial');
+  document.getElementById('panelScanner').style.display = tab === 'scanner' ? 'block' : 'none';
+  document.getElementById('panelHistorial').style.display = tab === 'historial' ? 'block' : 'none';
+  if (tab === 'historial') loadHistorial();
+}
+
+/* ── CÁMARA QR SCANNER ── */
+async function toggleCamera() {
+  const btn = document.getElementById('btnToggleCam');
+  if (_isScanning) {
+    await stopCamera();
+    btn.textContent = '📷 Iniciar Cámara';
+    btn.className = 'scanner-btn start';
+  } else {
+    try {
+      if (!_html5QrCode) {
+        _html5QrCode = new Html5Qrcode("qrReader");
+      }
+      btn.textContent = '⏹ Detener Cámara';
+      btn.className = 'scanner-btn stop';
+      _isScanning = true;
+
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+      await _html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        (decodedText) => onScanSuccess(decodedText),
+        () => {}
+      );
+    } catch(err) {
+      console.error(err);
+      toast('No se pudo acceder a la cámara. Revisa los permisos.', 'err');
+      btn.textContent = '📷 Iniciar Cámara';
+      btn.className = 'scanner-btn start';
+      _isScanning = false;
+    }
+  }
+}
+
+async function stopCamera() {
+  if (_html5QrCode && _isScanning) {
+    try {
+      await _html5QrCode.stop();
+    } catch(e) {}
+    _isScanning = false;
+  }
+}
+
+/* ── AL DETECTAR QR ── */
+function onScanSuccess(decodedText) {
+  try {
+    const data = JSON.parse(decodedText);
+    if (!data || data.app !== 'comadre_lola' || !data.items) {
+      toast('Código QR no corresponde a una comanda de Comadre Lola', 'err');
+      return;
+    }
+
+    // Feedback sonoro háptico
+    if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+
+    _currentScannedPayload = data;
+    displayComandaCard(data);
+    toast('¡Comanda escaneada con éxito!');
+  } catch(e) {
+    toast('Formato de código QR inválido', 'err');
+  }
+}
+
+function displayComandaCard(data) {
+  document.getElementById('cMesa').textContent = `📍 ${data.mesa.toUpperCase()}`;
+  document.getElementById('cTime').textContent = new Date(data.ts || Date.now()).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+  
+  const count = (data.items || []).reduce((s, i) => s + (i.c || i.cant || 1), 0);
+
+  const itemsHtml = (data.items || []).map(i => `
+    <div class="ci-row">
+      <div>
+        <span class="ci-cant">${i.c || i.cant || 1}x</span>
+        <span style="font-weight:700;">${i.n || i.nombre}</span>
+      </div>
+      <span style="font-size:11px;color:var(--a);font-weight:700;">Cocina / Barra</span>
+    </div>
+  `).join('');
+  document.getElementById('cItemsList').innerHTML = itemsHtml;
+
+  const notaBox = document.getElementById('cNotaBox');
+  if (data.nota) {
+    notaBox.textContent = `📝 Nota: "${data.nota}"`;
+    notaBox.style.display = 'block';
+  } else {
+    notaBox.style.display = 'none';
+  }
+
+  const totalRow = document.querySelector('.comanda-total-row');
+  if (totalRow) {
+    totalRow.innerHTML = `<span>TOTAL PRODUCTOS:</span><span id="cTotal" style="color:var(--p);font-size:16px;">${count} ${count===1?'item':'items'}</span>`;
+  }
+
+  document.getElementById('comandaCard').classList.add('show');
+  document.getElementById('btnConfirmOrder').disabled = false;
+  document.getElementById('btnConfirmOrder').textContent = '✅ Confirmar e Ingresar a Cocina/Barra';
+}
+
+function resetScanner() {
+  document.getElementById('comandaCard').classList.remove('show');
+  _currentScannedPayload = null;
+}
+
+/* ── CONFIRMAR PEDIDO EN EL SERVIDOR ── */
+async function confirmCurrentOrder() {
+  if (!_currentScannedPayload) return;
+  const btn = document.getElementById('btnConfirmOrder');
+  btn.disabled = true;
+  btn.textContent = 'Registrando comanda...';
+
+  const orderData = {
+    mesa: _currentScannedPayload.mesa,
+    cliente: 'Cliente Mesa',
+    items: _currentScannedPayload.items.map(i => ({
+      id: i.id,
+      nombre: i.n || i.nombre,
+      cant: i.c || i.cant || 1,
+      precio: i.p || i.precio || 0
+    })),
+    total: _currentScannedPayload.total || 0,
+    nota: _currentScannedPayload.nota || '',
+    garzon: 'Garzón App'
+  };
+
+  try {
+    const res = await fetch(API + '/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    });
+    const result = await res.json();
+    if (result.ok) {
+      toast(`✅ Comanda registrada con ID #${result.id}`);
+      btn.textContent = '✅ Comanda Enviada a Cocina/Barra';
+      btn.style.background = '#4CAF50';
+      
+      // Guardar en historial local
+      orderData.id = result.id;
+      orderData.createdAt = new Date().toISOString();
+      orderData.estado = 'recibido';
+      _localOrdersHistory.unshift(orderData);
+    } else {
+      throw new Error(result.error || 'Error al guardar');
+    }
+  } catch(err) {
+    console.error(err);
+    toast('No se pudo conectar con el servidor, comanda guardada localmente', 'err');
+    btn.textContent = 'Guardado Local';
+    orderData.id = 'LOCAL-' + Date.now();
+    orderData.createdAt = new Date().toISOString();
+    orderData.estado = 'recibido';
+    _localOrdersHistory.unshift(orderData);
+  }
+}
+
+/* ── COMPARTIR A WHATSAPP COCINA/BARRA ── */
+function shareOrderWhatsApp() {
+  if (!_currentScannedPayload) return;
+  const data = _currentScannedPayload;
+  let text = `🌹 *COMANDA LA COMADRE LOLA* 🌹\n`;
+  text += `📍 *${data.mesa.toUpperCase()}*\n`;
+  text += `⏰ *Hora:* ${new Date(data.ts || Date.now()).toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'})} hrs\n`;
+  text += `────────────────────\n`;
+  (data.items || []).forEach(i => {
+    text += `▪️ *${i.c || i.cant || 1}x* ${i.n || i.nombre}\n`;
+  });
+  text += `────────────────────\n`;
+  if (data.nota) {
+    text += `📝 *Nota especial:* _"${data.nota}"_\n`;
+    text += `────────────────────\n`;
+  }
+  text += `🚀 *Despachar a cocina / barra*`;
+
+  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+}
+
+/* ── MOCK DE PRUEBA ── */
+function testOrderMock() {
+  const mock = {
+    app: 'comadre_lola',
+    type: 'pedido',
+    mesa: 'Mesa 4',
+    ts: Date.now(),
+    items: [
+      { id: 't1', n: 'Terremoto La Comadre', c: 2, p: 5500 },
+      { id: 'tb1', n: 'Tabla La Comadre (Para 3-4)', c: 1, p: 16900 }
+    ],
+    total: 27900,
+    nota: 'Carne bien cocida, sin hielo en el pisco'
+  };
+  onScanSuccess(JSON.stringify(mock));
+}
+
+/* ── CARGAR HISTORIAL ── */
+async function loadHistorial() {
+  const list = document.getElementById('historialList');
+  list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--tm);">Cargando...</div>';
+
+  let orders = [];
+  try {
+    const res = await fetch(API + '/api/admin/orders?limit=20', {
+      headers: {
+        'Authorization': 'Bearer ' + (localStorage.getItem('lola_token') || '')
+      }
+    });
+    const result = await res.json();
+    if (result.ok && result.data) {
+      orders = result.data;
+    }
+  } catch(e) {}
+
+  if (!orders.length) {
+    orders = _localOrdersHistory;
+  }
+
+  if (!orders.length) {
+    list.innerHTML = `
+      <div style="text-align:center;padding:40px 20px;color:var(--tm);">
+        <div style="font-size:36px;margin-bottom:8px;">📋</div>
+        <p>Aún no hay comandas registradas en este turno.</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = orders.map(o => `
+    <div class="hist-item">
+      <div class="hist-hdr">
+        <span class="hist-mesa">📍 ${o.mesa || 'Mesa'}</span>
+        <span class="hist-badge ${o.estado || 'recibido'}">${o.estado || 'recibido'}</span>
+      </div>
+      <div style="font-size:12px;color:var(--tm);margin-bottom:6px;">
+        ${new Date(o.createdAt || Date.now()).toLocaleTimeString('es-CL')} · ${(o.items || []).length} items
+      </div>
+      <div class="hist-total">Total: ${formatCLP(o.total || 0)} CLP</div>
+      ${o.nota ? `<div style="font-size:12px;color:var(--p);margin-top:4px;">Nota: "${o.nota}"</div>` : ''}
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

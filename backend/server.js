@@ -89,29 +89,86 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-pool.connect()
-  .then(client => {
+async function initDB() {
+  try {
+    const client = await pool.connect();
     console.log('✅ PostgreSQL (Neon) conectado');
-    client.release();
-  })
-  .catch(err => console.error('❌ PostgreSQL error:', err.message));
 
-/* ── MAILER ── */
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS reservations (
+        id SERIAL PRIMARY KEY,
+        nombre VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        telefono VARCHAR(50),
+        fecha VARCHAR(50) NOT NULL,
+        hora VARCHAR(20) NOT NULL,
+        personas INTEGER NOT NULL,
+        mensaje TEXT,
+        estado VARCHAR(20) DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'confirmada', 'cancelada')),
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS newsletter (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS site_content (
+        id SERIAL PRIMARY KEY,
+        key VARCHAR(100) NOT NULL UNIQUE,
+        data JSONB NOT NULL DEFAULT '{}',
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS orders (
+        id SERIAL PRIMARY KEY,
+        mesa VARCHAR(50) NOT NULL,
+        cliente VARCHAR(255),
+        items JSONB NOT NULL DEFAULT '[]',
+        total INTEGER NOT NULL DEFAULT 0,
+        nota TEXT,
+        estado VARCHAR(30) DEFAULT 'recibido',
+        garzon VARCHAR(100),
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
+    console.log('✅ Tablas verificadas e inicializadas en PostgreSQL');
+    client.release();
+  } catch (err) {
+    console.error('❌ PostgreSQL init error:', err.message);
+  }
+}
+initDB();
+
+/* ── MAILER (Soporte Gmail para 3+ correos receptores) ── */
 let transporter = null;
 if (process.env.EMAIL_USER && !process.env.EMAIL_USER.startsWith('PENDIENTE')) {
   transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
   });
-  console.log('📧 Mailer:', process.env.EMAIL_USER);
+  console.log('📧 Mailer Gmail activo:', process.env.EMAIL_USER);
 } else {
-  console.log('⚠️  Email no configurado');
+  console.log('⚠️  Email no configurado (falta EMAIL_USER / EMAIL_PASS)');
+}
+
+function getAdminEmails() {
+  const raw = process.env.ADMIN_EMAIL || process.env.EMAIL_USER || '';
+  const emails = raw.split(',').map(e => e.trim()).filter(Boolean);
+  return emails.length ? emails : (process.env.EMAIL_USER ? [process.env.EMAIL_USER] : []);
 }
 
 async function sendMail(opts) {
-  if (!transporter) return;
-  try { await transporter.sendMail(opts); }
-  catch (err) { console.error('Email error:', err.message); }
+  if (!transporter) return false;
+  try {
+    const info = await transporter.sendMail(opts);
+    console.log('📧 Correo enviado con éxito:', opts.subject, '->', opts.to);
+    return { ok: true, messageId: info.messageId };
+  } catch (err) {
+    console.error('❌ Email error:', err.message);
+    return { ok: false, error: err.message };
+  }
 }
 
 /* ── AUTH MIDDLEWARE ── */
@@ -133,6 +190,8 @@ function requireAuth(req, res, next) {
 app.get('/login',  (_req, res) => res.sendFile('login.html',      { root: staticDir }));
 app.get('/admin',  (_req, res) => res.sendFile('admin.html',      { root: staticDir }));
 app.get('/editor', (_req, res) => res.sendFile('editor_cms.html', { root: staticDir }));
+app.get('/garzon', (_req, res) => res.sendFile('garzon.html',     { root: staticDir }));
+app.get('/carta',  (_req, res) => res.sendFile('carta.html',      { root: staticDir }));
 
 /* ══════════════════════════════════════════
    API AUTH
@@ -163,16 +222,20 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
 /* GET /api/admin/stats */
 app.get('/api/admin/stats', requireAuth, async (_req, res) => {
   try {
-    const [totalRes, pendRes, nlRes] = await Promise.all([
+    const [totalRes, pendRes, nlRes, totalOrd, pendOrd] = await Promise.all([
       pool.query('SELECT COUNT(*) FROM reservations'),
       pool.query("SELECT COUNT(*) FROM reservations WHERE estado = 'pendiente'"),
       pool.query('SELECT COUNT(*) FROM newsletter'),
+      pool.query('SELECT COUNT(*) FROM orders'),
+      pool.query("SELECT COUNT(*) FROM orders WHERE estado = 'recibido' OR estado = 'en_cocina'"),
     ]);
     res.json({
       ok: true,
       totalReservas: parseInt(totalRes.rows[0].count),
       pendientes: parseInt(pendRes.rows[0].count),
       newsletter: parseInt(nlRes.rows[0].count),
+      totalOrders: parseInt(totalOrd.rows[0].count),
+      ordersPendientes: parseInt(pendOrd.rows[0].count),
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -196,7 +259,6 @@ app.get('/api/admin/reservations', requireAuth, async (req, res) => {
 
     const total = parseInt(countRes.rows[0].count);
 
-    // Mapear campos para compatibilidad con frontend (id → _id, created_at → createdAt)
     const data = docsRes.rows.map(row => ({
       _id: row.id,
       nombre: row.nombre,
@@ -257,6 +319,125 @@ app.delete('/api/admin/reservations/:id', requireAuth, async (req, res) => {
   }
 });
 
+/* ══════════════════════════════════════════
+   API PEDIDOS / COMANDAS ADMIN
+══════════════════════════════════════════ */
+
+/* GET /api/admin/orders */
+app.get('/api/admin/orders', requireAuth, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit || '50');
+    const estado = req.query.estado;
+    let query = 'SELECT * FROM orders';
+    const params = [];
+    if (estado && estado !== 'todos') {
+      query += ' WHERE estado = $1';
+      params.push(estado);
+      query += ' ORDER BY created_at DESC LIMIT $' + (params.length + 1);
+      params.push(limit);
+    } else {
+      query += ' ORDER BY created_at DESC LIMIT $1';
+      params.push(limit);
+    }
+
+    const result = await pool.query(query, params);
+    const data = result.rows.map(row => ({
+      _id: row.id,
+      mesa: row.mesa,
+      cliente: row.cliente,
+      items: typeof row.items === 'string' ? JSON.parse(row.items) : row.items,
+      total: row.total,
+      nota: row.nota,
+      estado: row.estado,
+      garzon: row.garzon,
+      createdAt: row.created_at,
+    }));
+    res.json({ ok: true, data });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* PATCH /api/admin/orders/:id */
+app.patch('/api/admin/orders/:id', requireAuth, async (req, res) => {
+  try {
+    const { estado } = req.body;
+    const result = await pool.query(
+      'UPDATE orders SET estado = $1 WHERE id = $2 RETURNING *',
+      [estado, req.params.id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ ok: false, error: 'Pedido no encontrado' });
+    }
+    const row = result.rows[0];
+    res.json({
+      ok: true,
+      data: {
+        _id: row.id,
+        mesa: row.mesa,
+        cliente: row.cliente,
+        items: typeof row.items === 'string' ? JSON.parse(row.items) : row.items,
+        total: row.total,
+        nota: row.nota,
+        estado: row.estado,
+        garzon: row.garzon,
+        createdAt: row.created_at,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* DELETE /api/admin/orders/:id */
+app.delete('/api/admin/orders/:id', requireAuth, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM orders WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+/* POST /api/admin/test-email */
+app.post('/api/admin/test-email', requireAuth, async (_req, res) => {
+  try {
+    const adminEmails = getAdminEmails();
+    if (!adminEmails.length) {
+      return res.status(400).json({ ok: false, error: 'No hay correos administradores configurados (ADMIN_EMAIL o EMAIL_USER vacío).' });
+    }
+    if (!transporter) {
+      return res.status(400).json({ ok: false, error: 'Servicio de email no configurado. Verifica EMAIL_USER y EMAIL_PASS.' });
+    }
+
+    const testDestinations = adminEmails.join(', ');
+    const result = await sendMail({
+      from: `"La Comadre Lola" <${process.env.EMAIL_USER}>`,
+      to: testDestinations,
+      subject: '🌹 Prueba de Correo Exitosa — La Comadre Lola',
+      html: `
+        <div style="font-family: Arial, sans-serif; background:#0d0d12; color:#f0f0f0; padding:24px; border-radius:12px; border:1px solid #E8913A;">
+          <h2 style="color:#E8913A; margin-top:0;">🌹 ¡Prueba de Configuración Gmail Exitosa!</h2>
+          <p>Este es un correo de prueba enviado desde el servidor de <b>La Comadre Lola</b>.</p>
+          <hr style="border-color:#333; margin:16px 0;">
+          <p><b>Remitente (EMAIL_USER):</b> ${process.env.EMAIL_USER}</p>
+          <p><b>Destinatarios Administradores:</b> ${testDestinations}</p>
+          <p><b>Fecha y hora:</b> ${new Date().toLocaleString('es-CL')}</p>
+          <p style="color:#4ECDC4;">✅ Tu servidor está listo para recibir reservas y avisos en todos tus correos Gmail configurados.</p>
+        </div>
+      `,
+    });
+
+    if (result && result.ok) {
+      res.json({ ok: true, message: `Correo de prueba enviado correctamente a: ${testDestinations}` });
+    } else {
+      res.status(500).json({ ok: false, error: result ? result.error : 'Error al enviar correo' });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 /* GET /api/admin/newsletter */
 app.get('/api/admin/newsletter', requireAuth, async (_req, res) => {
   try {
@@ -281,7 +462,6 @@ app.post('/api/admin/upload-image', requireAuth, uploadLimiter, async (req, res)
         return res.status(400).json({ ok: false, error: 'Imagen en formato base64 requerida (desarrollo local)' });
       }
 
-      // Convertir base64 a archivo local
       const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
       if (!matches || matches.length !== 3) {
         return res.status(400).json({ ok: false, error: 'Formato de base64 inválido' });
@@ -420,29 +600,86 @@ app.post('/api/reservations', async (req, res) => {
       [nombre, email, telefono, fecha, hora, personas, mensaje]
     );
 
-    await sendMail({
-      from: process.env.EMAIL_USER,
-      to:   process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
-      subject: `🌹 Nueva reserva — ${nombre}`,
-      html: `<h2>Nueva reserva</h2>
-        <p><b>Nombre:</b> ${nombre}<br><b>Email:</b> ${email}<br>
-        <b>Telefono:</b> ${telefono || '-'}<br><b>Fecha:</b> ${fecha} ${hora}<br>
-        <b>Personas:</b> ${personas}<br><b>Mensaje:</b> ${mensaje || '-'}</p>`,
-    });
+    const adminRecipients = getAdminEmails();
+    if (adminRecipients.length > 0) {
+      await sendMail({
+        from: `"La Comadre Lola Reservas" <${process.env.EMAIL_USER}>`,
+        to: adminRecipients.join(', '),
+        subject: `🌹 Nueva reserva de ${nombre} (${personas} pers) — La Comadre Lola`,
+        html: `
+          <div style="font-family: Arial, sans-serif; background:#0d0d12; color:#f0f0f0; padding:24px; border-radius:12px; border:1px solid #E8913A;">
+            <h2 style="color:#E8913A; margin-top:0;">🌹 Nueva Reserva Recibida</h2>
+            <p><b>Nombre:</b> ${nombre}</p>
+            <p><b>Email:</b> <a href="mailto:${email}" style="color:#4ECDC4;">${email}</a></p>
+            <p><b>Teléfono:</b> ${telefono || 'No indicado'}</p>
+            <p><b>Fecha y Hora:</b> ${fecha} a las ${hora} hrs</p>
+            <p><b>Personas:</b> ${personas} comensales</p>
+            <p><b>Mensaje / Solicitud:</b> ${mensaje || 'Sin mensaje'}</p>
+            <hr style="border-color:#333; margin:16px 0;">
+            <p style="font-size:12px; color:#8a8aa0;">Gestiona esta reserva desde el <a href="${process.env.FRONTEND_URL || ''}/admin" style="color:#E8913A;">Panel Admin</a>.</p>
+          </div>
+        `,
+      });
+    }
 
+    // Confirmación al cliente
     await sendMail({
-      from:    process.env.EMAIL_USER,
-      to:      email,
-      subject: '🌹 Reserva confirmada — La Comadre Lola',
-      html: `<h2>Tu reserva esta lista, ${nombre}!</h2>
-        <p>Nos vemos el <b>${fecha} a las ${hora}</b> con <b>${personas} persona(s)</b>.</p>
-        <p>📍 Manuel Antonio Matta 1269, Quilicura</p>`,
+      from: `"La Comadre Lola" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: '🌹 Reserva Recibida — La Comadre Lola (Quilicura)',
+      html: `
+        <div style="font-family: Arial, sans-serif; background:#0d0d12; color:#f0f0f0; padding:24px; border-radius:12px; border:1px solid #E8913A;">
+          <h2 style="color:#E8913A; margin-top:0;">¡Tu reserva está registrada, ${nombre}! 🌹</h2>
+          <p>Hemos recibido tu solicitud para el <b>${fecha} a las ${hora} hrs</b> para <b>${personas} persona(s)</b>.</p>
+          <p>Te esperamos para disfrutar la mejor gastronomía, coctelería y el mejor carrete de Quilicura.</p>
+          <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:8px; margin:16px 0;">
+            <p style="margin:0 0 6px 0;">📍 <b>Dirección:</b> Manuel Antonio Matta 1269, Quilicura</p>
+            <p style="margin:0 0 6px 0;">Ⓜ️ A pasos del Metro Lo Cruzat (Línea 3)</p>
+            <p style="margin:0;">🚗 Estacionamiento externo (#1351)</p>
+          </div>
+          <p style="font-size:12px; color:#8a8aa0;">Si necesitas modificar o cancelar tu reserva, escríbenos a nuestro Instagram <a href="https://instagram.com/lacomadrelola__" style="color:#D4547B;">@lacomadrelola__</a>.</p>
+        </div>
+      `,
     });
 
     res.json({ ok: true, id: result.rows[0].id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: 'Error interno' });
+  }
+});
+
+/* POST /api/orders — Registrar pedido de comanda (desde garzón o cliente) */
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { mesa, cliente, items, total, nota, garzon } = req.body;
+    if (!mesa || !items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ ok: false, error: 'Faltan datos de la mesa o items del pedido' });
+    }
+
+    const totalCalculado = parseInt(total) || items.reduce((acc, it) => acc + ((it.precio || 0) * (it.cant || 1)), 0);
+
+    const result = await pool.query(
+      `INSERT INTO orders (mesa, cliente, items, total, nota, estado, garzon)
+       VALUES ($1, $2, $3, $4, $5, 'recibido', $6)
+       RETURNING id, created_at`,
+      [mesa, cliente || 'Cliente', JSON.stringify(items), totalCalculado, nota || '', garzon || 'Garzón Express']
+    );
+
+    const orderId = result.rows[0].id;
+    console.log(`🛎️ Nueva comanda recibida — ID #${orderId}, Mesa ${mesa}, Total: $${totalCalculado}`);
+
+    res.json({
+      ok: true,
+      id: orderId,
+      mesa,
+      total: totalCalculado,
+      createdAt: result.rows[0].created_at,
+      message: 'Comanda registrada con éxito',
+    });
+  } catch (err) {
+    console.error('Error al registrar pedido:', err);
+    res.status(500).json({ ok: false, error: 'Error interno al guardar pedido' });
   }
 });
 
@@ -455,7 +692,7 @@ app.post('/api/newsletter', async (req, res) => {
       'INSERT INTO newsletter (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
       [email]
     );
-    res.json({ ok: true });
+    res.json({ ok: true, msg: '¡Te has suscrito con éxito!' });
   } catch (err) {
     res.status(500).json({ ok: false, error: 'Error interno' });
   }
@@ -463,6 +700,6 @@ app.post('/api/newsletter', async (req, res) => {
 
 /* ── START ── */
 app.listen(PORT, () => {
-  console.log(`🚀 http://localhost:${PORT}`);
-  console.log(`   /login  /admin  /editor`);
+  console.log(`🚀 Servidor La Comadre Lola en http://localhost:${PORT}`);
+  console.log(`   / (Sitio)  /login  /admin  /editor  /garzon`);
 });
