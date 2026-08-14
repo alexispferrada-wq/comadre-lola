@@ -36,6 +36,7 @@ const criticalFiles = [
   'admin.html',
   'editor_cms.html',
   'login.html',
+  'guia.html',
   'favicon.svg',
   'CNAME',
   'js/api.js',
@@ -102,7 +103,7 @@ function testHtmlReferences(filename) {
   }
 }
 
-['index.html', 'carta.html', 'garzon.html', 'admin.html', 'editor_cms.html', 'login.html'].forEach(f => {
+['index.html', 'carta.html', 'garzon.html', 'admin.html', 'editor_cms.html', 'login.html', 'guia.html'].forEach(f => {
   testHtmlReferences(f);
 });
 

@@ -192,6 +192,8 @@ app.get('/admin',  (_req, res) => res.sendFile('admin.html',      { root: static
 app.get('/editor', (_req, res) => res.sendFile('editor_cms.html', { root: staticDir }));
 app.get('/garzon', (_req, res) => res.sendFile('garzon.html',     { root: staticDir }));
 app.get('/carta',  (_req, res) => res.sendFile('carta.html',      { root: staticDir }));
+app.get('/guia',   (_req, res) => res.sendFile('guia.html',       { root: staticDir }));
+app.get('/manual', (_req, res) => res.sendFile('guia.html',       { root: staticDir }));
 
 /* ══════════════════════════════════════════
    API AUTH
