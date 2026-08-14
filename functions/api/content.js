@@ -7,12 +7,12 @@ export async function onRequestGet(context) {
       if (row && row.data) {
         const parsed = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
         return new Response(JSON.stringify({ ok: true, data: parsed }), {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         });
       }
     }
     return new Response(JSON.stringify({ ok: true, data: {} }), {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
   } catch (err) {
     return new Response(JSON.stringify({ ok: false, error: err.message }), {
@@ -23,19 +23,30 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+  return handleSaveContent(context);
+}
+
+export async function onRequestPut(context) {
+  return handleSaveContent(context);
+}
+
+async function handleSaveContent(context) {
   const { request, env } = context;
   try {
     const body = await request.json();
+    const dataToSave = body.data || body;
+
     if (env.DB) {
       await env.DB.prepare(
         `INSERT INTO cms_content (key, data, updated_at)
          VALUES ('site_content', ?, CURRENT_TIMESTAMP)
          ON CONFLICT(key) DO UPDATE SET data = excluded.data, updated_at = CURRENT_TIMESTAMP`
       )
-      .bind(JSON.stringify(body))
+      .bind(JSON.stringify(dataToSave))
       .run();
     }
-    return new Response(JSON.stringify({ ok: true, message: 'Contenido guardado con éxito' }), {
+
+    return new Response(JSON.stringify({ ok: true, message: 'Contenido guardado y publicado con éxito' }), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {

@@ -1,5 +1,13 @@
 // functions/api/admin/content.js — Cloudflare Pages Function
 export async function onRequestPut(context) {
+  return handleSaveAdminContent(context);
+}
+
+export async function onRequestPost(context) {
+  return handleSaveAdminContent(context);
+}
+
+async function handleSaveAdminContent(context) {
   const { request, env } = context;
   try {
     const body = await request.json();
