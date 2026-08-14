@@ -1572,26 +1572,22 @@ footer{
 <nav class="nav" id="nav">
   <div class="nav-logo" onclick="scrollTo(0,0)">🌹 La Comadre Lola</div>
   <div class="nav-links">
-    <a class="nav-link" href="/carta">🍽️ Carta Digital</a>
     <a class="nav-link" onclick="scrollToId('eventos')">Eventos</a>
     <a class="nav-link" onclick="scrollToId('momentos')">Galería</a>
     <a class="nav-link" onclick="scrollToId('reservas')">Reservas</a>
     <a class="nav-link" onclick="scrollToId('footer')">Contacto</a>
-    <button class="nav-cta" onclick="location.href='/carta'" style="background:rgba(232,145,58,0.15);border:1px solid var(--p);color:var(--p);"><span id="navCartCount">⚡ Mi Pedido (0)</span></button>
-    <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar</button>
+    <button class="nav-cta" onclick="scrollToId('reservas')">🎉 Reservar Mesa</button>
   </div>
-  <div class="nav-burger" id="burger" onclick="toggleMenu()">
+  <div class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Abrir menú">
     <span></span><span></span><span></span>
   </div>
 </nav>
 <div class="nav-mobile" id="navMobile">
-  <a href="/carta">🍽️ Carta Digital</a>
-  <a href="/carta" style="color:var(--p)">⚡ Mi Pedido Express</a>
-  <a onclick="scrollToId('eventos');toggleMenu()">Eventos</a>
-  <a onclick="scrollToId('momentos');toggleMenu()">Galería</a>
-  <a onclick="scrollToId('reservas');toggleMenu()">Reservas</a>
-  <a onclick="scrollToId('footer');toggleMenu()">Contacto</a>
-  <a onclick="scrollToId('reservas');toggleMenu()" style="color:var(--s)">🎉 Reservar Mesa</a>
+  <a onclick="scrollToId('eventos');toggleMenu()">🎤 Cartelera de Eventos</a>
+  <a onclick="scrollToId('momentos');toggleMenu()">📸 Galería de Fotos</a>
+  <a onclick="scrollToId('reservas');toggleMenu()">📅 Reservar Mesa</a>
+  <a onclick="scrollToId('footer');toggleMenu()">📍 Ubicación y Contacto</a>
+  <a onclick="scrollToId('reservas');toggleMenu()" style="color:var(--s)">🎉 Reservar Mesa Ahora</a>
 </div>
 
 <!-- ── HERO ASIMÉTRICO ── -->
@@ -1606,9 +1602,9 @@ footer{
     </h1>
     <p class="hero-sub">Gastronomia · Shows en Vivo · El Mejor Carrete</p>
     <div class="hero-btns">
-      <button class="btn-main" id="heroBtn1" onclick="location.href='/carta'">⚡ PEDIDO EXPRESS / QR</button>
-      <button class="btn-sec" id="heroBtn2" onclick="location.href='/carta'">🍽️ Ver Carta</button>
-      <button class="btn-sec" id="heroBtn3" onclick="scrollToId('eventos')">🎤 Eventos</button>
+      <button class="btn-main" id="heroBtn1" onclick="scrollToId('reservas')">🎉 RESERVA TU MESA</button>
+      <button class="btn-sec" id="heroBtn2" onclick="scrollToId('eventos')">🎤 Ver Eventos</button>
+      <button class="btn-sec" id="heroBtn3" onclick="scrollToId('momentos')">📸 Galería</button>
     </div>
     <div class="hero-roses">🌹🌹🌹</div>
   </div>

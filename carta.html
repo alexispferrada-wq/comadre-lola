@@ -1,156 +1,190 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="font-normal theme-dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Digital & Pedido Express — La Comadre Lola</title>
-<meta name="description" content="Carta digital y pedidos express para La Comadre Lola. Coctelería de autor, tablas, platos tradicionales chilenos y schops.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Carta Digital — La Comadre Lola</title>
+<meta name="description" content="Carta digital accesible para clientes en mesa. Coctelería de autor, tablas criollas, cocina tradicional chilena y schops artesanales.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{
   font-family:'BudmoJiggler';
   src:url('assets/BudmoJiggler.TTF') format('truetype');
   font-weight:normal;font-style:normal;font-display:swap;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
 :root{
-  --p:#E8913A;
-  --s:#D4547B;
-  --a:#4ECDC4;
-  --bg:#09090d;
-  --bg-card:rgba(18, 18, 26, 0.98);
-  --tx:#fdfdfd;
-  --tm:#8a8aa0;
-  --bd:rgba(255,255,255,0.08);
-  --tr:.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --ft:'BudmoJiggler',cursive;
-  --fb:'Inter',sans-serif;
-  --bg-pattern:url('assets/fondo-adjunto.png');
+  /* Paleta de Alto Contraste WCAG AAA (>7:1 sobre fondo oscuro) */
+  --p:#FFA726;          /* Ámbar Luminoso de Alto Contraste */
+  --p-hover:#FFB74D;
+  --p-text:#000000;     /* Texto negro sobre ámbar = 14:1 */
+  --s:#FF4081;          /* Rosa saturado */
+  --a:#26E0D0;          /* Calipso brillante */
+  --bg:#0B0B12;         /* Fondo ultra oscuro */
+  --bg-card:#14141F;    /* Tarjetas oscuras sólidas */
+  --bg-elevated:#1D1D2C;
+  --tx:#FFFFFF;         /* Blanco puro para máxima legibilidad AAA */
+  --tm:#C4C4D8;         /* Gris claro de alto contraste (mínimo 7:1) */
+  --bd:rgba(255,255,255,0.18);
+  --bd-focus:#FFA726;
+  --ok:#4CAF50;
+  --danger:#FF5252;
+  
+  --ft:'Outfit', sans-serif;
+  --fb:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --flogo:'BudmoJiggler', cursive;
+
+  /* Escala tipográfica base */
+  --base-size: 16px;
+  --line-height: 1.6;
 }
 
-html{scroll-behavior:smooth;}
+/* Modos de accesibilidad de tamaño */
+html.font-normal { --base-size: 16px; }
+html.font-large  { --base-size: 19px; }
+html.font-xlarge { --base-size: 22px; }
+
+/* Modo Alto Contraste Extremo */
+html.contrast-max {
+  --bg:#000000;
+  --bg-card:#111111;
+  --bg-elevated:#222222;
+  --tx:#FFFFFF;
+  --tm:#E0E0E0;
+  --bd:#FFFFFF;
+  --p:#FFD54F;
+}
 
 body{
   font-family:var(--fb);
-  background: linear-gradient(rgba(9, 9, 13, 0.94), rgba(9, 9, 13, 0.94)), var(--bg-pattern), var(--bg);
-  background-size:auto,cover,auto;
-  background-position:center center;
-  background-attachment:fixed;
+  font-size:var(--base-size);
+  line-height:var(--line-height);
+  background:var(--bg);
   color:var(--tx);
   min-height:100vh;
-  padding-bottom:110px;
+  padding-bottom:130px;
+  overflow-x:hidden;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
 }
 
-/* ── TOPBAR ── */
+/* ── FOCO ACCESIBLE AAA (Para teclado / lectores de pantalla) ── */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+  outline:3px solid var(--p);
+  outline-offset:2px;
+}
+
+/* ── BARRA SUPERIOR ACCESIBLE ── */
 .topbar{
   position:sticky;
   top:0;
   z-index:1000;
-  height:66px;
-  background:rgba(12, 12, 18, 0.96);
-  border-bottom:2px solid var(--p);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+  min-height:70px;
+  background:rgba(11, 11, 18, 0.98);
+  border-bottom:3px solid var(--p);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 24px;
+  padding:10px 16px;
+  gap:12px;
 }
-.brand{
-  font-family:var(--ft);
-  font-size:20px;
-  color:var(--p);
+.brand-wrap{
+  display:flex;
+  flex-direction:column;
   text-decoration:none;
+}
+.brand-title{
+  font-family:var(--flogo);
+  font-size:clamp(1.1rem, 4vw, 1.4rem);
+  color:var(--p);
+  line-height:1.1;
+  letter-spacing:0.5px;
+}
+.brand-sub{
+  font-size:0.75rem;
+  font-weight:700;
+  color:var(--tm);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.top-controls{
   display:flex;
   align-items:center;
   gap:8px;
 }
-.brand span{
-  font-family:var(--fb);
-  font-size:11px;
-  font-weight:700;
-  background:rgba(232,145,58,0.15);
-  border:1px solid rgba(232,145,58,0.3);
-  color:var(--p);
-  padding:2px 8px;
-  border-radius:6px;
-  letter-spacing:1px;
-}
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.top-table-badge{
-  font-size:12px;
-  font-weight:700;
-  color:var(--a);
-  background:rgba(78,205,196,0.12);
-  border:1px solid rgba(78,205,196,0.25);
-  padding:6px 12px;
-  border-radius:20px;
-  cursor:pointer;
-}
-.top-btn-cart{
-  background:linear-gradient(135deg, var(--p), var(--s));
-  color:#fff;
-  border:none;
-  padding:8px 16px;
-  border-radius:20px;
-  font-size:12px;
+
+/* Botón accesible A- / A+ */
+.btn-a11y{
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  color:var(--tx);
+  min-height:44px;
+  padding:0 12px;
+  border-radius:10px;
+  font-size:0.85rem;
   font-weight:800;
   font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.btn-a11y:active{background:var(--p);color:#000;}
+
+/* Badge de Mesa Actual */
+.mesa-pill{
+  background:var(--p);
+  color:var(--p-text);
+  border:none;
+  min-height:44px;
+  padding:0 14px;
+  border-radius:12px;
+  font-size:0.9rem;
+  font-weight:800;
   cursor:pointer;
   display:flex;
   align-items:center;
   gap:6px;
-  box-shadow:0 4px 15px rgba(232,145,58,0.3);
+  box-shadow:0 3px 10px rgba(255,167,38,0.3);
 }
 
-/* ── HEADER BANNER ── */
-.carta-banner{
+/* ── CABECERA / BIENVENIDA ── */
+.header-hero{
+  padding:24px 18px 16px;
   text-align:center;
-  padding:36px 20px 20px;
-  max-width:800px;
+  max-width:600px;
   margin:0 auto;
 }
-.banner-badge{
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--p);
-  margin-bottom:8px;
-  display:inline-block;
-}
-.banner-h1{
+.header-title{
   font-family:var(--ft);
-  font-size:clamp(2rem, 6vw, 2.8rem);
-  color:#fff;
-  line-height:1.1;
+  font-size:clamp(1.5rem, 5.5vw, 2.2rem);
+  font-weight:800;
+  color:#FFFFFF;
+  line-height:1.2;
   margin-bottom:8px;
 }
-.banner-h1 span{color:var(--p);}
-.banner-sub{
-  font-size:14px;
+.header-title span{color:var(--p);}
+.header-desc{
+  font-size:0.95rem;
   color:var(--tm);
   line-height:1.5;
-  margin-bottom:20px;
 }
 
-/* ── CONTROLES & CATEGORÍAS ── */
-.controls-wrap{
-  max-width:1200px;
-  margin:0 auto 28px;
-  padding:0 20px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+/* ── BARRA DE BÚSQUEDA Y CATEGORÍAS ── */
+.search-container{
+  max-width:600px;
+  margin:0 auto 16px;
+  padding:0 16px;
 }
-.search-box{
+.search-field{
   position:relative;
   width:100%;
 }
@@ -159,239 +193,503 @@ body{
   left:16px;
   top:50%;
   transform:translateY(-50%);
+  font-size:1.2rem;
   color:var(--tm);
-  font-size:15px;
   pointer-events:none;
 }
 .search-input{
   width:100%;
-  padding:12px 18px 12px 44px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:30px;
-  color:#fff;
-  font-size:14px;
+  min-height:54px;
+  padding:12px 18px 12px 48px;
+  background:var(--bg-card);
+  border:2.5px solid var(--bd);
+  border-radius:14px;
+  color:#FFFFFF;
+  font-size:1rem;
+  font-weight:600;
   font-family:var(--fb);
   transition:border-color .2s;
 }
 .search-input:focus{
   outline:none;
   border-color:var(--p);
-  background:rgba(232,145,58,0.04);
+  background:var(--bg-elevated);
 }
 
-.cats-bar{
+/* Categorías (Pills grandes táctiles) */
+.categories-slider{
   display:flex;
-  gap:8px;
+  gap:10px;
   overflow-x:auto;
-  padding-bottom:6px;
+  padding:6px 16px 14px;
   scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
 }
-.cats-bar::-webkit-scrollbar{display:none;}
-.cat-chip{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  color:var(--tm);
-  padding:9px 18px;
-  border-radius:30px;
-  font-size:13px;
-  font-weight:600;
+.categories-slider::-webkit-scrollbar{display:none;}
+.cat-btn{
+  min-height:52px;
+  padding:0 20px;
+  background:var(--bg-card);
+  border:2px solid var(--bd);
+  color:var(--tx);
+  border-radius:14px;
+  font-size:0.95rem;
+  font-weight:700;
+  font-family:var(--fb);
   cursor:pointer;
   white-space:nowrap;
-  transition:all var(--tr);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:all .2s;
 }
-.cat-chip:hover{
-  border-color:var(--p);
-  color:#fff;
-}
-.cat-chip.active{
+.cat-btn.active{
   background:var(--p);
-  color:#000;
+  color:var(--p-text);
   border-color:var(--p);
   font-weight:800;
-  box-shadow:0 4px 15px rgba(232,145,58,0.35);
+  box-shadow:0 4px 15px rgba(255,167,38,0.35);
 }
 
-/* ── GRID DE PRODUCTOS ── */
-.carta-container{
-  max-width:1200px;
+/* ── LISTADO DE PRODUCTOS (CARDS ACCESIBLES) ── */
+.menu-list{
+  max-width:600px;
   margin:0 auto;
-  padding:0 20px;
-}
-.carta-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-  gap:20px;
+  padding:0 16px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }
 .dish-card{
   background:var(--bg-card);
-  border:1.5px solid rgba(255,255,255,0.08);
+  border:2px solid var(--bd);
   border-radius:18px;
   padding:20px;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
-  transition:all var(--tr);
-  position:relative;
-  box-shadow:0 8px 24px rgba(0,0,0,0.6);
+  gap:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.5);
+  transition:border-color .2s, transform .2s;
 }
-.dish-card:hover{
-  transform:translateY(-4px);
+.dish-card:focus-within, .dish-card:hover{
   border-color:var(--p);
-  box-shadow:0 12px 30px rgba(232,145,58,0.2);
 }
-.dish-top{
+.dish-header{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
   gap:10px;
-  margin-bottom:10px;
 }
 .dish-name{
-  font-size:16px;
-  font-weight:700;
-  color:#fff;
-  line-height:1.3;
+  font-family:var(--ft);
+  font-size:1.25rem;
+  font-weight:800;
+  color:#FFFFFF;
+  line-height:1.25;
 }
 .dish-badge{
-  font-size:10px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  padding:3px 8px;
-  border-radius:6px;
-  background:rgba(232,145,58,0.15);
+  background:rgba(255,167,38,0.18);
+  border:1.5px solid var(--p);
   color:var(--p);
-  border:1px solid rgba(232,145,58,0.3);
+  font-size:0.75rem;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:4px 8px;
+  border-radius:8px;
   white-space:nowrap;
 }
 .dish-desc{
-  font-size:13px;
+  font-size:0.95rem;
   color:var(--tm);
-  line-height:1.5;
-  margin-bottom:16px;
-  flex-grow:1;
+  line-height:1.55;
 }
-.dish-foot{
+.dish-footer{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding-top:14px;
-  border-top:1px solid rgba(255,255,255,0.06);
+  gap:12px;
+  padding-top:12px;
+  border-top:1.5px solid rgba(255,255,255,0.1);
 }
 .dish-price{
-  font-size:18px;
+  font-family:var(--ft);
+  font-size:1.35rem;
   font-weight:800;
   color:var(--p);
-}
-.btn-add{
-  background:linear-gradient(135deg,var(--p),var(--s));
-  color:#fff;
-  border:none;
-  padding:8px 16px;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:700;
-  font-family:var(--fb);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  transition:all .2s;
-}
-.btn-add:hover{
-  transform:scale(1.04);
-}
-.stepper{
-  display:flex;
-  align-items:center;
-  background:rgba(255,255,255,0.08);
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.15);
-  overflow:hidden;
-}
-.stepper-btn{
-  background:transparent;
-  border:none;
-  color:#fff;
-  width:28px;
-  height:28px;
-  cursor:pointer;
-  font-weight:800;
-  font-size:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.stepper-btn:hover{background:rgba(232,145,58,0.3);}
-.stepper-val{
-  padding:0 8px;
-  font-size:13px;
-  font-weight:700;
-  color:var(--p);
+  letter-spacing:0.5px;
 }
 
-/* ── BARRA FLOTANTE INFERIOR ── */
-.floating-bar{
-  position:fixed;
-  bottom:24px;
-  left:50%;
-  transform:translateX(-50%) translateY(120px);
-  z-index:950;
-  background:rgba(14,14,22,0.97);
-  border:2px solid var(--p);
-  border-radius:50px;
-  padding:10px 22px;
-  display:flex;
-  align-items:center;
-  gap:16px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.8),0 0 30px rgba(232,145,58,0.3);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.floating-bar.show{
-  transform:translateX(-50%) translateY(0);
-}
-.fb-info{
-  display:flex;
-  flex-direction:column;
-}
-.fb-count{
-  font-size:10px;
-  font-weight:800;
-  color:var(--tm);
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-.fb-total{
-  font-size:16px;
-  font-weight:800;
-  color:#fff;
-}
-.fb-btn{
-  background:linear-gradient(135deg,var(--p),var(--s));
-  color:#fff;
+/* Botón grande para agregar */
+.btn-add-item{
+  min-height:50px;
+  padding:0 22px;
+  background:var(--p);
+  color:var(--p-text);
   border:none;
-  padding:10px 20px;
-  border-radius:30px;
-  font-size:13px;
+  border-radius:14px;
+  font-size:1rem;
   font-weight:800;
   font-family:var(--fb);
   cursor:pointer;
   display:flex;
   align-items:center;
   gap:8px;
-  transition:transform .2s;
+  box-shadow:0 3px 12px rgba(255,167,38,0.3);
 }
-.fb-btn:hover{transform:scale(1.04);}
+.btn-add-item:active{transform:scale(0.97);}
 
-/* ── ONBOARDING MODAL ── */
-.onboarding-modal{
+/* Stepper accesible de cantidad (+ / −) */
+.dish-stepper{
+  display:flex;
+  align-items:center;
+  background:var(--bg-elevated);
+  border:2px solid var(--p);
+  border-radius:14px;
+  overflow:hidden;
+  min-height:50px;
+}
+.stepper-btn{
+  background:transparent;
+  border:none;
+  color:var(--tx);
+  width:48px;
+  height:48px;
+  font-size:1.4rem;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.stepper-btn:active{background:rgba(255,167,38,0.25);}
+.stepper-value{
+  min-width:36px;
+  text-align:center;
+  font-size:1.15rem;
+  font-weight:800;
+  color:var(--p);
+}
+
+/* ── BARRA FLOTANTE DE COMANDA (ALTO IMPACTO) ── */
+.floating-order-bar{
+  position:fixed;
+  bottom:16px;
+  left:16px;
+  right:16px;
+  max-width:568px;
+  margin:0 auto;
+  z-index:900;
+  background:var(--bg-card);
+  border:3px solid var(--p);
+  border-radius:20px;
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.9), 0 0 25px rgba(255,167,38,0.3);
+  transform:translateY(120px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
+}
+.floating-order-bar.visible{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.fob-left{
+  display:flex;
+  flex-direction:column;
+}
+.fob-tag{
+  font-size:0.75rem;
+  font-weight:800;
+  color:var(--p);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.fob-items-count{
+  font-size:1rem;
+  font-weight:800;
+  color:#FFFFFF;
+}
+.btn-fob-action{
+  min-height:52px;
+  padding:0 20px;
+  background:var(--p);
+  color:var(--p-text);
+  border:none;
+  border-radius:14px;
+  font-size:1rem;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:0 4px 15px rgba(255,167,38,0.4);
+}
+.btn-fob-action:active{transform:scale(0.97);}
+
+/* ── MODAL SELECCIÓN DE MESA (GRANDE Y CONFORTABLE) ── */
+.mesa-modal{
   position:fixed;
   inset:0;
   z-index:9990;
-  background:rgba(5,5,8,0.88);
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.mesa-modal.open{
+  opacity:1;
+  pointer-events:auto;
+}
+.mesa-card{
+  background:var(--bg-card);
+  border:3px solid var(--p);
+  border-radius:26px;
+  max-width:480px;
+  width:100%;
+  padding:32px 24px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.9);
+}
+.mesa-icon{font-size:2.8rem;margin-bottom:8px;}
+.mesa-title{
+  font-family:var(--ft);
+  font-size:1.6rem;
+  font-weight:800;
+  color:#FFFFFF;
+  margin-bottom:8px;
+}
+.mesa-desc{
+  font-size:0.95rem;
+  color:var(--tm);
+  margin-bottom:20px;
+}
+/* Selector numérico rápido para personas mayores */
+.mesa-quick-grid{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:8px;
+  margin-bottom:18px;
+}
+.mesa-quick-btn{
+  min-height:50px;
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  color:#FFFFFF;
+  font-size:1.15rem;
+  font-weight:800;
+  border-radius:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.mesa-quick-btn:active, .mesa-quick-btn.selected{
+  background:var(--p);
+  color:var(--p-text);
+  border-color:var(--p);
+}
+.mesa-manual-inp{
+  width:100%;
+  min-height:54px;
+  padding:0 16px;
+  background:var(--bg-elevated);
+  border:2.5px solid var(--bd);
+  border-radius:14px;
+  color:#FFFFFF;
+  font-size:1.1rem;
+  font-weight:700;
+  text-align:center;
+  margin-bottom:20px;
+}
+.mesa-manual-inp:focus{outline:none;border-color:var(--p);}
+.btn-mesa-confirm{
+  width:100%;
+  min-height:56px;
+  background:var(--p);
+  color:var(--p-text);
+  border:none;
+  border-radius:16px;
+  font-size:1.15rem;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 6px 20px rgba(255,167,38,0.4);
+}
+
+/* ── CAJÓN DE COMANDA / DRAWER (ALTO CONFORT) ── */
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(6px);
+  z-index:9800;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.drawer-backdrop.open{opacity:1;pointer-events:auto;}
+
+.comanda-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  max-width:500px;
+  background:var(--bg-card);
+  border-left:3px solid var(--p);
+  z-index:9850;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.comanda-drawer.open{transform:translateX(0);}
+
+.drawer-header{
+  padding:20px 22px;
+  background:var(--bg-elevated);
+  border-bottom:2px solid var(--bd);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.drawer-header-title{
+  font-family:var(--ft);
+  font-size:1.35rem;
+  font-weight:800;
+  color:#FFFFFF;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-close-drawer{
+  width:48px;
+  height:48px;
+  background:rgba(255,255,255,0.08);
+  border:2px solid var(--bd);
+  color:#FFFFFF;
+  border-radius:12px;
+  font-size:1.3rem;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.drawer-content{
+  flex:1;
+  overflow-y:auto;
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.drawer-label{
+  font-size:0.85rem;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--p);
+  margin-bottom:6px;
+  display:block;
+}
+.drawer-items-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.drawer-item-card{
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  border-radius:16px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.d-item-name{
+  font-family:var(--ft);
+  font-size:1.1rem;
+  font-weight:800;
+  color:#FFFFFF;
+}
+.drawer-notes-input{
+  width:100%;
+  min-height:90px;
+  padding:14px;
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  border-radius:14px;
+  color:#FFFFFF;
+  font-size:1rem;
+  font-family:var(--fb);
+  line-height:1.5;
+  resize:vertical;
+}
+.drawer-notes-input:focus{outline:none;border-color:var(--p);}
+
+.drawer-footer{
+  padding:20px 22px;
+  background:var(--bg-elevated);
+  border-top:2px solid var(--bd);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.d-footer-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.d-footer-count{
+  font-size:1.1rem;
+  font-weight:800;
+  color:#FFFFFF;
+}
+.btn-generate-qr{
+  width:100%;
+  min-height:60px;
+  background:var(--p);
+  color:var(--p-text);
+  border:none;
+  border-radius:16px;
+  font-size:1.15rem;
+  font-weight:900;
+  font-family:var(--fb);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-shadow:0 6px 20px rgba(255,167,38,0.4);
+}
+
+/* ── MODAL QR CODE (PANTALLA DE ATENCIÓN) ── */
+.qr-modal{
+  position:fixed;
+  inset:0;
+  z-index:9995;
+  background:rgba(0,0,0,0.92);
   backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
@@ -399,555 +697,585 @@ body{
   padding:20px;
   opacity:0;
   pointer-events:none;
-  transition:opacity 0.3s;
-}
-.onboarding-modal.open{
-  opacity:1;
-  pointer-events:auto;
-}
-.onboarding-card{
-  background:rgba(18,18,26,0.98);
-  border:2px solid var(--p);
-  border-radius:24px;
-  max-width:460px;
-  width:100%;
-  padding:36px 28px;
-  text-align:center;
-  box-shadow:0 25px 80px rgba(0,0,0,0.9),0 0 50px rgba(232,145,58,0.2);
-  transform:scale(0.92);
-  transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.onboarding-modal.open .onboarding-card{transform:scale(1);}
-.ob-icon{font-size:44px;margin-bottom:12px;}
-.ob-title{font-family:var(--ft);font-size:24px;color:var(--p);margin-bottom:8px;}
-.ob-sub{font-size:14px;color:var(--tm);margin-bottom:20px;line-height:1.4;}
-.ob-table-pill{
-  display:inline-block;
-  background:rgba(78,205,196,0.12);
-  border:1px solid rgba(78,205,196,0.3);
-  color:var(--a);
-  font-size:13px;
-  font-weight:700;
-  padding:6px 16px;
-  border-radius:20px;
-  margin-bottom:24px;
-}
-.ob-btns{display:flex;flex-direction:column;gap:12px;}
-.ob-btn{
-  padding:15px;
-  border-radius:14px;
-  font-size:14px;
-  font-weight:800;
-  font-family:var(--fb);
-  cursor:pointer;
-  border:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  transition:all .2s;
-}
-.ob-btn.primary{
-  background:linear-gradient(135deg,var(--p),var(--s));
-  color:#fff;
-  box-shadow:0 6px 20px rgba(232,145,58,0.35);
-}
-.ob-btn.secondary{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.15);
-  color:var(--tx);
-}
-
-/* ── ORDER DRAWER ── */
-.order-drawer{
-  position:fixed;
-  top:0;
-  right:0;
-  bottom:0;
-  width:100%;
-  max-width:440px;
-  background:#0e0e16;
-  border-left:2px solid var(--p);
-  z-index:9900;
-  display:flex;
-  flex-direction:column;
-  transform:translateX(100%);
-  transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow:-10px 0 50px rgba(0,0,0,0.8);
-}
-.order-drawer.open{transform:translateX(0);}
-.drawer-backdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(4px);
-  z-index:9890;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.3s;
-}
-.drawer-backdrop.open{opacity:1;pointer-events:auto;}
-
-.drawer-hdr{
-  padding:18px 22px;
-  background:rgba(18,18,28,0.98);
-  border-bottom:1px solid var(--bd);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.drawer-title{font-size:16px;font-weight:800;color:var(--p);display:flex;align-items:center;gap:8px;}
-.drawer-close{
-  background:rgba(255,255,255,0.06);border:none;color:var(--tm);width:32px;height:32px;
-  border-radius:8px;font-size:16px;cursor:pointer;
-}
-.drawer-body{flex:1;overflow-y:auto;padding:20px 22px;}
-.drawer-label{
-  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);
-  margin-bottom:8px;display:block;
-}
-.table-inp{
-  width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);
-  border-radius:12px;color:#fff;font-size:15px;font-weight:700;margin-bottom:20px;
-}
-.table-inp:focus{outline:none;border-color:var(--p);}
-.order-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
-.order-row{
-  display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
-  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;
-}
-.order-row-info{flex:1;margin-right:10px;}
-.order-row-name{font-size:14px;font-weight:700;color:#fff;}
-.order-row-price{font-size:12px;color:var(--p);font-weight:600;}
-.order-note{
-  width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);
-  border-radius:12px;color:#fff;font-size:13px;font-family:var(--fb);resize:vertical;min-height:70px;
-  margin-bottom:16px;
-}
-.order-note:focus{outline:none;border-color:var(--p);}
-
-.drawer-foot{
-  padding:18px 22px;background:rgba(18,18,28,0.98);border-top:1px solid var(--bd);
-}
-.foot-total-row{
-  display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:800;
-  color:#fff;margin-bottom:14px;
-}
-.foot-total-row span:last-child{color:var(--p);font-size:20px;}
-.btn-gen-qr{
-  width:100%;padding:15px;background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;
-  border-radius:14px;font-size:15px;font-weight:800;font-family:var(--fb);cursor:pointer;
-  box-shadow:0 6px 20px rgba(232,145,58,0.4);
-}
-
-/* ── QR MODAL ── */
-.qr-modal{
-  position:fixed;inset:0;z-index:9995;background:rgba(5,5,8,0.92);backdrop-filter:blur(12px);
-  display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;
-  transition:opacity 0.3s;
+  transition:opacity .3s;
 }
 .qr-modal.open{opacity:1;pointer-events:auto;}
 .qr-card{
-  background:#111118;border:3px solid var(--p);border-radius:28px;max-width:420px;width:100%;
-  padding:32px 24px;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,0.9),0 0 60px rgba(232,145,58,0.25);
+  background:var(--bg-card);
+  border:3px solid var(--p);
+  border-radius:28px;
+  max-width:440px;
+  width:100%;
+  padding:28px 20px;
+  text-align:center;
   position:relative;
+  box-shadow:0 25px 80px rgba(0,0,0,0.95);
 }
-.qr-close{
-  position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;color:#fff;
-  width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;
+.btn-close-qr{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:44px;
+  height:44px;
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  color:#FFFFFF;
+  border-radius:50%;
+  font-size:1.2rem;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.qr-mesa-badge{
-  display:inline-block;background:var(--p);color:#000;font-size:15px;font-weight:800;padding:6px 20px;
-  border-radius:20px;margin-bottom:14px;letter-spacing:1px;
+.qr-mesa-tag{
+  display:inline-block;
+  background:var(--p);
+  color:var(--p-text);
+  font-size:1.25rem;
+  font-weight:900;
+  padding:8px 24px;
+  border-radius:25px;
+  margin-bottom:12px;
+  letter-spacing:1px;
 }
-.qr-box{
-  background:#fff;padding:16px;border-radius:18px;display:inline-flex;align-items:center;
-  justify-content:center;margin:12px 0 16px;
+.qr-heading{
+  font-family:var(--ft);
+  font-size:1.35rem;
+  font-weight:800;
+  color:#FFFFFF;
+  margin-bottom:6px;
 }
-.qr-instruction{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
-.qr-subtext{font-size:12px;color:var(--tm);margin-bottom:16px;}
-.qr-summary{
-  background:rgba(255,255,255,0.04);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;
-  font-size:12px;text-align:left;max-height:110px;overflow-y:auto;margin-bottom:16px;
+.qr-subtext{
+  font-size:0.95rem;
+  color:var(--tm);
+  margin-bottom:16px;
+  line-height:1.4;
+}
+.qr-display-box{
+  background:#FFFFFF;
+  padding:18px;
+  border-radius:20px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:16px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.8);
+}
+.qr-items-summary{
+  background:var(--bg-elevated);
+  border:2px solid var(--bd);
+  border-radius:14px;
+  padding:12px 16px;
+  text-align:left;
+  font-size:0.95rem;
+  font-weight:600;
+  max-height:120px;
+  overflow-y:auto;
+  margin-bottom:16px;
+}
+.btn-modify-order{
+  width:100%;
+  min-height:50px;
+  background:transparent;
+  border:2px solid var(--bd);
+  color:#FFFFFF;
+  border-radius:14px;
+  font-size:0.95rem;
+  font-weight:800;
+  font-family:var(--fb);
+  cursor:pointer;
 }
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;
-  font-weight:700;opacity:0;transform:translateY(10px);pointer-events:none;transition:all .3s;
-  box-shadow:0 8px 30px rgba(0,0,0,.5);
+/* ── TOAST ACCESIBLE ── */
+.toast-msg{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  z-index:9999;
+  background:#2E7D32;
+  color:#FFFFFF;
+  border:2px solid #FFFFFF;
+  padding:14px 24px;
+  border-radius:16px;
+  font-size:1rem;
+  font-weight:800;
+  opacity:0;
+  pointer-events:none;
+  transition:all .3s;
+  box-shadow:0 10px 30px rgba(0,0,0,0.8);
+  white-space:nowrap;
 }
-.toast.show{opacity:1;transform:translateY(0);}
-.toast.ok{background:#4CAF50;color:#fff;}
-.toast.err{background:#f44336;color:#fff;}
+.toast-msg.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast-msg.err{background:#C62828;}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<header class="topbar">
-  <a href="/" class="brand">
-    🌹 La Comadre Lola <span>CARTA</span>
-  </a>
-  <div class="top-actions">
-    <div class="top-table-badge" id="topTableBadge" onclick="openOrderDrawer()">
-      📍 Mesa: ?
-    </div>
-    <button class="top-btn-cart" onclick="openOrderDrawer()">
-      <span id="topCartCount">⚡ Mi Pedido (0)</span>
+<!-- ── TOPBAR ── -->
+<header class="topbar" role="banner">
+  <div class="brand-wrap">
+    <div class="brand-title">🌹 La Comadre Lola</div>
+    <div class="brand-sub">Carta Digital en Mesa</div>
+  </div>
+
+  <div class="top-controls">
+    <!-- Selector de Tamaño de Letra Accesible (+50 años) -->
+    <button class="btn-a11y" id="btnFontSize" onclick="cycleFontSize()" aria-label="Cambiar tamaño de letra">
+      <span>A</span><span style="font-size:1.15rem;font-weight:900;">+</span>
+    </button>
+
+    <!-- Botón / Badge de Mesa -->
+    <button class="mesa-pill" id="btnMesaTop" onclick="openMesaModal()" aria-label="Asignar o cambiar número de mesa">
+      <span id="txtMesaTop">📍 Mesa: ?</span>
     </button>
   </div>
 </header>
 
-<!-- BANNER -->
-<section class="carta-banner">
-  <span class="banner-badge">🍽️ Sabor y Tradición · Quilicura</span>
-  <h1 class="banner-h1">CARTA & <span>COCTELERÍA</span></h1>
-  <p class="banner-sub">Explora nuestra carta digital, arma tu comanda y genera el código QR para que el garzón te atienda en segundos.</p>
+<!-- ── CABECERA / BIENVENIDA ── -->
+<section class="header-hero">
+  <h1 class="header-title">NUESTRA <span>CARTA</span></h1>
+  <p class="header-desc">Selecciona tus platos y tragos favoritos. Al finalizar, genera el código QR para que el garzón tome tu orden.</p>
 </section>
 
-<!-- BUSCADOR Y CATEGORÍAS -->
-<div class="controls-wrap">
-  <div class="search-box">
-    <span class="search-icon">🔍</span>
-    <input type="text" class="search-input" id="searchInput" placeholder="Buscar plato, trago, cerveza..." oninput="handleSearch(this.value)">
-  </div>
-  <div class="cats-bar" id="catsBar">
-    <button class="cat-chip active" onclick="filterCat('todos',this)">🌟 Todos</button>
-    <button class="cat-chip" onclick="filterCat('tragos',this)">🍹 Tragos de la Casa</button>
-    <button class="cat-chip" onclick="filterCat('tablas',this)">🥩 Tablas & Piqueos</button>
-    <button class="cat-chip" onclick="filterCat('cocina',this)">🍲 Cocina Chilena</button>
-    <button class="cat-chip" onclick="filterCat('cervezas',this)">🍺 Cervezas & Schops</button>
-    <button class="cat-chip" onclick="filterCat('postres_bebidas',this)">🍨 Bebidas & Postres</button>
+<!-- ── BUSCADOR ACCESIBLE ── -->
+<div class="search-container">
+  <div class="search-field">
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input type="text" class="search-input" id="searchMenu" placeholder="Buscar por nombre o ingrediente..." oninput="handleMenuSearch(this.value)" aria-label="Buscar en la carta">
   </div>
 </div>
 
-<!-- GRID CARTA -->
-<main class="carta-container">
-  <div class="carta-grid" id="cartaGrid"></div>
-</main>
+<!-- ── CATEGORÍAS (PILLS GRANDES) ── -->
+<nav class="categories-slider" aria-label="Categorías del menú">
+  <button class="cat-btn active" onclick="filterCategory('todos', this)">🌟 Todos</button>
+  <button class="cat-btn" onclick="filterCategory('tragos', this)">🍹 Tragos de la Casa</button>
+  <button class="cat-btn" onclick="filterCategory('tablas', this)">🥩 Tablas & Piqueos</button>
+  <button class="cat-btn" onclick="filterCategory('cocina', this)">🍲 Cocina Chilena</button>
+  <button class="cat-btn" onclick="filterCategory('cervezas', this)">🍺 Cervezas & Schops</button>
+  <button class="cat-btn" onclick="filterCategory('postres_bebidas', this)">🍨 Bebidas & Postres</button>
+</nav>
 
-<!-- BARRA FLOTANTE -->
-<div class="floating-bar" id="floatingBar">
-  <div class="fb-info">
-    <span class="fb-count" id="fbCount">0 ITEMS</span>
-    <span class="fb-total" id="fbTotal">$0 CLP</span>
+<!-- ── LISTADO DE PLATOS / TRAGOS ── -->
+<main class="menu-list" id="menuCardsContainer" role="main"></main>
+
+<!-- ── BARRA FLOTANTE DE COMANDA ── -->
+<aside class="floating-order-bar" id="floatingBar" aria-label="Resumen de pedido flotante">
+  <div class="fob-left">
+    <span class="fob-tag">Comanda Lista</span>
+    <span class="fob-items-count" id="fobItemsText">0 productos seleccionados</span>
   </div>
-  <button class="fb-btn" onclick="openOrderDrawer()">
-    <span>⚡ Ver Comanda / QR</span>
+  <button class="btn-fob-action" onclick="openComandaDrawer()" aria-label="Abrir resumen y generar QR">
+    <span>Ver Pedido</span> <span>➔</span>
   </button>
-</div>
+</aside>
 
-<!-- ONBOARDING MODAL -->
-<div class="onboarding-modal" id="welcomeModal" onclick="if(event.target===this)closeWelcomeModal()">
-  <div class="onboarding-card">
-    <div class="ob-icon">🌹</div>
-    <h2 class="ob-title">¡HOLA, BIENVENIDO!</h2>
-    <p class="ob-sub">Elige cómo deseas iniciar tu experiencia hoy en La Comadre Lola</p>
-    <div class="ob-table-pill" id="obTablePill">📍 Mesa: Sin asignar</div>
-    <div class="ob-btns">
-      <button class="ob-btn primary" onclick="startOrder()">
-        <span>⚡ Hacer Pedido de Inmediato</span>
-      </button>
-      <button class="ob-btn secondary" onclick="closeWelcomeModal()">
-        <span>📖 Explorar la Carta Digital</span>
-      </button>
+<!-- ── MODAL ELECCIÓN DE MESA (ACCESIBLE Y GRANDE) ── -->
+<div class="mesa-modal" id="mesaModal" role="dialog" aria-modal="true" aria-labelledby="mesaModalTitle">
+  <div class="mesa-card">
+    <div class="mesa-icon" aria-hidden="true">📍</div>
+    <h2 class="mesa-title" id="mesaModalTitle">¿En qué mesa te encuentras?</h2>
+    <p class="mesa-desc">Toca el número de tu mesa para que el garzón identifique tu pedido rápidamente:</p>
+
+    <!-- Botones táctiles rápidos del 1 al 15 -->
+    <div class="mesa-quick-grid" id="mesaQuickGrid">
+      <!-- Inyectados por JS (1 a 15) -->
     </div>
-  </div>
-</div>
 
-<!-- ORDER DRAWER -->
-<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeOrderDrawer()"></div>
-<div class="order-drawer" id="orderDrawer">
-  <div class="drawer-hdr">
-    <div class="drawer-title">⚡ <span>Tu Pedido / Comanda</span></div>
-    <button class="drawer-close" onclick="closeOrderDrawer()">✕</button>
-  </div>
-  <div class="drawer-body">
-    <label class="drawer-label">📍 Número de Mesa</label>
-    <input type="text" class="table-inp" id="tableInp" placeholder="Ej: Mesa 4" oninput="saveTable(this.value)">
+    <input type="text" class="mesa-manual-inp" id="mesaManualInp" placeholder="O escribe el número aquí..." aria-label="Número de mesa manual" oninput="highlightQuickBtn(this.value)">
 
-    <label class="drawer-label">🍽️ Productos Seleccionados</label>
-    <div class="order-list" id="drawerOrderList"></div>
-
-    <label class="drawer-label">📝 Observaciones para Cocina / Barra</label>
-    <textarea class="order-note" id="noteInp" placeholder="Ej: Sin hielo, carne a punto, salsas aparte..." oninput="saveNote(this.value)"></textarea>
-  </div>
-  <div class="drawer-foot">
-    <div class="foot-total-row">
-      <span>RESUMEN COMANDA:</span>
-      <span id="drawerTotal" style="color:var(--p);font-size:15px;">0 productos</span>
-    </div>
-    <button class="btn-gen-qr" onclick="generateQR()">
-      📲 Generar Código QR de Pedido
+    <button class="btn-mesa-confirm" onclick="confirmMesaSelection()">
+      <span>✅ Confirmar Mesa</span>
     </button>
   </div>
 </div>
 
-<!-- QR MODAL -->
-<div class="qr-modal" id="qrModal" onclick="if(event.target===this)closeQRModal()">
+<!-- ── CAJÓN DE COMANDA / DRAWER ── -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeComandaDrawer()"></div>
+<div class="comanda-drawer" id="comandaDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer-header">
+    <div class="drawer-header-title" id="drawerTitle">
+      <span>🛍️</span> <span>Tu Pedido</span>
+    </div>
+    <button class="btn-close-drawer" onclick="closeComandaDrawer()" aria-label="Cerrar comanda">✕</button>
+  </div>
+
+  <div class="drawer-content">
+    <div>
+      <span class="drawer-label">Mesa Seleccionada</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-elevated);border:2px solid var(--bd);border-radius:14px;padding:12px 16px;">
+        <span style="font-size:1.15rem;font-weight:800;color:var(--p);" id="drawerMesaText">📍 Mesa ?</span>
+        <button onclick="openMesaModal()" style="background:transparent;border:none;color:#FFFFFF;font-weight:700;cursor:pointer;text-decoration:underline;">Cambiar</button>
+      </div>
+    </div>
+
+    <div>
+      <span class="drawer-label">Platos y Tragos Seleccionados</span>
+      <div class="drawer-items-list" id="drawerList"></div>
+    </div>
+
+    <div>
+      <label class="drawer-label" for="drawerNotes">Observaciones para Cocina / Barra (Opcional)</label>
+      <textarea class="drawer-notes-input" id="drawerNotes" placeholder="Ejemplo: Sin hielo, carne a punto, salsas aparte..." oninput="saveNotes(this.value)"></textarea>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <div class="d-footer-info">
+      <span style="font-size:0.95rem;color:var(--tm);">Total Seleccionado:</span>
+      <span class="d-footer-count" id="drawerItemCount">0 productos</span>
+    </div>
+    <button class="btn-generate-qr" onclick="generateOrderQR()">
+      <span>📲 GENERAR CÓDIGO QR</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── MODAL QR CODE ACCESIBLE ── -->
+<div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
   <div class="qr-card">
-    <button class="qr-close" onclick="closeQRModal()">✕</button>
-    <div class="qr-mesa-badge" id="qrMesa">MESA 1</div>
-    <div class="qr-instruction">Muestra este código a tu Garzón</div>
-    <div class="qr-subtext">El garzón lo escaneará con su teléfono y enviará la comanda a cocina y barra al instante.</div>
-    <div class="qr-box" id="qrContainer"></div>
-    <div class="qr-summary" id="qrSummary"></div>
-    <button class="ob-btn secondary" style="width:100%" onclick="closeQRModal(); openOrderDrawer();">
-      ✏️ Modificar Pedido
+    <button class="btn-close-qr" onclick="closeQRModal()" aria-label="Cerrar código QR">✕</button>
+    <div class="qr-mesa-tag" id="qrMesaTag">MESA 1</div>
+    <h2 class="qr-heading" id="qrTitle">Muestra este código al Garzón</h2>
+    <p class="qr-subtext">El garzón lo escaneará con su teléfono para despachar tu pedido a cocina y barra al instante.</p>
+
+    <div class="qr-display-box" id="qrCanvasBox"></div>
+
+    <div class="qr-items-summary" id="qrItemsList"></div>
+
+    <button class="btn-modify-order" onclick="closeQRModal(); openComandaDrawer();">
+      ✏️ Modificar o Agregar más productos
     </button>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
 
-<!-- QR ENGINE -->
+<!-- QR Generator Engine -->
 <script src="js/qrcode.min.js"></script>
 
 <script>
-const CARTA_ITEMS_INIT = [
+/* ── CATÁLOGO CARTA ── */
+const CARTA_DEFAULT = [
   // TRAGOS DE LA CASA
-  { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO', popular:true },
-  { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA', popular:true },
+  { id:'t1', cat:'tragos', nombre:'Terremoto La Comadre', desc:'Pipeño artesanal dulce, helado de piña premium, fernet y toque especial de granadina.', precio:5500, badge:'DESTACADO' },
+  { id:'t2', cat:'tragos', nombre:'La Lola Especial', desc:'Pisco añejo macerado con frutos rojos de estación, maracuyá, menta fresca y tónica.', precio:6200, badge:'DE LA CASA' },
   { id:'t3', cat:'tragos', nombre:'Terremoto Tradicional', desc:'El clásico campesino con pipeño dulce, helado de piña y jarabe de granadina.', precio:4900, badge:'CLÁSICO' },
-  { id:'t4', cat:'tragos', nombre:'Mojito Chileno de Pisco', desc:'Pisco blanco chileno, limón sutil, hierbabuena fresca, azúcar y un toque de ginger ale.', precio:5900, badge:'' },
-  { id:'t5', cat:'tragos', nombre:'Piscola Mistral 35° / Alto 35°', desc:'Vaso largo con harto hielo, 2 medidas de pisco y bebida Coca-Cola o Sprite.', precio:4500, badge:'FAVORITO' },
-  { id:'t6', cat:'tragos', nombre:'Pisco Sour Artesanal', desc:'Limón de pica fresco, pisco aromático, goma y gotas de amargo de angostura.', precio:4900, badge:'' },
+  { id:'t4', cat:'tragos', nombre:'Mojito Chileno de Pisco', desc:'Pisco blanco chileno, limón sutil, hierbabuena fresca, azúcar y toque de ginger ale.', precio:5900, badge:'' },
+  { id:'t5', cat:'tragos', nombre:'Piscola Mistral / Alto 35°', desc:'Vaso largo con abundante hielo, 2 medidas de pisco y bebida Coca-Cola o Sprite.', precio:4500, badge:'FAVORITO' },
+  { id:'t6', cat:'tragos', nombre:'Pisco Sour Artesanal', desc:'Limón de pica fresco, pisco aromático chileno, goma y gotas de amargo de angostura.', precio:4900, badge:'' },
 
   // TABLAS & PIQUEOS
-  { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO', popular:true },
+  { id:'tb1', cat:'tablas', nombre:'Tabla La Comadre (Para 3-4)', desc:'Carne mechada jugosa, prietas artesanales, papas rústicas crujientes, queso fundido y pebre cuchareado.', precio:16900, badge:'RECOMENDADO' },
   { id:'tb2', cat:'tablas', nombre:'Pichanga Caliente', desc:'Carne mechada, vienesas del sur, queso mantecoso fundido, huevo duro, aceitunas y papas fritas.', precio:14900, badge:'' },
-  { id:'tb3', cat:'tablas', nombre:'Chorrillana Porteña Tradicional', desc:'Lomo salteado a la plancha con cebolla caramelizada, huevos fritos y base de papas crujientes.', precio:15500, badge:'IMPERDIBLE', popular:true },
-  { id:'tb4', cat:'tablas', nombre:'Tabla de Empanaditas (6 unidades)', desc:'3 de pino de vacuno bien jugoso y 3 de queso fundido con camarón.', precio:8900, badge:'' },
+  { id:'tb3', cat:'tablas', nombre:'Chorrillana Porteña Tradicional', desc:'Lomo salteado a la plancha con cebolla caramelizada, huevos fritos y base de papas crujientes.', precio:15500, badge:'IMPERDIBLE' },
+  { id:'tb4', cat:'tablas', nombre:'Tabla de Empanaditas (6 un.)', desc:'3 de pino de vacuno bien jugoso y 3 de queso fundido con camarón.', precio:8900, badge:'' },
 
   // COCINA CHILENA
-  { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA', popular:true },
+  { id:'c1', cat:'cocina', nombre:'Costillar Campesino al Horno', desc:'Costillar macerado en vino tinto y ají color, acompañado de puré rústico al merkén.', precio:12500, badge:'PLATO ESTRELLA' },
   { id:'c2', cat:'cocina', nombre:'Pastel de Choclo Tradicional', desc:'Choclo tierno pastelero, pino de vacuno, presa de pollo, aceitunas y huevo duro gratinado.', precio:10900, badge:'TRADICIÓN' },
-  { id:'c3', cat:'cocina', nombre:'Cazuela de Vacuno', desc:'Corte de osobuco, choclo dulce, zapallo camote, porotos verdes y caldo humeante concentrado.', precio:9900, badge:'' },
-  { id:'c4', cat:'cocina', nombre:'Reineta a la Plancha', desc:'Pescado fresco sellado a la plancha con agregado a elección (papas fritas, arroz o chilena).', precio:11900, badge:'' },
+  { id:'c3', cat:'cocina', nombre:'Cazuela de Vacuno', desc:'Corte de osobuco tierno, choclo dulce, zapallo camote, porotos verdes y caldo humeante.', precio:9900, badge:'' },
+  { id:'c4', cat:'cocina', nombre:'Reineta a la Plancha', desc:'Pescado fresco sellado a la plancha con agregado a elección (papas fritas, arroz o ensalada chilena).', precio:11900, badge:'' },
 
   // CERVEZAS & SCHOPS
   { id:'cv1', cat:'cervezas', nombre:'Schop Kross Golden 500cc', desc:'Cerveza artesanal rubia en barril bien helada con espuma cremosa.', precio:4200, badge:'BARRIL' },
-  { id:'cv2', cat:'cervezas', nombre:'Schop Austral Calafate 500cc', desc:'La clásica patagónica con sabor a calafate recién tirada de schopera.', precio:4500, badge:'BARRIL', popular:true },
-  { id:'cv3', cat:'cervezas', nombre:'Corona Extra 330cc', desc:'Botella individual con rodaja de limón sutil.', precio:3200, badge:'' },
-  { id:'cv4', cat:'cervezas', nombre:'Kunstmann Torobayo 330cc', desc:'Cerveza ámbar artesanal valdiviana con notas a caramelo.', precio:3800, badge:'' },
+  { id:'cv2', cat:'cervezas', nombre:'Schop Austral Calafate 500cc', desc:'La clásica patagónica con sabor a calafate recién tirada de schopera.', precio:4500, badge:'BARRIL' },
+  { id:'cv3', cat:'cervezas', nombre:'Corona Extra 330cc', desc:'Botella individual servida con rodaja de limón sutil.', precio:3200, badge:'' },
+  { id:'cv4', cat:'cervezas', nombre:'Kunstmann Torobayo 330cc', desc:'Cerveza ámbar artesanal valdiviana con notas a caramelo y malta tostada.', precio:3800, badge:'' },
 
   // BEBIDAS & POSTRES
-  { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO', popular:true },
-  { id:'p2', cat:'postres_bebidas', nombre:'Leche Asada de la Casa', desc:'Receta de la abuela con abundante caramelo rubio brillante.', precio:3800, badge:'CASERO' },
+  { id:'p1', cat:'postres_bebidas', nombre:'Mote con Huesillo Tradicional', desc:'Vaso de 500cc con dos huesillos grandes, jugo acaramelado y mote de trigo tierno.', precio:3500, badge:'CASERO' },
+  { id:'p2', cat:'postres_bebidas', nombre:'Leche Asada de la Casa', desc:'Receta de la abuela con abundante caramelo rubio brillante y vainilla.', precio:3800, badge:'CASERO' },
   { id:'p3', cat:'postres_bebidas', nombre:'Bebida en Lata 350cc', desc:'Coca-Cola, Coca-Cola Zero, Sprite o Fanta bien fría.', precio:2000, badge:'' },
   { id:'p4', cat:'postres_bebidas', nombre:'Agua Mineral 500cc', desc:'Con o sin gas.', precio:1800, badge:'' }
 ];
 
-let _items = [...CARTA_ITEMS_INIT];
-let _cat = 'todos';
-let _q = '';
+let _menuItems = [...CARTA_DEFAULT];
+let _currentCat = 'todos';
+let _searchQuery = '';
 let _cart = [];
 let _table = '';
-let _note = '';
+let _notes = '';
 
-function formatCLP(v) { return '$' + Number(v).toLocaleString('es-CL'); }
+function formatCLP(n) { return '$' + Number(n).toLocaleString('es-CL'); }
 
-function toast(msg, type='ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + type + ' show';
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+function toast(msg, isErr=false) {
+  const el = document.getElementById('toastMsg');
+  el.textContent = msg;
+  el.className = 'toast-msg show' + (isErr ? ' err' : '');
+  if (navigator.vibrate) navigator.vibrate(40);
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2600);
 }
 
-/* ── PERSISTENCIA ── */
-function loadStorage() {
+/* ── ACCESIBILIDAD: TAMAÑO DE TEXTO (+50 AÑOS) ── */
+const FONT_CLASSES = ['font-normal', 'font-large', 'font-xlarge'];
+let _fontIdx = 0;
+
+function cycleFontSize() {
+  const html = document.documentElement;
+  html.classList.remove(FONT_CLASSES[_fontIdx]);
+  _fontIdx = (_fontIdx + 1) % FONT_CLASSES.length;
+  html.classList.add(FONT_CLASSES[_fontIdx]);
+  
+  const labels = ['Letra Normal', 'Letra Grande', 'Letra Extra Grande'];
+  toast(`Tamaño: ${labels[_fontIdx]}`);
+  localStorage.setItem('lola_font_size', FONT_CLASSES[_fontIdx]);
+}
+
+/* ── PERSISTENCIA LOCALSTORAGE ── */
+function loadSavedState() {
   try {
-    const c = localStorage.getItem('lola_pedido_actual');
-    if (c) _cart = JSON.parse(c) || [];
-    const tbl = localStorage.getItem('lola_mesa_actual');
-    if (tbl) _table = tbl;
-    const n = localStorage.getItem('lola_pedido_nota');
-    if (n) _note = n;
+    const savedCart = localStorage.getItem('lola_pedido_actual');
+    if (savedCart) _cart = JSON.parse(savedCart) || [];
+
+    const savedTable = localStorage.getItem('lola_mesa_actual');
+    if (savedTable) _table = savedTable;
+
+    const savedNotes = localStorage.getItem('lola_pedido_nota');
+    if (savedNotes) _notes = savedNotes;
+
+    const savedFont = localStorage.getItem('lola_font_size');
+    if (savedFont && FONT_CLASSES.includes(savedFont)) {
+      document.documentElement.classList.remove(...FONT_CLASSES);
+      document.documentElement.classList.add(savedFont);
+      _fontIdx = FONT_CLASSES.indexOf(savedFont);
+    }
   } catch(e) {}
 }
 
-function saveStorage() {
+function saveState() {
   try {
     localStorage.setItem('lola_pedido_actual', JSON.stringify(_cart));
     if (_table) localStorage.setItem('lola_mesa_actual', _table);
-    if (_note) localStorage.setItem('lola_pedido_nota', _note);
+    if (_notes) localStorage.setItem('lola_pedido_nota', _notes);
   } catch(e) {}
-  updateUI();
+  updateCartIndicators();
 }
 
-/* ── RENDER CARTA ── */
-function renderGrid() {
-  const grid = document.getElementById('cartaGrid');
-  const filtered = _items.filter(it => {
-    const matchCat = _cat === 'todos' || it.cat === _cat;
-    const matchQ = !_q || it.nombre.toLowerCase().includes(_q) || (it.desc && it.desc.toLowerCase().includes(_q));
+/* ── RENDER DE CARDS DE LA CARTA ── */
+function renderMenuCards() {
+  const container = document.getElementById('menuCardsContainer');
+  const filtered = _menuItems.filter(item => {
+    const matchCat = _currentCat === 'todos' || item.cat === _currentCat;
+    const matchQ = !_searchQuery || 
+      item.nombre.toLowerCase().includes(_searchQuery) || 
+      (item.desc && item.desc.toLowerCase().includes(_searchQuery));
     return matchCat && matchQ;
   });
 
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--tm);">🍽️ No se encontraron productos con ese criterio.</div>';
+    container.innerHTML = `
+      <div style="text-align:center;padding:40px 20px;background:var(--bg-card);border:2px solid var(--bd);border-radius:18px;">
+        <span style="font-size:2.5rem;display:block;margin-bottom:8px;">🍽️</span>
+        <p style="font-size:1.1rem;font-weight:700;color:#FFFFFF;">No se encontraron productos</p>
+        <p style="font-size:0.95rem;color:var(--tm);">Intenta con otro término o categoría.</p>
+      </div>
+    `;
     return;
   }
 
-  grid.innerHTML = filtered.map(it => {
-    const inCart = _cart.find(c => c.id === it.id);
+  container.innerHTML = filtered.map(item => {
+    const inCart = _cart.find(c => c.id === item.id);
     return `
-      <div class="dish-card">
-        <div>
-          <div class="dish-top">
-            <div class="dish-name">${it.nombre}</div>
-            ${it.badge ? `<div class="dish-badge">${it.badge}</div>` : ''}
-          </div>
-          <div class="dish-desc">${it.desc || ''}</div>
+      <article class="dish-card" aria-label="${item.nombre}">
+        <div class="dish-header">
+          <h3 class="dish-name">${item.nombre}</h3>
+          ${item.badge ? `<span class="dish-badge">${item.badge}</span>` : ''}
         </div>
-        <div class="dish-foot">
-          <div class="dish-price">${formatCLP(it.precio)}</div>
+        <p class="dish-desc">${item.desc || ''}</p>
+        <div class="dish-footer">
+          <span class="dish-price">${formatCLP(item.precio)}</span>
           ${inCart ? `
-            <div class="stepper">
-              <button class="stepper-btn" onclick="updateQty('${it.id}', -1)">−</button>
-              <span class="stepper-val">${inCart.cant}</span>
-              <button class="stepper-btn" onclick="updateQty('${it.id}', 1)">+</button>
+            <div class="dish-stepper" role="group" aria-label="Cantidad de ${item.nombre}">
+              <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', -1)" aria-label="Disminuir cantidad">−</button>
+              <span class="stepper-value" aria-live="polite">${inCart.cant}</span>
+              <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', 1)" aria-label="Aumentar cantidad">+</button>
             </div>
           ` : `
-            <button class="btn-add" onclick="addItem('${it.id}')">
-              <span>+ Agregar</span>
+            <button class="btn-add-item" onclick="addItemToOrder('${item.id}')" aria-label="Agregar ${item.nombre} al pedido">
+              <span style="font-size:1.2rem;font-weight:900;">+</span> <span>Agregar</span>
             </button>
           `}
         </div>
-      </div>
+      </article>
     `;
   }).join('');
 }
 
-function filterCat(cat, btn) {
-  _cat = cat;
-  document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
+function filterCategory(cat, btn) {
+  _currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  renderGrid();
+  renderMenuCards();
 }
 
-function handleSearch(val) {
-  _q = val.trim().toLowerCase();
-  renderGrid();
+function handleMenuSearch(val) {
+  _searchQuery = val.trim().toLowerCase();
+  renderMenuCards();
 }
 
-/* ── ACCIONES CARRITO ── */
-function addItem(id) {
-  const it = _items.find(i => i.id === id);
-  if (!it) return;
-  const inCart = _cart.find(c => c.id === id);
-  if (inCart) inCart.cant += 1;
-  else _cart.push({ id: it.id, nombre: it.nombre, precio: it.precio, cant: 1 });
-  saveStorage();
-  renderGrid();
-  toast(`Agregado: ${it.nombre}`);
+/* ── ACCIONES DE SELECCIÓN ── */
+function addItemToOrder(id) {
+  const item = _menuItems.find(i => i.id === id);
+  if (!item) return;
+
+  const existing = _cart.find(c => c.id === id);
+  if (existing) {
+    existing.cant += 1;
+  } else {
+    _cart.push({ id: item.id, nombre: item.nombre, cant: 1 });
+  }
+
+  saveState();
+  renderMenuCards();
+  toast(`Agregado: ${item.nombre}`);
 }
 
-function updateQty(id, delta) {
-  const inCart = _cart.find(c => c.id === id);
-  if (!inCart) return;
-  inCart.cant += delta;
-  if (inCart.cant <= 0) _cart = _cart.filter(c => c.id !== id);
-  saveStorage();
-  renderGrid();
+function updateItemQuantity(id, delta) {
+  const existing = _cart.find(c => c.id === id);
+  if (!existing) return;
+
+  existing.cant += delta;
+  if (existing.cant <= 0) {
+    _cart = _cart.filter(c => c.id !== id);
+  }
+
+  saveState();
+  renderMenuCards();
 }
 
-function saveTable(val) {
-  _table = val.trim();
-  localStorage.setItem('lola_mesa_actual', _table);
-  updateUI();
+function saveNotes(val) {
+  _notes = val.trim();
+  localStorage.setItem('lola_pedido_nota', _notes);
 }
 
-function saveNote(val) {
-  _note = val.trim();
-  localStorage.setItem('lola_pedido_nota', _note);
-}
-
-function updateUI() {
-  const count = _cart.reduce((s, i) => s + i.cant, 0);
+/* ── ACTUALIZACIÓN DE INDICADORES Y CAJÓN ── */
+function updateCartIndicators() {
+  const totalCount = _cart.reduce((sum, item) => sum + item.cant, 0);
 
   // Topbar
-  document.getElementById('topCartCount').textContent = `⚡ Mi Pedido (${count})`;
-  document.getElementById('topTableBadge').textContent = _table ? `📍 ${_table}` : '📍 Asignar Mesa';
+  document.getElementById('txtMesaTop').textContent = _table ? `📍 ${_table}` : '📍 Asignar Mesa';
 
   // Floating Bar
-  const fb = document.getElementById('floatingBar');
-  if (count > 0) {
-    fb.classList.add('show');
-    document.getElementById('fbCount').textContent = '⚡ COMANDA EN CURSO';
-    document.getElementById('fbTotal').textContent = `${count} ${count === 1 ? 'item seleccionado' : 'items seleccionados'}`;
+  const fob = document.getElementById('floatingBar');
+  const fobText = document.getElementById('fobItemsText');
+  if (totalCount > 0) {
+    fob.classList.add('visible');
+    fobText.textContent = `${totalCount} ${totalCount === 1 ? 'producto en pedido' : 'productos en pedido'}`;
   } else {
-    fb.classList.remove('show');
+    fob.classList.remove('visible');
   }
 
   // Drawer
-  const listEl = document.getElementById('drawerOrderList');
-  document.getElementById('drawerTotal').textContent = `${count} ${count === 1 ? 'producto seleccionado' : 'productos seleccionados'}`;
-  if (document.getElementById('tableInp')) document.getElementById('tableInp').value = _table || '';
-  if (document.getElementById('noteInp')) document.getElementById('noteInp').value = _note || '';
+  document.getElementById('drawerMesaText').textContent = _table ? `📍 ${_table}` : '📍 Mesa no asignada';
+  document.getElementById('drawerItemCount').textContent = `${totalCount} ${totalCount === 1 ? 'producto' : 'productos'}`;
+  const notesEl = document.getElementById('drawerNotes');
+  if (notesEl) notesEl.value = _notes || '';
 
-  if (!count) {
-    listEl.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--tm);">🛒 Tu comanda está vacía.<br>Agrega platos o tragos de la carta.</div>';
+  const drawerList = document.getElementById('drawerList');
+  if (!totalCount) {
+    drawerList.innerHTML = `
+      <div style="text-align:center;padding:30px 10px;color:var(--tm);">
+        🛒 Tu pedido está vacío.<br>Agrega platos o tragos de la carta.
+      </div>
+    `;
   } else {
-    listEl.innerHTML = _cart.map(it => `
-      <div class="order-row">
-        <div class="order-row-info">
-          <div class="order-row-name"><b>${it.cant}x</b> ${it.nombre}</div>
-        </div>
-        <div class="stepper">
-          <button class="stepper-btn" onclick="updateQty('${it.id}', -1)">−</button>
-          <span class="stepper-val">${it.cant}</span>
-          <button class="stepper-btn" onclick="updateQty('${it.id}', 1)">+</button>
+    drawerList.innerHTML = _cart.map(item => `
+      <div class="drawer-item-card">
+        <div class="d-item-name"><b>${item.cant}x</b> ${item.nombre}</div>
+        <div class="dish-stepper">
+          <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', -1)" aria-label="Quitar uno">−</button>
+          <span class="stepper-value">${item.cant}</span>
+          <button class="stepper-btn" onclick="updateItemQuantity('${item.id}', 1)" aria-label="Agregar uno">+</button>
         </div>
       </div>
     `).join('');
   }
 }
 
-/* ── DRAWER & MODALS ── */
-function openOrderDrawer() {
-  updateUI();
-  document.getElementById('orderDrawer').classList.add('open');
+/* ── MODAL SELECCIÓN DE MESA ── */
+function initMesaGrid() {
+  const grid = document.getElementById('mesaQuickGrid');
+  let html = '';
+  for (let i = 1; i <= 15; i++) {
+    html += `<button class="mesa-quick-btn" onclick="selectQuickMesa(${i})">${i}</button>`;
+  }
+  grid.innerHTML = html;
+}
+
+function selectQuickMesa(num) {
+  const inp = document.getElementById('mesaManualInp');
+  inp.value = `Mesa ${num}`;
+  highlightQuickBtn(`Mesa ${num}`);
+}
+
+function highlightQuickBtn(val) {
+  const num = parseInt(val.replace(/[^0-9]/g, ''), 10);
+  document.querySelectorAll('.mesa-quick-btn').forEach((btn, idx) => {
+    if (idx + 1 === num) btn.classList.add('selected');
+    else btn.classList.remove('selected');
+  });
+}
+
+function openMesaModal() {
+  document.getElementById('mesaModal').classList.add('open');
+  if (_table) {
+    document.getElementById('mesaManualInp').value = _table;
+    highlightQuickBtn(_table);
+  }
+}
+
+function closeMesaModal() {
+  document.getElementById('mesaModal').classList.remove('open');
+}
+
+function confirmMesaSelection() {
+  const inp = document.getElementById('mesaManualInp');
+  let val = inp.value.trim();
+  if (!val) {
+    toast('Por favor selecciona o escribe tu mesa', true);
+    inp.focus();
+    return;
+  }
+  if (!val.toLowerCase().startsWith('mesa')) {
+    val = `Mesa ${val}`;
+  }
+  _table = val;
+  saveState();
+  closeMesaModal();
+  toast(`¡Mesa asignada: ${_table}!`);
+}
+
+/* ── CAJÓN DE COMANDA ── */
+function openComandaDrawer() {
+  if (!_table) {
+    openMesaModal();
+    return;
+  }
+  updateCartIndicators();
+  document.getElementById('comandaDrawer').classList.add('open');
   document.getElementById('drawerBackdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeOrderDrawer() {
-  document.getElementById('orderDrawer').classList.remove('open');
+function closeComandaDrawer() {
+  document.getElementById('comandaDrawer').classList.remove('open');
   document.getElementById('drawerBackdrop').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-function openWelcomeModal() {
-  document.getElementById('obTablePill').textContent = _table ? `📍 ${_table}` : '📍 Mesa: Sin asignar';
-  document.getElementById('welcomeModal').classList.add('open');
-}
-
-function closeWelcomeModal() {
-  document.getElementById('welcomeModal').classList.remove('open');
-}
-
-function startOrder() {
-  closeWelcomeModal();
-  openOrderDrawer();
-}
-
 /* ── GENERACIÓN QR ── */
-function generateQR() {
+function generateOrderQR() {
   if (!_cart.length) {
-    toast('Agrega al menos un producto a tu pedido', 'err');
+    toast('Agrega al menos un producto a tu pedido', true);
     return;
   }
-  const tableVal = document.getElementById('tableInp').value.trim();
-  if (!tableVal) {
-    toast('Por favor escribe tu número de mesa', 'err');
-    document.getElementById('tableInp').focus();
+  if (!_table) {
+    toast('Por favor selecciona tu número de mesa primero', true);
+    openMesaModal();
     return;
   }
-  _table = tableVal;
-  saveStorage();
 
   const payload = {
     app: 'comadre_lola',
@@ -955,10 +1283,10 @@ function generateQR() {
     mesa: _table,
     ts: Date.now(),
     items: _cart.map(i => ({ id: i.id, n: i.nombre, c: i.cant })),
-    nota: _note || ''
+    nota: _notes || ''
   };
 
-  const container = document.getElementById('qrContainer');
+  const container = document.getElementById('qrCanvasBox');
   container.innerHTML = '';
 
   new QRCode(container, {
@@ -970,14 +1298,15 @@ function generateQR() {
     correctLevel: QRCode.CorrectLevel.M
   });
 
-  document.getElementById('qrMesa').textContent = _table.toUpperCase();
-  document.getElementById('qrSummary').innerHTML = _cart.map(i => `
-    <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-      <span><b>• ${i.cant}x</b> ${i.nombre}</span>
+  document.getElementById('qrMesaTag').textContent = _table.toUpperCase();
+  document.getElementById('qrItemsList').innerHTML = _cart.map(i => `
+    <div style="display:flex;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <span style="color:var(--p);font-weight:800;margin-right:8px;">${i.cant}x</span>
+      <span>${i.nombre}</span>
     </div>
-  `).join('') + (_note ? `<div style="margin-top:6px;color:var(--p);font-style:italic;">Nota: "${_note}"</div>` : '');
+  `).join('') + (_notes ? `<div style="margin-top:8px;color:var(--p);font-style:italic;">Nota: "${_notes}"</div>` : '');
 
-  closeOrderDrawer();
+  closeComandaDrawer();
   document.getElementById('qrModal').classList.add('open');
   toast('¡Código QR generado con éxito!');
 }
@@ -986,23 +1315,23 @@ function closeQRModal() {
   document.getElementById('qrModal').classList.remove('open');
 }
 
-/* ── INIT CARTA ── */
-async function initCarta() {
-  loadStorage();
+/* ── INICIALIZACIÓN ── */
+async function initApp() {
+  loadSavedState();
+  initMesaGrid();
 
-  // Detectar URL params (ej: /carta?mesa=4)
+  // Detectar parámetro ?mesa=X en la URL
   const params = new URLSearchParams(window.location.search);
-  const m = params.get('mesa') || params.get('table');
-  if (m) {
-    _table = `Mesa ${m.replace(/[^0-9a-zA-Z]/g, '')}`;
-    saveTable(_table);
-    setTimeout(() => openWelcomeModal(), 400);
-  } else if (!localStorage.getItem('lola_carta_visited')) {
-    setTimeout(() => openWelcomeModal(), 500);
-    localStorage.setItem('lola_carta_visited', '1');
+  const paramMesa = params.get('mesa') || params.get('table');
+  if (paramMesa) {
+    _table = `Mesa ${paramMesa.replace(/[^0-9a-zA-Z]/g, '')}`;
+    saveState();
+  } else if (!_table) {
+    // Si no tiene mesa configurada, abrir el selector suavemente
+    setTimeout(() => openMesaModal(), 400);
   }
 
-  // Cargar contenido actualizado desde API si existe
+  // Cargar catálogo actualizado desde CMS si está disponible
   try {
     const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? window.location.origin
@@ -1010,15 +1339,15 @@ async function initCarta() {
     const res = await fetch(API + '/api/content');
     const result = await res.json();
     if (result.ok && result.data && result.data.carta && result.data.carta.length > 0) {
-      _items = result.data.carta;
+      _menuItems = result.data.carta;
     }
   } catch(e) {}
 
-  renderGrid();
-  updateUI();
+  renderMenuCards();
+  updateCartIndicators();
 }
 
-initCarta();
+initApp();
 </script>
 </body>
 </html>
