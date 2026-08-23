@@ -82,20 +82,30 @@ body{
   font-size:var(--base-size);
   line-height:var(--line-height);
   background-color: #000000;
-  background-image: 
-    radial-gradient(ellipse at 50% 10%, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.68) 80%),
-    linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.62)),
-    url('assets/fondo_oficial.png');
-  background-size: auto, auto, 480px;
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-attachment: scroll, scroll, fixed;
-  background-position: center top, center top, center center;
   color:var(--tx);
   min-height:100vh;
   padding-bottom:130px;
   overflow-x:hidden;
+  position: relative;
   text-rendering:optimizeLegibility;
   -webkit-font-smoothing:antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #000000;
+  background-image: 
+    radial-gradient(ellipse at 50% 30%, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.40) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.32)),
+    url('assets/fondo_oficial.png');
+  background-size: cover, cover, 540px;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-position: center center, center center, center center;
+  transform: translateZ(0);
 }
 
 /* ── FOCO ACCESIBLE AAA (Para teclado / lectores de pantalla) ── */
@@ -736,15 +746,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <!-- ── LISTADO DE PLATOS / TRAGOS ── -->
 <main class="menu-list" id="menuCardsContainer" role="main"></main>
 
-<!-- ── FOOTER ELEGANTE ── -->
-<footer style="text-align:center;padding:40px 20px 60px;background:#08080C;border-top:2px solid var(--bd);margin-top:40px;">
+<!-- ── FOOTER CONTINUO & ELEGANTE ── -->
+<footer style="text-align:center;padding:40px 20px 60px;background:transparent;border-top:none;margin-top:20px;">
   <div style="font-family:var(--flogo);font-size:1.5rem;color:var(--p);margin-bottom:8px;">🌹 La Comadre Lola</div>
   <p style="font-size:0.95rem;color:var(--tm);margin-bottom:16px;">Manuel Antonio Matta 1269, Quilicura · A pasos del Metro Lo Cruzat (L3)</p>
   <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
-    <a href="/" style="color:#FFFFFF;text-decoration:none;font-weight:700;padding:8px 16px;background:var(--bg-elevated);border-radius:10px;border:1px solid var(--bd);">🏠 Volver al Inicio</a>
+    <a href="/" style="color:#FFFFFF;text-decoration:none;font-weight:700;padding:8px 16px;background:rgba(18,18,26,0.85);backdrop-filter:blur(10px);border-radius:10px;border:1px solid rgba(255,255,255,0.15);">🏠 Volver al Inicio</a>
     <a href="/#reservas" style="color:#000;background:var(--p);text-decoration:none;font-weight:900;padding:8px 16px;border-radius:10px;">🎉 Reservar Mesa</a>
   </div>
-  <div style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;">
+  <div style="padding-top:16px;border-top:none;display:flex;justify-content:center;">
     <a href="https://tusitioya.cl" target="_blank" rel="noopener" class="tusitio-badge" title="Desarrollado por TuSitio Labs">
       <span class="tusitio-badge-text">Desarrollado por</span>
       <img src="assets/tusitio_labs_logo_footer.svg" alt="TuSitio Labs" class="tusitio-badge-logo">

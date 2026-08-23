@@ -154,9 +154,9 @@ if (process.env.EMAIL_USER && !process.env.EMAIL_USER.startsWith('PENDIENTE')) {
 }
 
 function getAdminEmails() {
-  const raw = process.env.ADMIN_EMAIL || process.env.EMAIL_USER || '';
+  const raw = process.env.ADMIN_EMAIL || 'artemisa.photo@gmail.com';
   const emails = raw.split(',').map(e => e.trim()).filter(Boolean);
-  return emails.length ? emails : (process.env.EMAIL_USER ? [process.env.EMAIL_USER] : []);
+  return emails.length ? emails : ['artemisa.photo@gmail.com'];
 }
 
 async function sendMail(opts) {
