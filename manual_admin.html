@@ -400,24 +400,19 @@
           <td>Lector QR con cámara para despachar comandas a WhatsApp de cocina.</td>
         </tr>
         <tr>
-          <td><strong>Panel Admin</strong></td>
+          <td><strong>Panel de Control & CMS Unificado</strong></td>
           <td><span class="code-snippet">lacomadrelola.cl/admin</span></td>
           <td>Administrador</td>
-          <td>Gestión de reservas, historial de pedidos, suscriptores y prueba Gmail.</td>
-        </tr>
-        <tr>
-          <td><strong>Editor CMS en Vivo</strong></td>
-          <td><span class="code-snippet">lacomadrelola.cl/editor</span></td>
-          <td>Administrador</td>
-          <td>Modificación en vivo de platos, precios, eventos, fotos, textos y colores.</td>
+          <td>Gestión integral: Reservas, Comandas, Newsletter, Métricas, Editor CMS y Manual.</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout avoid-break">
-      <strong>🔐 Credenciales de Inicio de Sesión (Admin y Editor)</strong>
+      <strong>🔐 Credenciales de Inicio de Sesión (Panel de Control Unificado)</strong>
+      Acceso directo: <span class="code-snippet">lacomadrelola.cl/admin</span> (redirige automáticamente a login si la sesión expiró).<br>
       Usuario por defecto: <span class="code-snippet">admin</span><br>
-      Contraseña: la definida en la variable de entorno <span class="code-snippet">ADMIN_PASS</span> de Render. La sesión se mantiene autenticada mediante token JWT seguro por 8 horas.
+      Contraseña: la definida en la variable de entorno <span class="code-snippet">ADMIN_PASS</span>. La sesión se mantiene autenticada mediante token JWT seguro por 8 horas.
     </div>
 
     <!-- ════════════ CAPÍTULO 2 ════════════ -->
@@ -489,8 +484,8 @@
     </ol>
 
     <!-- ════════════ CAPÍTULO 4 ════════════ -->
-    <h2 class="section-heading">4. Uso del Editor CMS en Vivo (`/editor`)</h2>
-    <p>El Editor visual permite modificar todo el contenido del sitio web sin tocar código de programación.</p>
+    <h2 class="section-heading">4. Uso del Editor CMS Integrado en el Panel Admin</h2>
+    <p>El Editor visual integrado en <span class="code-snippet">lacomadrelola.cl/admin</span> (pestaña <em>"🎨 Editor Web (CMS)"</em>) permite modificar todo el contenido del sitio web sin tocar código de programación y con compresión de imágenes automática en tiempo real.</p>
 
     <table class="manual-table avoid-break">
       <thead>
@@ -502,24 +497,24 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>🏠 Hero</strong></td>
+          <td><strong>🌹 Hero</strong></td>
           <td>Títulos, subtítulo, etiqueta y botones de portada.</td>
           <td>Permite cambiar las frases promocionales y los botones principales.</td>
         </tr>
         <tr>
           <td><strong>🍽️ Carta</strong></td>
           <td>Platos, tragos, precios, descripciones y fotos.</td>
-          <td>Se pueden añadir o borrar ítems, asignar badges (<span class="badge-pill cyan">POPULAR</span>) y subir fotos.</td>
+          <td>Se pueden añadir o borrar ítems, asignar categorías y subir fotos optimizadas.</td>
         </tr>
         <tr>
-          <td><strong>🖼 Carrusel</strong></td>
+          <td><strong>📸 Carrusel</strong></td>
           <td>Imágenes de fondo a pantalla completa del inicio.</td>
-          <td>Sube fotos de alta resolución o ingresa URLs directas.</td>
+          <td>Sube fotos de alta resolución con compresión canvas instantánea.</td>
         </tr>
         <tr>
-          <td><strong>📸 Galería</strong></td>
+          <td><strong>🖼️ Galería</strong></td>
           <td>Fotos de "Mejores Momentos" con descripciones.</td>
-          <td>Controla las imágenes del lightbox interactivo.</td>
+          <td>Controla las imágenes del lightbox interactivo con auto-compresión.</td>
         </tr>
         <tr>
           <td><strong>🎤 Eventos</strong></td>
@@ -534,14 +529,14 @@
         <tr>
           <td><strong>📍 Footer</strong></td>
           <td>Dirección, teléfono, horarios de atención y copyright.</td>
-          <td>Sincroniza automáticamente los datos de contacto en la web.</td>
+          <td>Sincroniza automáticamente los datos de contacto en toda la web.</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout avoid-break">
       <strong>🚀 El Botón "Publicar en Vivo"</strong>
-      Cada vez que realices cambios en el editor, presiona el botón verde/azul superior <strong>"🚀 Publicar en vivo"</strong>. El sistema guardará los datos en el servidor y en 1 segundo todos los visitantes verán el contenido actualizado.
+      Cada vez que realices cambios en el editor, presiona el botón superior <strong>"🚀 Publicar en vivo"</strong>. El sistema guardará los datos en la base de datos de producción y todos los visitantes verán el contenido actualizado de inmediato.
     </div>
 
     <!-- ════════════ CAPÍTULO 5 ════════════ -->
@@ -550,14 +545,14 @@
     <h2 class="section-heading">5. Preguntas Frecuentes y Soporte Técnico</h2>
 
     <h3 class="sub-heading">❓ ¿Qué hacer si no llegan los correos de reservas?</h3>
-    <p>1. Verifica en <span class="code-snippet">/admin</span> haciendo clic en <strong>"✉️ Probar Gmail"</strong>.<br>
-    2. Si arroja error, comprueba que la contraseña de aplicación de Google (App Password de 16 caracteres) de la cuenta emisora no haya sido revocada.<br>
+    <p>1. Verifica en <span class="code-snippet">/admin</span> la bandeja de reservas.<br>
+    2. Comprueba que las notificaciones estén dirigidas a <span class="code-snippet">artemisa.photo@gmail.com</span>.<br>
     3. Revisa la carpeta de <em>Spam / Correo no deseado</em> en Gmail y marca el remitente como seguro.</p>
 
     <h3 class="sub-heading">❓ ¿Cómo agregar un nuevo plato o evento rápidamente?</h3>
-    <p>1. Ingresa a <span class="code-snippet">lacomadrelola.cl/editor</span>.<br>
-    2. Selecciona la pestaña <strong>🍽️ Carta</strong> o <strong>🎤 Eventos</strong>.<br>
-    3. Haz clic en <strong>"+ Añadir Producto"</strong> o <strong>"+ Añadir Evento"</strong>, completa los datos y sube la foto.<br>
+    <p>1. Ingresa a <span class="code-snippet">lacomadrelola.cl/admin</span> y selecciona la pestaña <strong>🎨 Editor Web (CMS)</strong>.<br>
+    2. Selecciona la sub-sección <strong>🍽️ Carta & Menú</strong> o <strong>🎤 Cartelera Eventos</strong>.<br>
+    3. Haz clic en <strong>"+ Nuevo Plato"</strong> o <strong>"+ Nuevo Evento"</strong>, completa los datos y sube la foto.<br>
     4. Haz clic en <strong>"🚀 Publicar en vivo"</strong>.</p>
 
     <h3 class="sub-heading">❓ ¿El cliente necesita descargar alguna aplicación para pedir?</h3>
