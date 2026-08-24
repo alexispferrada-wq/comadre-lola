@@ -1,0 +1,3 @@
+# Cloudflare Pages Redirects
+http://www.lacomadrelola.cl/* https://lacomadrelola.cl/:splat 301!
+https://www.lacomadrelola.cl/* https://lacomadrelola.cl/:splat 301!
