@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Despacho de Correo de Entrega — La Comadre Lola</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{
+  font-family:'BudmoJiggler';
+  src:url('assets/BudmoJiggler.TTF') format('truetype');
+  font-weight:normal;font-style:normal;font-display:swap;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --p:#00fadd;
+  --s:#e10e89;
+  --a:#00fadd;
+  --bg:#08080c;
+  --bg2:#12121c;
+  --bg3:#181826;
+  --tx:#f0f0f0;
+  --tm:#8a8aa0;
+  --bd:rgba(255,255,255,0.08);
+}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--tx);
+  min-height:100vh;
+  padding:30px 20px 60px;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-color:#08080c;
+  background-image:
+    linear-gradient(180deg, rgba(8, 8, 12, 0.85) 0%, rgba(8, 8, 12, 0.92) 100%),
+    url('assets/fondo_oficial.png');
+  background-size:cover, 480px;
+  background-repeat:no-repeat, repeat;
+  background-position:center center;
+  transform:translateZ(0);
+}
+
+.wrap{
+  max-width:820px;
+  margin:0 auto;
+}
+
+/* Header */
+.top-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.brand{
+  font-family:'BudmoJiggler',cursive;
+  font-size:24px;
+  color:var(--p);
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.brand span{
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  color:var(--tm);
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+/* Card Control */
+.control-box{
+  background:rgba(18,18,28,0.95);
+  border:1px solid rgba(0,250,221,0.3);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.control-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.form-label{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  color:var(--tm);
+}
+.form-input{
+  padding:12px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--bd);
+  border-radius:10px;
+  color:var(--tx);
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+}
+.form-input:focus{
+  outline:none;
+  border-color:var(--p);
+}
+
+.btn-send{
+  width:100%;
+  padding:16px;
+  background:linear-gradient(135deg,var(--p),#00c8b0);
+  color:#000;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-shadow:0 8px 30px rgba(0,250,221,0.35);
+  transition:all 0.2s;
+}
+.btn-send:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 35px rgba(0,250,221,0.5);
+}
+.btn-send:disabled{
+  opacity:0.5;
+  cursor:wait;
+  transform:none;
+}
+
+/* Email Preview Card */
+.preview-card{
+  background:#12121c;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,0.8);
+}
+.email-bar{
+  background:#0d0d15;
+  border-bottom:1px solid var(--bd);
+  padding:16px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:13px;
+}
+.email-meta-row{
+  display:flex;
+  gap:10px;
+}
+.email-meta-row span:first-child{
+  color:var(--tm);
+  min-width:60px;
+  font-weight:600;
+}
+.email-body{
+  padding:32px 28px;
+  line-height:1.6;
+}
+.email-box{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:14px;
+  padding:20px;
+  margin:20px 0;
+}
+.email-box.highlight{
+  border-color:rgba(0,250,221,0.4);
+  background:rgba(0,250,221,0.02);
+}
+.email-box.pink{
+  border-color:rgba(225,14,137,0.4);
+  background:rgba(225,14,137,0.02);
+}
+.email-title{
+  font-size:16px;
+  font-weight:700;
+  color:var(--p);
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-mock{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--p),#00c8b0);
+  color:#000;
+  font-weight:800;
+  font-size:14px;
+  text-decoration:none;
+  padding:12px 24px;
+  border-radius:10px;
+  margin:10px 0;
+}
+.qr-preview-box{
+  text-align:center;
+  background:#090910;
+  border:1px dashed rgba(0,250,221,0.4);
+  border-radius:14px;
+  padding:24px;
+  margin:20px 0;
+}
+.qr-img{
+  width:180px;
+  height:180px;
+  border-radius:10px;
+  border:4px solid #fff;
+  margin:12px auto;
+  display:block;
+}
+
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  background:#12121c;
+  border:1px solid var(--p);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  box-shadow:0 10px 30px rgba(0,0,0,0.8);
+  opacity:0;
+  transform:translateY(20px);
+  transition:all 0.3s;
+  z-index:999;
+}
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.toast.err{
+  border-color:#ff4d4d;
+  color:#ff8080;
+}
+
+@media(max-width:600px){
+  .control-grid{grid-template-columns:1fr;}
+  .email-body{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- Top Nav -->
+  <div class="top-header">
+    <a href="/admin" class="brand">
+      🌹 La Comadre Lola <span>| Panel Admin</span>
+    </a>
+    <div style="display:flex;gap:10px;">
+      <a href="/admin" class="form-input" style="text-decoration:none;font-size:13px;padding:8px 14px;color:var(--tx);">← Volver al Panel</a>
+      <a href="/" target="_blank" class="form-input" style="text-decoration:none;font-size:13px;padding:8px 14px;color:var(--p);border-color:var(--p);">🌐 Ver Sitio</a>
+    </div>
+  </div>
+
+  <!-- Panel de Envío -->
+  <div class="control-box">
+    <h2 style="font-size:18px;margin-bottom:8px;color:var(--p);">📨 Enviar Notificación y Accesos de Entrega</h2>
+    <p style="font-size:13px;color:var(--tm);margin-bottom:20px;line-height:1.5;">
+      Este asistente enviará el correo formal de entrega a Maite con todos los accesos del restaurante, enlace de creación de contraseña, código QR de mesas y el manual PDF.
+    </p>
+
+    <div class="control-grid">
+      <div class="form-group">
+        <label class="form-label">Remitente</label>
+        <input class="form-input" value="contacto@tusitioya.cl" readonly style="opacity:0.75;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Destinatario (Correo de Maite)</label>
+        <input class="form-input" id="toEmail" value="artemisa.photo@gmail.com" placeholder="correo@ejemplo.com">
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:16px;">
+      <label class="form-label">Nombre Contraparte</label>
+      <input class="form-input" id="toName" value="Maite" placeholder="Nombre">
+    </div>
+
+    <button class="btn-send" id="sendBtn" onclick="sendDeliveryEmail()">
+      <span>🚀 Enviar Correo de Entrega a Maite</span>
+    </button>
+  </div>
+
+  <!-- Previsualización del Correo en Tiempo Real -->
+  <div class="preview-card">
+    <div class="email-bar">
+      <div class="email-meta-row">
+        <span>De:</span>
+        <strong style="color:var(--p);">TuSitioYa &lt;contacto@tusitioya.cl&gt;</strong>
+      </div>
+      <div class="email-meta-row">
+        <span>Para:</span>
+        <strong id="previewTo">Maite &lt;artemisa.photo@gmail.com&gt;</strong>
+      </div>
+      <div class="email-meta-row">
+        <span>Asunto:</span>
+        <strong>🌹 ¡Tu nuevo sitio web y sistema digital están listos! — La Comadre Lola</strong>
+      </div>
+      <div class="email-meta-row">
+        <span>Adjunto:</span>
+        <span style="color:var(--p);font-size:12px;">📄 Manual_Administracion_La_Comadre_Lola.pdf (814 KB)</span>
+      </div>
+    </div>
+
+    <div class="email-body">
+      <div style="font-size:18px;font-weight:700;margin-bottom:16px;color:#fff;">
+        Hola <span id="previewGreeting">Maite</span>, un gusto saludarte.
+      </div>
+      <p style="color:#d0d0e0;margin-bottom:16px;">
+        Te escribimos para contarte que hemos finalizado con éxito la puesta en marcha de la nueva plataforma web y sistema digital para <b>La Comadre Lola</b>. El sitio ya se encuentra 100% activo, optimizado para celulares y computadores, y listo para recibir a tus clientes.
+      </p>
+
+      <div class="email-box highlight">
+        <div class="email-title">🌐 1. Enlaces Principales del Restaurante</div>
+        <ul style="list-style:none;padding-left:0;line-height:1.8;font-size:14px;color:#d0d0e0;">
+          <li>• <b>Sitio Web Oficial:</b> <a href="https://lacomadrelola.cl" target="_blank" style="color:var(--p);font-weight:600;">https://lacomadrelola.cl</a></li>
+          <li>• <b>Carta Digital Interactiva:</b> <a href="https://lacomadrelola.cl/carta" target="_blank" style="color:var(--p);font-weight:600;">https://lacomadrelola.cl/carta</a></li>
+          <li>• <b>Panel de Administración y Reservas:</b> <a href="https://lacomadrelola.cl/admin" target="_blank" style="color:var(--p);font-weight:600;">https://lacomadrelola.cl/admin</a></li>
+        </ul>
+      </div>
+
+      <div class="email-box pink">
+        <div class="email-title" style="color:#ff2d92;">🔑 2. Acceso y Definición de tu Contraseña Personal</div>
+        <p style="font-size:14px;color:#d0d0e0;margin-bottom:12px;">
+          Para que tengas el control total y exclusivo de tu panel de administración, puedes definir tu propia contraseña directamente desde este enlace:
+        </p>
+        <div style="text-align:center;">
+          <a href="https://lacomadrelola.cl/login.html?action=reset" target="_blank" class="btn-mock">
+            🔑 Crear / Guardar mi Contraseña
+          </a>
+        </div>
+        <p style="font-size:12px;color:var(--tm);margin-top:10px;">
+          <b>Usuario:</b> <code>admin</code><br>
+          <i>(Nota: Si en algún momento olvidas tu clave, en la misma pantalla de ingreso encontrarás la opción "¿Olvidaste tu contraseña?" para restaurarla en segundos).</i>
+        </p>
+      </div>
+
+      <div class="qr-preview-box">
+        <div class="email-title" style="justify-content:center;">📱 3. Código QR para las Mesas (Carta Digital)</div>
+        <p style="font-size:13px;color:var(--tm);max-width:500px;margin:0 auto 12px;">
+          Puedes descargar e imprimir este código QR para colocarlo en las mesas o barra. Los clientes abrirán la carta digital al instante.
+        </p>
+        <img src="assets/qr_carta_oficial.png" alt="QR Carta" class="qr-img">
+        <div>
+          <a href="assets/qr_carta_oficial.png" download="QR_Carta_La_Comadre_Lola.png" style="color:var(--p);font-size:13px;font-weight:700;text-decoration:none;">
+            ⬇️ Descargar Imagen QR en Alta Definición
+          </a>
+        </div>
+      </div>
+
+      <div class="email-box">
+        <div class="email-title">📖 4. Manual Oficial de Operaciones</div>
+        <p style="font-size:14px;color:#d0d0e0;margin-bottom:12px;">
+          Hemos preparado un manual redactado en lenguaje sencillo y práctico para la administración del local:
+        </p>
+        <a href="/Manual_Administracion_La_Comadre_Lola.pdf" target="_blank" style="color:var(--p);font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+          📄 Descargar Manual de Administración en PDF (814 KB)
+        </a>
+      </div>
+
+      <p style="color:#d0d0e0;margin-top:24px;">
+        Cualquier duda que tengas estamos totalmente a tu disposición para apoyarte en el despegue de la plataforma.
+      </p>
+      <p style="color:#fff;font-weight:600;margin-top:10px;">
+        ¡Mucho éxito con la nueva web de <b>La Comadre Lola</b>! 🥂✨
+      </p>
+
+      <div style="margin-top:30px;padding-top:20px;border-top:1px solid var(--bd);text-align:center;font-size:13px;color:var(--tm);">
+        <strong style="color:#fff;">Equipo TuSitioYa</strong><br>
+        <a href="mailto:contacto@tusitioya.cl" style="color:var(--p);text-decoration:none;">contacto@tusitioya.cl</a> | <a href="https://tusitioya.cl" target="_blank" style="color:var(--p);text-decoration:none;">tusitioya.cl</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+const API = window.location.origin;
+
+document.getElementById('toEmail').addEventListener('input', function(e) {
+  const name = document.getElementById('toName').value || 'Maite';
+  document.getElementById('previewTo').textContent = `${name} <${e.target.value}>`;
+});
+
+document.getElementById('toName').addEventListener('input', function(e) {
+  const email = document.getElementById('toEmail').value || 'artemisa.photo@gmail.com';
+  document.getElementById('previewTo').textContent = `${e.target.value} <${email}>`;
+  document.getElementById('previewGreeting').textContent = e.target.value;
+});
+
+function showToast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.textContent = (isErr ? '⚠ ' : '✓ ') + msg;
+  t.className = 'toast show' + (isErr ? ' err' : '');
+  setTimeout(() => { t.className = 'toast'; }, 4000);
+}
+
+async function sendDeliveryEmail() {
+  const btn = document.getElementById('sendBtn');
+  const to = document.getElementById('toEmail').value.trim();
+  const name = document.getElementById('toName').value.trim();
+
+  if (!to) {
+    showToast('Ingresa un correo destinatario válido', true);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳ Despachando correo por MailChannels...</span>';
+
+  try {
+    const res = await fetch(API + '/api/admin/send-delivery-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, name })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      showToast(`¡Correo formal enviado con éxito a ${to}!`);
+      btn.innerHTML = '<span>✅ ¡Correo Enviado Exitosamente!</span>';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🚀 Reenviar Correo de Entrega</span>';
+      }, 3000);
+    } else {
+      showToast(data.error || 'Error al enviar correo', true);
+      btn.disabled = false;
+      btn.innerHTML = '<span>🚀 Enviar Correo de Entrega a Maite</span>';
+    }
+  } catch (err) {
+    showToast('Error de conexión con el servidor', true);
+    btn.disabled = false;
+    btn.innerHTML = '<span>🚀 Enviar Correo de Entrega a Maite</span>';
+  }
+}
+</script>
+</body>
+</html>
