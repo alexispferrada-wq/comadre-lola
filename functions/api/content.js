@@ -2,29 +2,42 @@
 async function ensureCmsTable(db) {
   if (!db) return;
   try {
-    await db.exec(`
-      CREATE TABLE IF NOT EXISTS cms_content (
-        key TEXT PRIMARY KEY,
-        data TEXT NOT NULL,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-
     const info = await db.prepare("PRAGMA table_info(cms_content)").all();
-    const cols = (info?.results || []).map(c => c.name);
+    const cols = (info && info.results ? info.results : []).map(c => c.name);
 
-    if (cols.length > 0 && !cols.includes('key')) {
-      await db.exec(`DROP TABLE IF EXISTS cms_content;`);
-      await db.exec(`
+    if (!cols || cols.length === 0) {
+      await db.prepare(`
+        CREATE TABLE IF NOT EXISTS cms_content (
+          "key" TEXT PRIMARY KEY,
+          "data" TEXT NOT NULL,
+          "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `).run();
+    } else if (!cols.includes('key')) {
+      // Recrear si la tabla previa fue creada con esquema incompatible
+      await db.prepare("DROP TABLE IF EXISTS cms_content").run();
+      await db.prepare(`
         CREATE TABLE cms_content (
-          key TEXT PRIMARY KEY,
-          data TEXT NOT NULL,
-          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
+          "key" TEXT PRIMARY KEY,
+          "data" TEXT NOT NULL,
+          "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `).run();
     }
   } catch (e) {
-    console.warn('ensureCmsTable warning:', e);
+    console.error('ensureCmsTable error:', e);
+    try {
+      await db.prepare("DROP TABLE IF EXISTS cms_content").run();
+      await db.prepare(`
+        CREATE TABLE cms_content (
+          "key" TEXT PRIMARY KEY,
+          "data" TEXT NOT NULL,
+          "updated_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `).run();
+    } catch (e2) {
+      console.error('Forced table creation error:', e2);
+    }
   }
 }
 
@@ -33,7 +46,7 @@ export async function onRequestGet(context) {
   try {
     if (env.DB) {
       await ensureCmsTable(env.DB);
-      const row = await env.DB.prepare("SELECT data FROM cms_content WHERE key = 'site_content'").first();
+      const row = await env.DB.prepare('SELECT "data" FROM cms_content WHERE "key" = ?').bind('site_content').first();
       if (row && row.data) {
         const parsed = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
         return new Response(JSON.stringify({ ok: true, data: parsed }), {
@@ -69,9 +82,9 @@ async function handleSaveContent(context) {
     if (env.DB) {
       await ensureCmsTable(env.DB);
       await env.DB.prepare(
-        `INSERT INTO cms_content (key, data, updated_at)
+        `INSERT INTO cms_content ("key", "data", "updated_at")
          VALUES ('site_content', ?, CURRENT_TIMESTAMP)
-         ON CONFLICT(key) DO UPDATE SET data = excluded.data, updated_at = CURRENT_TIMESTAMP`
+         ON CONFLICT("key") DO UPDATE SET "data" = excluded."data", "updated_at" = CURRENT_TIMESTAMP`
       )
       .bind(JSON.stringify(dataToSave))
       .run();
