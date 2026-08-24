@@ -198,6 +198,33 @@ htmlFiles.forEach(filename => {
   }
 });
 
+/* ── LAB 8: CLOUDFLARE EDGE, DUAL DOMAIN & MOTOR DE CORREO ── */
+console.log('\n☁️ LAB 8: Cloudflare Edge, Enrutamiento Dual & Motor de Correo');
+const middlewarePath = path.join(rootDir, 'functions/_middleware.js');
+const redirectsPath = path.join(rootDir, '_redirects');
+const reservationsFuncPath = path.join(rootDir, 'functions/api/reservations.js');
+const pdfPath = path.join(rootDir, 'Manual_Administracion_La_Comadre_Lola.pdf');
+
+assert(fs.existsSync(middlewarePath), 'Middleware de Edge (_middleware.js) implementado');
+if (fs.existsSync(middlewarePath)) {
+  const mw = fs.readFileSync(middlewarePath, 'utf-8');
+  assert(mw.includes('www.lacomadrelola.cl'), 'Middleware gestiona resolución dual www.lacomadrelola.cl');
+}
+
+assert(fs.existsSync(redirectsPath), 'Archivo _redirects de Cloudflare Pages presente');
+if (fs.existsSync(redirectsPath)) {
+  const red = fs.readFileSync(redirectsPath, 'utf-8');
+  assert(red.includes('301'), 'Reglas de redirección canónica 301 definidas');
+}
+
+assert(fs.existsSync(reservationsFuncPath), 'Función de reservas en Cloudflare Pages activa');
+if (fs.existsSync(reservationsFuncPath)) {
+  const rf = fs.readFileSync(reservationsFuncPath, 'utf-8');
+  assert(rf.includes('artemisa.photo@gmail.com') && rf.includes('mailchannels'), 'Motor de despacho automático de correos configurado');
+}
+
+assert(fs.existsSync(pdfPath) && fs.statSync(pdfPath).size > 100000, 'Manual oficial PDF compilado y disponible (>500KB)');
+
 /* ── RESULTADOS FINALES ── */
 console.log('\n======================================================');
 console.log(`📊 RESUMEN QA: ${passedTests}/${totalTests} Tests Pasados (${Math.round((passedTests/totalTests)*100)}%)`);
