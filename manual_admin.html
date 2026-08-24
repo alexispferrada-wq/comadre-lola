@@ -139,12 +139,12 @@
       align-self: flex-start;
       background: #111118;
       color: #00fadd;
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 10pt;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
     }
     .cover-title-wrap {
       margin-top: 30px;
@@ -335,13 +335,13 @@
 
     <!-- ════════════ PORTADA ════════════ -->
     <div class="cover-page avoid-break">
-      <div class="cover-badge">Documento Oficial de Administración</div>
+      <div class="cover-badge">Documento Oficial para el Administrador</div>
       
       <div class="cover-title-wrap">
         <div class="cover-brand">🌹 La Comadre Lola</div>
-        <div class="cover-subtitle">Manual de Administración & Guía de Operaciones del Sistema</div>
+        <div class="cover-subtitle">Manual de Uso y Operaciones para el Administrador del Local</div>
         <div class="cover-desc">
-          Guía completa y detallada para el administrador, administradores de turno y equipo de servicio. Incluye gestión de reservas online, flujo de comandas QR para garzones, administración de correos corporativos y uso del Editor CMS en tiempo real.
+          Guía práctica y paso a paso para el administrador y encargado de turno. Aprende a gestionar reservas en tiempo real, configurar el envío de correos con Gmail, modificar la carta y eventos desde el panel web, y coordinar el flujo de pedidos express para garzones.
         </div>
       </div>
 
@@ -351,16 +351,16 @@
           <span>Av. Manuel Antonio Matta 1269, Quilicura</span>
         </div>
         <div>
-          <strong>🌐 Dominio Oficial:</strong>
-          <span>https://lacomadrelola.cl</span>
+          <strong>🌐 Panel de Control:</strong>
+          <span>https://lacomadrelola.cl/admin</span>
         </div>
         <div>
-          <strong>📧 Notificaciones del Sistema:</strong>
+          <strong>📧 Correo de Notificaciones:</strong>
           <span>artemisa.photo@gmail.com</span>
         </div>
         <div>
-          <strong>📅 Versión del Sistema:</strong>
-          <span>2026 · Edición Producción</span>
+          <strong>📅 Versión:</strong>
+          <span>Edición Operativa 2026</span>
         </div>
       </div>
     </div>
@@ -368,199 +368,182 @@
     <!-- ════════════ CAPÍTULO 1 ════════════ -->
     <div class="page-break"></div>
 
-    <h2 class="section-heading">1. Accesos Directos y Rutas del Sistema</h2>
-    <p>El sistema de La Comadre Lola está diseñado con módulos independientes para clientes, garzones y administradores:</p>
+    <h2 class="section-heading">1. Acceso al Panel de Control Unificado</h2>
+    <p>Todo el control del restaurante (reservas, comandas, carta digital, galería de fotos, eventos y textos) se administra desde un solo lugar sin necesidad de instalar programas ni aplicaciones complejas.</p>
 
-    <table class="manual-table avoid-break">
-      <thead>
-        <tr>
-          <th>Ruta / Módulo</th>
-          <th>URL de Acceso</th>
-          <th>Tipo de Usuario</th>
-          <th>Función Principal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Sitio Público</strong></td>
-          <td><span class="code-snippet">lacomadrelola.cl/</span></td>
-          <td>Público General</td>
-          <td>Landing principal con carrusel, eventos, galería y reservas online.</td>
-        </tr>
-        <tr>
-          <td><strong>Carta & Pedido QR</strong></td>
-          <td><span class="code-snippet">lacomadrelola.cl/carta</span></td>
-          <td>Clientes en Mesa</td>
-          <td>Menú digital con fotos, categorías y generador de pedidos express vía QR.</td>
-        </tr>
-        <tr>
-          <td><strong>App de Garzón</strong></td>
-          <td><span class="code-snippet">lacomadrelola.cl/garzon</span></td>
-          <td>Garzones / Barra</td>
-          <td>Lector QR con cámara para despachar comandas a WhatsApp de cocina.</td>
-        </tr>
-        <tr>
-          <td><strong>Panel de Control & CMS Unificado</strong></td>
-          <td><span class="code-snippet">lacomadrelola.cl/admin</span></td>
-          <td>Administrador</td>
-          <td>Gestión integral: Reservas, Comandas, Newsletter, Métricas, Editor CMS y Manual.</td>
-        </tr>
-      </tbody>
-    </table>
+    <h3 class="sub-heading">🔑 Cómo ingresar al sistema:</h3>
+    <ol class="step-list avoid-break">
+      <li><strong>Abre tu navegador</strong> (Google Chrome, Safari o Microsoft Edge) desde tu computador, tablet o celular.</li>
+      <li><strong>Ingresa a la dirección oficial:</strong> <span class="code-snippet">https://lacomadrelola.cl/admin</span></li>
+      <li><strong>Escribe tus datos de acceso:</strong> Ingresa tu usuario (ej: <span class="code-snippet">admin</span>) y tu contraseña de seguridad.</li>
+      <li><strong>¡Listo!</strong> Accederás directamente al panel con todas las pestañas de operación listas para usar. Tu sesión se mantiene activa durante todo tu turno de trabajo.</li>
+    </ol>
 
     <div class="callout avoid-break">
-      <strong>🔐 Credenciales de Inicio de Sesión (Panel de Control Unificado)</strong>
-      Acceso directo: <span class="code-snippet">lacomadrelola.cl/admin</span> (redirige automáticamente a login si la sesión expiró).<br>
-      Usuario por defecto: <span class="code-snippet">admin</span><br>
-      Contraseña: la definida en la variable de entorno <span class="code-snippet">ADMIN_PASS</span>. La sesión se mantiene autenticada mediante token JWT seguro por 8 horas.
+      <strong>💡 Pestañas disponibles en tu Panel:</strong>
+      • 📊 <b>Métricas & Resumen:</b> Conteo de reservas recibidas, comandas del día y suscriptores.<br>
+      • 📅 <b>Reservas:</b> Bandeja de entrada con las solicitudes de mesas enviadas por clientes.<br>
+      • 🛎️ <b>Comandas:</b> Monitor en tiempo real de pedidos de mesas y barra.<br>
+      • ✉️ <b>Newsletter:</b> Lista de correos de clientes suscritos para promociones.<br>
+      • 🎨 <b>Editor Web (CMS):</b> Modifica precios, fotos de la carta, eventos y portada en vivo.<br>
+      • 📖 <b>Manual de Operaciones:</b> Guía rápida de consulta y descarga del manual oficial.
     </div>
 
     <!-- ════════════ CAPÍTULO 2 ════════════ -->
-    <h2 class="section-heading">2. Gestión de Reservas y Notificaciones de Correo</h2>
-    <p>El sistema cuenta con un motor automatizado que recepciona reservas desde la web y notifica simultáneamente a los administradores.</p>
+    <h2 class="section-heading">2. Configuración del Correo Gmail para Enviar Notificaciones</h2>
+    <p>Para que el sistema pueda enviar automáticamente los correos de confirmación a los clientes y las alertas de reservas a tu bandeja de entrada de Gmail, se utiliza una <strong>Contraseña de Aplicación de Google</strong>. Este procedimiento se hace una sola vez y garantiza máxima seguridad.</p>
 
-    <h3 class="sub-heading">📬 Flujo de Notificaciones Automáticas</h3>
+    <h3 class="sub-heading">📋 Paso a paso para habilitar el envío desde tu Gmail:</h3>
     <ol class="step-list avoid-break">
-      <li><strong>El cliente llena el formulario en la web:</strong> Ingresa nombre, correo, teléfono, fecha, hora, cantidad de personas y requerimientos especiales.</li>
-      <li><strong>Registro en Base de Datos:</strong> La solicitud queda guardada inmediatamente en el panel administrativo con estado <span class="badge-pill pink">Pendiente</span>.</li>
-      <li><strong>Alerta por Correo:</strong> El servidor envía una notificación instantánea con todos los datos de la reserva al correo del administrador: <span class="code-snippet">artemisa.photo@gmail.com</span> (o los correos definidos en <span class="code-snippet">ADMIN_EMAIL</span>).</li>
-      <li><strong>Confirmación al Cliente:</strong> El sistema despacha automáticamente un acuse de recibo al correo del cliente confirmando que su solicitud está en proceso.</li>
+      <li>
+        <strong>Ingresa a tu cuenta de Google:</strong><br>
+        Abre <span class="code-snippet">https://myaccount.google.com/security</span> en tu navegador con la cuenta de Gmail del restaurante (ej: <span class="code-snippet">artemisa.photo@gmail.com</span>).
+      </li>
+      <li>
+        <strong>Activa la "Verificación en dos pasos" (si aún no la tienes):</strong><br>
+        En la sección <em>Seguridad</em>, haz clic en <em>Verificación en dos pasos</em> y sigue las instrucciones en pantalla vinculando el número de teléfono del administrador.
+      </li>
+      <li>
+        <strong>Genera una "Contraseña de Aplicación":</strong><br>
+        En el buscador superior de la cuenta de Google escribe <strong>"Contraseñas de aplicaciones"</strong> (o App Passwords). Haz clic en la opción.
+      </li>
+      <li>
+        <strong>Crea la clave para La Comadre Lola:</strong><br>
+        En el campo de nombre escribe <strong>"La Comadre Lola"</strong> y haz clic en el botón <strong>"Crear"</strong>.
+      </li>
+      <li>
+        <strong>Copia el código de 16 letras generado:</strong><br>
+        Google te mostrará un código amarillo de 16 caracteres (ejemplo: <span class="code-snippet">abcd efgh ijkl mnop</span>). Esta es la llave segura que permite al sistema enviar correos a tu nombre.
+      </li>
+      <li>
+        <strong>Entrega la clave a soporte o ingrésala en la configuración:</strong><br>
+        Con este código activo, el servidor enviará inmediatamente todos los correos de reservas a <span class="code-snippet">artemisa.photo@gmail.com</span> y a los clientes.
+      </li>
     </ol>
 
-    <h3 class="sub-heading">✉️ Configuración de Correos Corporativos (@lacomadrelola.cl)</h3>
-    <p>Para gestionar los 3 correos corporativos oficiales hacia Gmail sin pagar licencias adicionales de Google Workspace:</p>
+    <h3 class="sub-heading">✉️ Correos Corporativos oficiales (@lacomadrelola.cl)</h3>
+    <p>Para una imagen 100% profesional ante clientes y proveedores, el restaurante cuenta con 3 correos corporativos oficiales configurados para reenviar todo automáticamente a tu Gmail sin costo extra:</p>
 
     <table class="manual-table avoid-break">
       <thead>
         <tr>
-          <th>Correo Corporativo</th>
-          <th>Destino de Reenvío</th>
-          <th>Uso Recomendado</th>
+          <th>Correo Oficial</th>
+          <th>Destino en Gmail</th>
+          <th>Propósito</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="code-snippet">administracion@lacomadrelola.cl</span></td>
           <td>Gmail del Administrador</td>
-          <td>Contratos, proveedores, temas legales y financieros.</td>
+          <td>Contratos, facturación, proveedores y temas legales.</td>
         </tr>
         <tr>
           <td><span class="code-snippet">contacto@lacomadrelola.cl</span></td>
           <td>Gmail del Administrador</td>
-          <td>Consultas generales de clientes y solicitudes de eventos privados.</td>
+          <td>Consultas generales de clientes y eventos corporativos.</td>
         </tr>
         <tr>
           <td><span class="code-snippet">reservas@lacomadrelola.cl</span></td>
           <td>Gmail del Administrador</td>
-          <td>Confirmación y coordinación de reservas de mesas y grupos.</td>
+          <td>Atención y confirmación de reservas de mesas y grupos.</td>
         </tr>
       </tbody>
     </table>
-
-    <div class="callout warning avoid-break">
-      <strong>💡 Botón "Probar Gmail" en el Panel Admin</strong>
-      Dentro de <span class="code-snippet">lacomadrelola.cl/admin</span> existe un botón en la barra superior llamado <strong>"✉️ Probar Gmail"</strong>. Al presionarlo, el sistema envía un correo de diagnóstico para confirmar que las credenciales SMTP de Gmail están funcionando al 100%.
-    </div>
 
     <!-- ════════════ CAPÍTULO 3 ════════════ -->
     <div class="page-break"></div>
 
-    <h2 class="section-heading">3. Flujo de Pedido Express QR y App de Garzones</h2>
-    <p>Este flujo acelera la atención en mesa, reduce tiempos de espera y permite enviar pedidos a cocina y barra con total precisión.</p>
+    <h2 class="section-heading">3. Gestión Diaria de Reservas de Mesas</h2>
+    <p>Cada vez que un cliente solicita una mesa desde <span class="code-snippet">lacomadrelola.cl</span>, la reserva entra de inmediato al sistema.</p>
 
-    <h3 class="sub-heading">📱 A. Lo que hace el Cliente en la Mesa:</h3>
+    <h3 class="sub-heading">⚡ Procedimiento de Atención de una Reserva:</h3>
     <ol class="step-list avoid-break">
-      <li><strong>Escaneo del QR en Mesa:</strong> El cliente escanea el QR físico pegado en su mesa (ej: <span class="code-snippet">lacomadrelola.cl/carta?mesa=4</span>).</li>
-      <li><strong>Armado de la Comanda:</strong> Elige sus tragos, tablas o platos criollos y puede escribir observaciones (ej: <em>"carne término medio, bebida sin hielo"</em>).</li>
-      <li><strong>Generación de QR de Pedido:</strong> Presiona <strong>"📲 Generar Código QR de Pedido"</strong>. La pantalla de su teléfono genera un código QR nítido con el resumen exacto y el total estimado en pesos chilenos.</li>
-    </ol>
-
-    <h3 class="sub-heading">🧑‍🍳 B. Lo que hace el Garzón con su Teléfono:</h3>
-    <ol class="step-list avoid-break">
-      <li><strong>Ingreso a la App:</strong> Entra a <span class="code-snippet">lacomadrelola.cl/garzon</span>.</li>
-      <li><strong>Escaneo con la Cámara:</strong> Apunta la cámara del celular al QR que le muestra el cliente.</li>
-      <li><strong>Lectura y Validación:</strong> La app lee de inmediato el número de mesa, productos, subtotales, notas especiales y total.</li>
-      <li><strong>Despacho en 1 Clic:</strong> El garzón pulsa <strong>"💬 Enviar Comanda a WhatsApp"</strong> y el pedido se transfiere formateado al grupo de WhatsApp de Cocina y Barra para su preparación inmediata.</li>
+      <li><strong>Entra a la pestaña 📅 Reservas:</strong> Verás la lista ordenada con las reservas más recientes arriba. Las solicitudes nuevas aparecen destacadas en estado <span class="badge-pill pink">Pendiente</span>.</li>
+      <li><strong>Revisa los detalles:</strong> Comprueba la fecha, hora solicitada, cantidad de comensales y si el cliente dejó alguna nota especial (ej: <em>"Cumpleaños, mesa en terraza"</em>).</li>
+      <li><strong>Contacta al cliente en 1 Clic:</strong> Haz clic sobre el número de teléfono del cliente para abrir directamente una conversación de WhatsApp o llamada telefónica.</li>
+      <li><strong>Confirma o Cancela:</strong>
+        <br>• Si hay disponibilidad, presiona el botón verde <strong>"✓ Confirmar"</strong>.
+        <br>• Si no hay mesas o el cliente cancela, presiona el botón naranja <strong>"✕ Cancelar"</strong> para liberar el cupo.
+      </li>
     </ol>
 
     <!-- ════════════ CAPÍTULO 4 ════════════ -->
-    <h2 class="section-heading">4. Uso del Editor CMS Integrado en el Panel Admin</h2>
-    <p>El Editor visual integrado en <span class="code-snippet">lacomadrelola.cl/admin</span> (pestaña <em>"🎨 Editor Web (CMS)"</em>) permite modificar todo el contenido del sitio web sin tocar código de programación y con compresión de imágenes automática en tiempo real.</p>
+    <h2 class="section-heading">4. Edición de Carta, Eventos y Fotos (CMS en Vivo)</h2>
+    <p>El módulo <strong>🎨 Editor Web (CMS)</strong> te permite actualizar la carta, cambiar precios y publicar shows en vivo al instante.</p>
 
-    <table class="manual-table avoid-break">
-      <thead>
-        <tr>
-          <th>Pestaña del Editor</th>
-          <th>Qué permite modificar</th>
-          <th>Instrucciones Clave</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>🌹 Hero</strong></td>
-          <td>Títulos, subtítulo, etiqueta y botones de portada.</td>
-          <td>Permite cambiar las frases promocionales y los botones principales.</td>
-        </tr>
-        <tr>
-          <td><strong>🍽️ Carta</strong></td>
-          <td>Platos, tragos, precios, descripciones y fotos.</td>
-          <td>Se pueden añadir o borrar ítems, asignar categorías y subir fotos optimizadas.</td>
-        </tr>
-        <tr>
-          <td><strong>📸 Carrusel</strong></td>
-          <td>Imágenes de fondo a pantalla completa del inicio.</td>
-          <td>Sube fotos de alta resolución con compresión canvas instantánea.</td>
-        </tr>
-        <tr>
-          <td><strong>🖼️ Galería</strong></td>
-          <td>Fotos de "Mejores Momentos" con descripciones.</td>
-          <td>Controla las imágenes del lightbox interactivo con auto-compresión.</td>
-        </tr>
-        <tr>
-          <td><strong>🎤 Eventos</strong></td>
-          <td>Cartelera de shows, tributos, fechas y links de compra.</td>
-          <td>Enlaza directo a las ticketeras oficiales como <strong>FilaCero</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>🎨 Colores</strong></td>
-          <td>Paleta de diseño (Turquesa, Fucsia y Fondo).</td>
-          <td>Ajusta la atmósfera visual del restaurante en tiempo real.</td>
-        </tr>
-        <tr>
-          <td><strong>📍 Footer</strong></td>
-          <td>Dirección, teléfono, horarios de atención y copyright.</td>
-          <td>Sincroniza automáticamente los datos de contacto en toda la web.</td>
-        </tr>
-      </tbody>
-    </table>
+    <h3 class="sub-heading">🍽️ Cómo modificar precios o agregar platos:</h3>
+    <ol class="step-list avoid-break">
+      <li>Entra a la pestaña <strong>🎨 Editor Web (CMS)</strong> y selecciona la sub-sección <strong>🍽️ Carta & Menú</strong>.</li>
+      <li><strong>Para editar un plato:</strong> Modifica directamente su nombre, precio en pesos chilenos o descripción de ingredientes.</li>
+      <li><strong>Para subir una foto:</strong> Haz clic en <strong>"📁 Subir Foto"</strong> y selecciona la imagen desde tu celular o computador. <em>El sistema comprime la foto automáticamente para que cargue ultra rápido sin ponerse lenta.</em></li>
+      <li><strong>Para agregar un plato nuevo:</strong> Presiona <strong>"+ Nuevo Plato"</strong> arriba a la derecha.</li>
+      <li><strong>¡IMPORTANTE!</strong> Al terminar, haz clic en el botón superior <strong>"🚀 Publicar en vivo"</strong> para que todos los clientes en el local vean los cambios de inmediato.</li>
+    </ol>
 
-    <div class="callout avoid-break">
-      <strong>🚀 El Botón "Publicar en Vivo"</strong>
-      Cada vez que realices cambios en el editor, presiona el botón superior <strong>"🚀 Publicar en vivo"</strong>. El sistema guardará los datos en la base de datos de producción y todos los visitantes verán el contenido actualizado de inmediato.
-    </div>
+    <h3 class="sub-heading">🎤 Cómo publicar los eventos de la semana:</h3>
+    <ol class="step-list avoid-break">
+      <li>En el Editor Web, selecciona <strong>🎤 Cartelera Eventos</strong>.</li>
+      <li>Escribe el nombre del show, fecha (ej: <em>Viernes 14 Ago</em>), hora de inicio y descripción.</li>
+      <li>Sube el afiche o flyer del artista con el botón <strong>"📁 Subir Flyer"</strong>.</li>
+      <li>Pega el enlace de compra de entradas (ej: link de <strong>FilaCero</strong> o link de WhatsApp para reservas).</li>
+      <li>Presiona <strong>"🚀 Publicar en vivo"</strong>.</li>
+    </ol>
 
     <!-- ════════════ CAPÍTULO 5 ════════════ -->
     <div class="page-break"></div>
 
-    <h2 class="section-heading">5. Preguntas Frecuentes y Soporte Técnico</h2>
+    <h2 class="section-heading">5. Flujo de Pedidos Express QR para Garzones</h2>
+    <p>Este sistema agiliza el despacho de comandas en mesa y elimina los errores al tomar pedidos a mano.</p>
 
-    <h3 class="sub-heading">❓ ¿Qué hacer si no llegan los correos de reservas?</h3>
-    <p>1. Verifica en <span class="code-snippet">/admin</span> la bandeja de reservas.<br>
-    2. Comprueba que las notificaciones estén dirigidas a <span class="code-snippet">artemisa.photo@gmail.com</span>.<br>
-    3. Revisa la carpeta de <em>Spam / Correo no deseado</em> en Gmail y marca el remitente como seguro.</p>
+    <table class="manual-table avoid-break">
+      <thead>
+        <tr>
+          <th>Etapa</th>
+          <th>Quién lo realiza</th>
+          <th>Qué ocurre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Armado del Pedido</strong></td>
+          <td>El Cliente en la Mesa</td>
+          <td>Abre <span class="code-snippet">lacomadrelola.cl/carta</span>, elige sus tragos o platos y presiona <em>"Generar Código QR de Pedido"</em>. En la pantalla del cliente aparece un código QR con el resumen.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Escaneo Express</strong></td>
+          <td>El Garzón con su Celular</td>
+          <td>Abre <span class="code-snippet">lacomadrelola.cl/garzon</span>, apunta la cámara al QR del cliente y la app lee la mesa, los productos y las notas en 1 segundo.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Despacho a Cocina</strong></td>
+          <td>El Garzón</td>
+          <td>Presiona <strong>"💬 Enviar a WhatsApp"</strong> y la comanda se envía formateada al grupo de Cocina y Barra para preparar los tragos y platos de inmediato.</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h3 class="sub-heading">❓ ¿Cómo agregar un nuevo plato o evento rápidamente?</h3>
-    <p>1. Ingresa a <span class="code-snippet">lacomadrelola.cl/admin</span> y selecciona la pestaña <strong>🎨 Editor Web (CMS)</strong>.<br>
-    2. Selecciona la sub-sección <strong>🍽️ Carta & Menú</strong> o <strong>🎤 Cartelera Eventos</strong>.<br>
-    3. Haz clic en <strong>"+ Nuevo Plato"</strong> o <strong>"+ Nuevo Evento"</strong>, completa los datos y sube la foto.<br>
-    4. Haz clic en <strong>"🚀 Publicar en vivo"</strong>.</p>
+    <!-- ════════════ CAPÍTULO 6 ════════════ -->
+    <h2 class="section-heading">6. Preguntas Frecuentes del Administrador</h2>
 
-    <h3 class="sub-heading">❓ ¿El cliente necesita descargar alguna aplicación para pedir?</h3>
-    <p>No. Todo funciona 100% en la web directamente desde el navegador de su teléfono celular (Safari, Chrome, etc.) sin descargar nada ni registrarse.</p>
+    <div class="callout avoid-break">
+      <strong>❓ ¿Cómo sé si un cambio que hice en el editor ya está visible en internet?</strong>
+      Cuando presionas el botón <strong>"🚀 Publicar en vivo"</strong>, el badge superior cambia a color verde mostrando el mensaje: <span class="badge-pill green">✓ Publicado en vivo</span> con la hora exacta. En ese mismo segundo todos los clientes ya ven los cambios.
+    </div>
+
+    <div class="callout avoid-break">
+      <strong>❓ ¿Qué hago si olvidé mi contraseña del panel?</strong>
+      Comunícate con el soporte técnico de TuSitio Labs para que restablezca tu clave de acceso en minutos.
+    </div>
+
+    <div class="callout avoid-break">
+      <strong>❓ ¿Las fotos que subo deben tener un tamaño o peso especial?</strong>
+      No. Gracias al compresor inteligente incorporado, puedes tomar una foto directa con tu iPhone o celular de alta resolución y el sistema la optimiza automáticamente en segundos sin sobrecargar la página.
+    </div>
 
     <div class="footer-note avoid-break">
-      © 2026 La Comadre Lola — Restaurant · Bar · Eventos · Quilicura, Chile.<br>
-      Desarrollado y mantenido con estándares de alta disponibilidad por <strong>TuSitio Labs</strong>.
+      🌹 <strong>La Comadre Lola</strong> — Restaurant · Bar · Eventos · Quilicura, Santiago de Chile.<br>
+      Sistema diseñado para máxima velocidad y facilidad de uso por <strong>TuSitio Labs</strong>.
     </div>
 
   </div>
