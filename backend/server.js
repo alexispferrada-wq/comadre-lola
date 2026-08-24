@@ -189,11 +189,11 @@ function requireAuth(req, res, next) {
 ══════════════════════════════════════════ */
 app.get('/login',  (_req, res) => res.sendFile('login.html',      { root: staticDir }));
 app.get('/admin',  (_req, res) => res.sendFile('admin.html',      { root: staticDir }));
-app.get('/editor', (_req, res) => res.sendFile('editor_cms.html', { root: staticDir }));
+app.get('/editor', (_req, res) => res.redirect('/admin?tab=cms'));
 app.get('/garzon', (_req, res) => res.sendFile('garzon.html',     { root: staticDir }));
 app.get('/carta',  (_req, res) => res.sendFile('carta.html',      { root: staticDir }));
 app.get('/guia',   (_req, res) => res.sendFile('guia.html',       { root: staticDir }));
-app.get('/manual', (_req, res) => res.sendFile('guia.html',       { root: staticDir }));
+app.get('/manual', (_req, res) => res.sendFile('manual_admin.html', { root: staticDir }));
 
 /* ══════════════════════════════════════════
    API AUTH

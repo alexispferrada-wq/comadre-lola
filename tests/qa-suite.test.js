@@ -161,6 +161,43 @@ assert(serverJs.includes('getAdminEmails'), 'Divisor inteligente de múltiples c
 assert(serverJs.includes('/api/admin/test-email'), 'Endpoint de verificación de envío Gmail');
 assert(serverJs.includes('/garzon') && serverJs.includes('/carta'), 'Rutas limpias /carta y /garzon configuradas');
 
+/* ── LAB 7: AUDITORÍA TOTAL DE ENLACES E HIPERVÍNCULOS ── */
+console.log('\n🌐 LAB 7: Auditoría Exhaustiva de Enlaces e Hipervínculos');
+const htmlFiles = ['index.html', 'carta.html', 'garzon.html', 'admin.html', 'editor_cms.html', 'login.html', 'guia.html', 'manual_admin.html'];
+
+htmlFiles.forEach(filename => {
+  const filePath = path.join(rootDir, filename);
+  if (!fs.existsSync(filePath)) return;
+  const content = fs.readFileSync(filePath, 'utf-8');
+  
+  const hrefRegex = /href=["']([^"']+)["']/gi;
+  let match;
+  while ((match = hrefRegex.exec(content)) !== null) {
+    const href = match[1].trim();
+    if (href.includes('${')) {
+      // Plantilla JS dinámica en template strings
+      continue;
+    }
+    if (href.startsWith('#')) {
+      const targetId = href.substring(1);
+      if (targetId) {
+        assert(content.includes(`id="${targetId}"`) || content.includes(`id='${targetId}'`), `[${filename}] Enlace interno ancla verificado: ${href}`);
+      }
+    } else if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+      assert(href.length > 5, `[${filename}] Enlace externo/contacto válido: ${href}`);
+    } else if (href.startsWith('/')) {
+      const cleanPath = href.replace(/^\//, '').split('#')[0].split('?')[0];
+      const validClean = cleanPath === '' || cleanPath === 'carta' || cleanPath === 'admin' || cleanPath === 'editor' || cleanPath === 'garzon' || cleanPath === 'login' || cleanPath === 'guia' || cleanPath === 'manual' || fs.existsSync(path.join(rootDir, cleanPath)) || fs.existsSync(path.join(rootDir, cleanPath + '.html'));
+      assert(validClean, `[${filename}] Ruta limpia válida: ${href}`);
+    } else {
+      const cleanFile = href.split('#')[0].split('?')[0];
+      if (cleanFile) {
+        assert(fs.existsSync(path.join(rootDir, cleanFile)), `[${filename}] Archivo vinculado presente: ${href}`);
+      }
+    }
+  }
+});
+
 /* ── RESULTADOS FINALES ── */
 console.log('\n======================================================');
 console.log(`📊 RESUMEN QA: ${passedTests}/${totalTests} Tests Pasados (${Math.round((passedTests/totalTests)*100)}%)`);
