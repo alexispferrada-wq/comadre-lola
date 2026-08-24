@@ -36,6 +36,22 @@ body{
   min-height:100vh;
   display:flex;
   flex-direction:column;
+  position:relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #08080c;
+  background-image: 
+    linear-gradient(180deg, rgba(8, 8, 12, 0.88) 0%, rgba(8, 8, 12, 0.94) 100%),
+    url('assets/fondo_oficial.png');
+  background-size: cover, 480px;
+  background-repeat: no-repeat, repeat;
+  background-position: center center;
+  transform: translateZ(0);
 }
 
 /* ── TOP BAR ── */
