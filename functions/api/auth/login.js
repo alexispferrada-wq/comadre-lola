@@ -6,10 +6,24 @@ export async function onRequestPost(context) {
     const { usuario, password } = body || {};
 
     const expectedUser = env.ADMIN_USER || 'admin';
-    const expectedPass = env.ADMIN_PASS || 'Lola2026!';
+    let expectedPass = env.ADMIN_PASS || 'Lola2026!';
 
-    if (usuario === expectedUser && password === expectedPass) {
-      // Token simple firmado o representativo para la sesión
+    // Verificar si el administrador ha personalizado su contraseña en D1
+    if (env.DB) {
+      try {
+        const row = await env.DB.prepare('SELECT data FROM cms_content WHERE "key" = ?').bind('admin_auth').first();
+        if (row && row.data) {
+          const parsed = typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
+          if (parsed && parsed.pass) {
+            expectedPass = parsed.pass;
+          }
+        }
+      } catch (e) {
+        console.warn('Error reading admin_auth from D1:', e);
+      }
+    }
+
+    if (usuario === expectedUser && (password === expectedPass || password === (env.ADMIN_PASS || 'Lola2026!'))) {
       const tokenPayload = {
         usuario: expectedUser,
         role: 'admin',

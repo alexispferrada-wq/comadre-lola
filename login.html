@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — La Comadre Lola</title>
+<title>Acceso Administrador — La Comadre Lola</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{
   font-family:'BudmoJiggler';
@@ -31,35 +31,37 @@ body::before{
   transform:translateZ(0);
 }
 
-.card{width:100%;max-width:420px;background:rgba(18,18,28,.97);border:1px solid rgba(232,145,58,.2);border-radius:24px;padding:48px 40px;box-shadow:0 40px 120px rgba(0,0,0,.7);position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(232,145,58,.1),transparent 70%);pointer-events:none;}
-.card::after{content:'';position:absolute;bottom:-50px;left:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(212,84,123,.08),transparent 70%);pointer-events:none;}
+.card{width:100%;max-width:440px;background:rgba(18,18,28,.97);border:1px solid rgba(0,250,221,.25);border-radius:24px;padding:44px 36px;box-shadow:0 40px 120px rgba(0,0,0,.8);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,250,221,.12),transparent 70%);pointer-events:none;}
+.card::after{content:'';position:absolute;bottom:-50px;left:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(225,14,137,.1),transparent 70%);pointer-events:none;}
 
-.logo{text-align:center;margin-bottom:36px;}
-.logo-brand{font-family:'BudmoJiggler',cursive;font-size:24px;color:var(--p);}
-.logo-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--tm);margin-top:4px;}
+.logo{text-align:center;margin-bottom:28px;}
+.logo-brand{font-family:'BudmoJiggler',cursive;font-size:26px;color:var(--p);letter-spacing:0.5px;}
+.logo-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tm);margin-top:4px;font-weight:700;}
 
-.fld{margin-bottom:18px;}
+.fld{margin-bottom:16px;}
 .fld label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);margin-bottom:8px;}
-.fld input{width:100%;padding:13px 16px;background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s,background .2s;}
-.fld input:focus{outline:none;border-color:var(--p);background:rgba(232,145,58,.04);}
-.fld input.error{border-color:#f44336;}
+.fld input{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s,background .2s;}
+.fld input:focus{outline:none;border-color:var(--p);background:rgba(0,250,221,.05);}
 
-.err-msg{display:none;background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.3);color:#ff6b6b;border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:16px;}
-.err-msg.show{display:block;}
+.msg-box{display:none;border-radius:10px;padding:12px 14px;font-size:13px;text-align:center;margin-bottom:16px;line-height:1.4;}
+.msg-box.err{display:block;background:rgba(244,67,54,.12);border:1px solid rgba(244,67,54,.35);color:#ff6b6b;}
+.msg-box.ok{display:block;background:rgba(0,250,221,.12);border:1px solid rgba(0,250,221,.35);color:var(--p);}
 
-.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--p),var(--s));border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 8px 30px rgba(232,145,58,.3);transition:opacity .2s,transform .2s;margin-top:4px;}
-.btn:hover{opacity:.92;transform:translateY(-1px);}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--p),var(--s));border:none;border-radius:12px;color:#000;font-size:14px;font-weight:800;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,250,221,.3);transition:all .2s;margin-top:6px;}
+.btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 12px 28px rgba(0,250,221,.4);}
 .btn:disabled{opacity:.5;cursor:wait;transform:none;}
 
-.back{text-align:center;margin-top:20px;font-size:12px;color:var(--tm);}
-.back a{color:var(--p);cursor:pointer;}
+.links-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px;font-size:12px;color:var(--tm);}
+.links-row a{color:var(--p);text-decoration:none;cursor:pointer;font-weight:600;}
+.links-row a:hover{text-decoration:underline;}
+
+.panel-view{display:none;}
+.panel-view.active{display:block;}
+
 @media(max-width:480px){
-  .card{padding:36px 24px;}
-  .logo-brand{font-size:20px;}
-}
-@media(max-width:360px){
-  .card{padding:28px 16px;}
+  .card{padding:32px 20px;}
+  .logo-brand{font-size:22px;}
 }
 </style>
 </head>
@@ -67,37 +69,109 @@ body::before{
 <div class="card">
   <div class="logo">
     <div class="logo-brand">🌹 La Comadre Lola</div>
-    <div class="logo-sub">Panel de Administracion</div>
+    <div class="logo-sub" id="cardSubTitle">Panel de Administración</div>
   </div>
 
-  <div class="err-msg" id="errMsg"></div>
+  <div class="msg-box" id="msgBox"></div>
 
-  <div class="fld">
-    <label>Usuario</label>
-    <input type="text" id="usuario" placeholder="admin" autocomplete="username">
+  <!-- ── VISTA 1: LOGIN HABITUAL ── -->
+  <div id="viewLogin" class="panel-view active">
+    <div class="fld">
+      <label>Usuario</label>
+      <input type="text" id="usuario" placeholder="admin" value="admin" autocomplete="username">
+    </div>
+    <div class="fld">
+      <label>Contraseña</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn" id="loginBtn" onclick="doLogin()">Ingresar al Panel →</button>
+
+    <div class="links-row">
+      <a onclick="showView('forgot')">¿Olvidaste tu contraseña?</a>
+      <a href="/">← Volver al sitio</a>
+    </div>
   </div>
-  <div class="fld">
-    <label>Contrasena</label>
-    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+
+  <!-- ── VISTA 2: SOLICITAR RECUPERACIÓN / ENLACE ── -->
+  <div id="viewForgot" class="panel-view">
+    <p style="font-size:13px;color:var(--tm);margin-bottom:16px;line-height:1.5;">
+      Ingresa tu correo o confirma tu usuario para enviarte un enlace directo que te permitirá definir una nueva contraseña.
+    </p>
+    <div class="fld">
+      <label>Usuario / Administrador</label>
+      <input type="text" id="forgotUser" value="admin" readonly style="opacity:0.8;background:rgba(255,255,255,0.02);">
+    </div>
+
+    <button class="btn" id="forgotBtn" onclick="sendRecoveryLink()">Enviar Enlace a mi Correo →</button>
+
+    <div class="links-row" style="justify-content:center;margin-top:18px;">
+      <a onclick="showView('login')">← Volver al inicio de sesión</a>
+    </div>
   </div>
 
-  <button class="btn" id="loginBtn" onclick="doLogin()">Ingresar →</button>
+  <!-- ── VISTA 3: DEFINIR / CAMBIAR CONTRASEÑA ── -->
+  <div id="viewReset" class="panel-view">
+    <p style="font-size:13px;color:var(--tm);margin-bottom:16px;line-height:1.5;">
+      Escribe tu nueva contraseña de administración. Se guardará de inmediato y podrás usarla para ingresar siempre.
+    </p>
+    <div class="fld">
+      <label>Nueva Contraseña</label>
+      <input type="password" id="newPass1" placeholder="Mínimo 4 caracteres">
+    </div>
+    <div class="fld">
+      <label>Confirmar Nueva Contraseña</label>
+      <input type="password" id="newPass2" placeholder="Repite tu nueva contraseña">
+    </div>
 
-  <div class="back"><a onclick="location.href='/'">← Volver al sitio</a></div>
+    <button class="btn" id="savePassBtn" onclick="saveNewPassword()">Guardar Nueva Contraseña ✓</button>
+
+    <div class="links-row" style="justify-content:center;margin-top:18px;">
+      <a onclick="showView('login')">← Ir a Iniciar Sesión</a>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const API = window.location.origin;
+let _tokenParam = new URLSearchParams(location.search).get('token');
+let _actionParam = new URLSearchParams(location.search).get('action');
 
-document.getElementById('password').addEventListener('keydown', e => {
+function showMsg(text, type='err') {
+  const b = document.getElementById('msgBox');
+  b.textContent = (type==='err'?'⚠ ':'✓ ') + text;
+  b.className = 'msg-box ' + type;
+}
+
+function showView(viewName) {
+  document.getElementById('msgBox').className = 'msg-box';
+  document.querySelectorAll('.panel-view').forEach(v => v.classList.remove('active'));
+  
+  if (viewName === 'forgot') {
+    document.getElementById('viewForgot').classList.add('active');
+    document.getElementById('cardSubTitle').textContent = 'Recuperar Contraseña';
+  } else if (viewName === 'reset') {
+    document.getElementById('viewReset').classList.add('active');
+    document.getElementById('cardSubTitle').textContent = 'Crear Nueva Contraseña';
+  } else {
+    document.getElementById('viewLogin').classList.add('active');
+    document.getElementById('cardSubTitle').textContent = 'Panel de Administración';
+  }
+}
+
+// Detección de token en URL (ej: ?token=... o ?action=reset)
+if (_tokenParam || _actionParam === 'reset') {
+  showView('reset');
+}
+
+document.getElementById('password')?.addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
-document.getElementById('usuario').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('password').focus();
-});
 
-// Si ya tiene token valido, redirigir directo
+// Auto-redirección si ya está autenticado
 (async () => {
+  if (_tokenParam || _actionParam === 'reset') return;
   const token = localStorage.getItem('lola_token');
   if (!token) return;
   try {
@@ -106,14 +180,13 @@ document.getElementById('usuario').addEventListener('keydown', e => {
   } catch {}
 })();
 
+/* ── 1. LOGIN ── */
 async function doLogin() {
   const usuario  = document.getElementById('usuario').value.trim();
   const password = document.getElementById('password').value;
   const btn      = document.getElementById('loginBtn');
-  const err      = document.getElementById('errMsg');
 
-  err.classList.remove('show');
-  if (!usuario || !password) { showErr('Completa usuario y contrasena.'); return; }
+  if (!usuario || !password) { showMsg('Ingresa tu usuario y contraseña.'); return; }
 
   btn.disabled = true;
   btn.textContent = 'Verificando...';
@@ -132,21 +205,102 @@ async function doLogin() {
       const to = new URLSearchParams(location.search).get('to') || '/admin';
       location.href = to;
     } else {
-      showErr(data.error || 'Credenciales incorrectas.');
+      showMsg(data.error || 'Credenciales incorrectas.', 'err');
       btn.disabled = false;
-      btn.textContent = 'Ingresar →';
+      btn.textContent = 'Ingresar al Panel →';
     }
   } catch {
-    showErr('Error de conexion. Verifica que el servidor este corriendo.');
+    showMsg('Error de conexión con el servidor.', 'err');
     btn.disabled = false;
-    btn.textContent = 'Ingresar →';
+    btn.textContent = 'Ingresar al Panel →';
   }
 }
 
-function showErr(msg) {
-  const e = document.getElementById('errMsg');
-  e.textContent = '⚠  ' + msg;
-  e.classList.add('show');
+/* ── 2. SOLICITAR ENLACE DE RECUPERACIÓN ── */
+async function sendRecoveryLink() {
+  const btn = document.getElementById('forgotBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generando enlace...';
+
+  try {
+    const res = await fetch(API + '/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'request' })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      showMsg('¡Listo! Hemos enviado el enlace a tu correo. También puedes abrirlo aquí directamente para cambiar tu clave ahora mismo.', 'ok');
+      btn.style.display = 'none';
+      
+      // Mostrar botón directo si el usuario está en pantalla
+      const linkDiv = document.createElement('div');
+      linkDiv.style.marginTop = '16px';
+      linkDiv.innerHTML = `
+        <button class="btn" style="background:#00fadd;color:#000;" onclick="showView('reset')">
+          🔑 Definir mi nueva clave ahora
+        </button>
+      `;
+      document.getElementById('viewForgot').appendChild(linkDiv);
+    } else {
+      showMsg(data.error || 'No se pudo generar el enlace.', 'err');
+      btn.disabled = false;
+      btn.textContent = 'Enviar Enlace a mi Correo →';
+    }
+  } catch {
+    showMsg('Error de conexión.', 'err');
+    btn.disabled = false;
+    btn.textContent = 'Enviar Enlace a mi Correo →';
+  }
+}
+
+/* ── 3. GUARDAR NUEVA CONTRASEÑA ── */
+async function saveNewPassword() {
+  const p1 = document.getElementById('newPass1').value;
+  const p2 = document.getElementById('newPass2').value;
+  const btn = document.getElementById('savePassBtn');
+
+  if (!p1 || p1.length < 4) {
+    showMsg('La contraseña debe tener al menos 4 caracteres.', 'err');
+    return;
+  }
+  if (p1 !== p2) {
+    showMsg('Las contraseñas no coinciden. Escríbelas iguales.', 'err');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Guardando en el sistema...';
+
+  try {
+    const res = await fetch(API + '/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'set',
+        newPassword: p1,
+        token: _tokenParam || ''
+      })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      showMsg('¡Tu nueva contraseña ha sido guardada con éxito! Ya puedes iniciar sesión.', 'ok');
+      setTimeout(() => {
+        document.getElementById('password').value = p1;
+        showView('login');
+      }, 1800);
+    } else {
+      showMsg(data.error || 'No se pudo guardar la contraseña.', 'err');
+      btn.disabled = false;
+      btn.textContent = 'Guardar Nueva Contraseña ✓';
+    }
+  } catch {
+    showMsg('Error de conexión al guardar.', 'err');
+    btn.disabled = false;
+    btn.textContent = 'Guardar Nueva Contraseña ✓';
+  }
 }
 </script>
 </body>
