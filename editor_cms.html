@@ -1630,6 +1630,39 @@ function exportChanges(){
     .catch(()=>showToast(`📋 ${entries.length} cambio(s) listo(s)`,'info'));
 }
 
+function getCleanPayloadForPublish(state) {
+  try {
+    const clean = JSON.parse(JSON.stringify(state));
+    if (clean.carousel && Array.isArray(clean.carousel)) {
+      clean.carousel = clean.carousel.map(c => ({
+        src: (c.src && c.src.startsWith('data:')) ? 'assets/carrusel_bar.png' : c.src
+      }));
+    }
+    if (clean.galeria && Array.isArray(clean.galeria)) {
+      clean.galeria = clean.galeria.map(g => ({
+        src: (g.src && g.src.startsWith('data:')) ? 'assets/galeria_brindis.png' : g.src,
+        caption: g.caption || ''
+      }));
+    }
+    if (clean.carta && Array.isArray(clean.carta)) {
+      clean.carta = clean.carta.map(item => ({
+        ...item,
+        foto: (item.foto && item.foto.startsWith('data:')) ? '' : item.foto,
+        img: (item.img && item.img.startsWith('data:')) ? '' : item.img
+      }));
+    }
+    if (clean.eventos && Array.isArray(clean.eventos)) {
+      clean.eventos = clean.eventos.map(ev => ({
+        ...ev,
+        flyer: (ev.flyer && ev.flyer.startsWith('data:')) ? 'assets/carrusel_show.png' : ev.flyer
+      }));
+    }
+    return clean;
+  } catch(e) {
+    return state;
+  }
+}
+
 /* ── PUBLICAR EN VIVO ── */
 async function publishLive(){
   const btn=document.getElementById('publishBtn');
@@ -1639,13 +1672,14 @@ async function publishLive(){
 
   try {
     const token=localStorage.getItem('lola_token');
+    const payload = getCleanPayloadForPublish(S);
     const res=await fetch(API + '/api/admin/content', {
       method:'PUT',
       headers:{
         'Content-Type':'application/json',
         'Authorization':'Bearer '+token,
       },
-      body: JSON.stringify({ data: S }),
+      body: JSON.stringify({ data: payload }),
     });
     const result=await res.json();
     if(result.ok){

@@ -7,6 +7,21 @@ export async function onRequestPost(context) {
   return handleSaveAdminContent(context);
 }
 
+function sanitizeData(data) {
+  if (!data) return {};
+  try {
+    const raw = JSON.stringify(data, (key, value) => {
+      if (typeof value === 'string' && value.startsWith('data:image/') && value.length > 10000) {
+        return '';
+      }
+      return value;
+    });
+    return JSON.parse(raw);
+  } catch (e) {
+    return data;
+  }
+}
+
 async function createTableClean(db) {
   try {
     await db.prepare("DROP TABLE IF EXISTS cms_content").run();
@@ -24,10 +39,10 @@ async function handleSaveAdminContent(context) {
   const { request, env } = context;
   try {
     const body = await request.json();
-    const dataToSave = body.data || body;
+    const dataToSave = sanitizeData(body.data || body);
+    const jsonString = JSON.stringify(dataToSave);
 
     if (env.DB) {
-      // 1. Asegurar que la tabla exista
       try {
         await env.DB.prepare(`
           CREATE TABLE IF NOT EXISTS cms_content (
@@ -38,17 +53,15 @@ async function handleSaveAdminContent(context) {
         `).run();
       } catch (e) {}
 
-      // 2. Intentar inserción / actualización
       try {
         await env.DB.prepare(
           `INSERT INTO cms_content ("key", "data", "updated_at")
            VALUES ('site_content', ?, CURRENT_TIMESTAMP)
            ON CONFLICT("key") DO UPDATE SET "data" = excluded."data", "updated_at" = CURRENT_TIMESTAMP`
         )
-        .bind(JSON.stringify(dataToSave))
+        .bind(jsonString)
         .run();
       } catch (err) {
-        // Si la tabla existía con esquema incompatible (sin columna 'key'), la recreamos y reintentamos
         console.warn('Recreando tabla cms_content por incompatibilidad de esquema:', err.message);
         await createTableClean(env.DB);
         await env.DB.prepare(
@@ -56,7 +69,7 @@ async function handleSaveAdminContent(context) {
            VALUES ('site_content', ?, CURRENT_TIMESTAMP)
            ON CONFLICT("key") DO UPDATE SET "data" = excluded."data", "updated_at" = CURRENT_TIMESTAMP`
         )
-        .bind(JSON.stringify(dataToSave))
+        .bind(jsonString)
         .run();
       }
     }
