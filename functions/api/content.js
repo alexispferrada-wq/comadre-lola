@@ -3,7 +3,7 @@ function sanitizeData(data) {
   if (!data) return {};
   try {
     const raw = JSON.stringify(data, (key, value) => {
-      if (typeof value === 'string' && value.startsWith('data:image/') && value.length > 10000) {
+      if (typeof value === 'string' && value.startsWith('data:image/') && value.length > 350000) {
         return '';
       }
       return value;
