@@ -562,6 +562,60 @@ app.get('/api/content', async (_req, res) => {
   }
 });
 
+/* POST /api/bot/update-content — Actualización quirúrgica desde el bot de WhatsApp.
+   Protegido con LOLA_BOT_KEY (server-to-server). El bot (con aprobación de la
+   JEFA) puede cambiar eventos, horario o precios en site_content. */
+app.post('/api/bot/update-content', async (req, res) => {
+  const botKey = process.env.LOLA_BOT_KEY || '';
+  const sentKey = String(req.headers['x-bot-key'] || '');
+  if (!botKey || sentKey !== botKey) {
+    return res.status(401).json({ ok: false, error: 'Clave del bot inválida' });
+  }
+  try {
+    const { section, action, payload } = req.body || {};
+    if (!section || !payload) {
+      return res.status(400).json({ ok: false, error: 'section y payload requeridos' });
+    }
+    // Leer contenido actual
+    const cur = await pool.query("SELECT data FROM site_content WHERE key = 'live'");
+    const data = cur.rows[0]?.data || {};
+
+    if (section === 'eventos') {
+      // payload: { match: {name}, update: {...} } → modifica un evento por nombre
+      //          { match: {name}, remove: true } → lo quita
+      if (!Array.isArray(data.eventos)) data.eventos = [];
+      const idx = data.eventos.findIndex(e => e.name === (payload.match && payload.match.name));
+      if (payload.remove) {
+        if (idx !== -1) data.eventos.splice(idx, 1);
+        else return res.status(404).json({ ok: false, error: 'Evento no encontrado' });
+      } else if (idx !== -1) {
+        data.eventos[idx] = { ...data.eventos[idx], ...payload.update };
+      } else if (payload.add) {
+        data.eventos.push({ ...payload.update, ...payload.add });
+      } else {
+        return res.status(404).json({ ok: false, error: 'Evento no encontrado' });
+      }
+    } else if (section === 'footer') {
+      // payload: { update: { hours, phone, address } } → horario/contacto
+      if (!data.footer) data.footer = {};
+      data.footer = { ...data.footer, ...payload.update };
+    } else if (section === 'precios' || section === 'carta') {
+      // payload: { update: { ...precios } } → se guardan en data.precios (para consumo futuro)
+      data.precios = { ...(data.precios || {}), ...payload.update };
+    } else if (section === 'hero') {
+      if (!data.hero) data.hero = {};
+      data.hero = { ...data.hero, ...payload.update };
+    } else {
+      return res.status(400).json({ ok: false, error: 'Sección no soportada: ' + section });
+    }
+
+    await pool.query("UPDATE site_content SET data = $1, updated_at = NOW() WHERE key = 'live'", [JSON.stringify(data)]);
+    res.json({ ok: true, message: 'Contenido actualizado por el bot', section });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 /* ══════════════════════════════════════════
    API PUBLICA
 ══════════════════════════════════════════ */
