@@ -457,42 +457,9 @@ app.get('/api/admin/newsletter', requireAuth, async (_req, res) => {
 
 /* POST /api/admin/upload-image */
 app.post('/api/admin/upload-image', requireAuth, uploadLimiter, async (req, res) => {
-  if (!CLOUDINARY_CONFIGURED) {
-    try {
-      const { dataUrl, target } = req.body || {};
-      if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
-        return res.status(400).json({ ok: false, error: 'Imagen en formato base64 requerida (desarrollo local)' });
-      }
-
-      const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-      if (!matches || matches.length !== 3) {
-        return res.status(400).json({ ok: false, error: 'Formato de base64 inválido' });
-      }
-
-      const ext = matches[1].split('/')[1] || 'png';
-      const buffer = Buffer.from(matches[2], 'base64');
-
-      const uploadsDir = path.join(staticDir, 'assets', 'uploads');
-      const fs = require('fs');
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
-
-      const fileName = `upload_${Date.now()}_${Math.floor(Math.random() * 1000)}.${ext}`;
-      const filePath = path.join(uploadsDir, fileName);
-      fs.writeFileSync(filePath, buffer);
-
-      console.log(`💾 Imagen guardada localmente en desarrollo: assets/uploads/${fileName}`);
-      return res.json({
-        ok: true,
-        url: `/assets/uploads/${fileName}`,
-      });
-    } catch (err) {
-      console.error('Local upload error:', err.message);
-      return res.status(500).json({ ok: false, error: 'Error al guardar la imagen localmente', detail: err.message });
-    }
-  }
-
+  // Almacenamiento local + imgproxy (reemplaza a Cloudinary). El volumen
+  // lola_uploads se monta en /app/assets/uploads (backend) y /uploads (imgproxy).
+  const IMG_BASE_URL = process.env.IMG_BASE_URL || 'https://img.lacomadrelola.cl';
   try {
     const { dataUrl, imageUrl, target } = req.body || {};
     const source = dataUrl || imageUrl;
@@ -501,38 +468,51 @@ app.post('/api/admin/upload-image', requireAuth, uploadLimiter, async (req, res)
       return res.status(400).json({ ok: false, error: 'Imagen requerida' });
     }
 
-    if (dataUrl && !dataUrl.startsWith('data:image/')) {
-      return res.status(400).json({ ok: false, error: 'Formato de imagen inválido' });
+    // Guardar la imagen en el volumen compartido
+    let buffer = null;
+    if (dataUrl) {
+      const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(400).json({ ok: false, error: 'Formato de base64 inválido' });
+      }
+      buffer = Buffer.from(matches[2], 'base64');
+    } else {
+      // Descargar desde URL externa
+      const resp = await fetch(imageUrl);
+      if (!resp.ok) return res.status(400).json({ ok: false, error: 'No se pudo descargar la imagen' });
+      buffer = Buffer.from(await resp.arrayBuffer());
     }
 
-    const subFolder = sanitizeFolderPart(target, 'general');
-    const folder = `${CLOUDINARY_FOLDER}/${subFolder}`;
+    const uploadsDir = path.join(staticDir, 'assets', 'uploads');
+    const fs = require('fs');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
 
-    const uploaded = await cloudinary.uploader.upload(source, {
-      resource_type: 'image',
-      folder,
-      overwrite: false,
-      unique_filename: true,
-      transformation: [{ quality: 'auto', fetch_format: 'auto' }],
-      tags: ['lacomadrelola', subFolder],
-    });
+    const ext = (dataUrl && dataUrl.match(/^data:([A-Za-z-+\/]+);base64,/)?.[1].split('/')[1]) || 'png';
+    const safeExt = ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext) ? ext : 'png';
+    const fileName = `upload_${Date.now()}_${Math.floor(Math.random() * 1000)}.${safeExt}`;
+    fs.writeFileSync(path.join(uploadsDir, fileName), buffer);
 
+    // URL original via imgproxy (sirve el archivo tal cual desde el volumen local)
+    const originalUrl = `${IMG_BASE_URL}/plain/local:///${fileName}`;
+    // URL optimizada (imagen lista para usar en el sitio)
+    const optimizedUrl = `${IMG_BASE_URL}/quality:80/plain/local:///${fileName}@webp`;
+
+    console.log(`💾 Imagen guardada localmente: ${fileName} (${buffer.length} bytes)`);
     return res.json({
       ok: true,
-      url: uploaded.secure_url,
-      publicId: uploaded.public_id,
-      width: uploaded.width,
-      height: uploaded.height,
-      bytes: uploaded.bytes,
-      format: uploaded.format,
+      url: optimizedUrl,
+      original: originalUrl,
+      fileName,
+      width: null,
+      height: null,
+      bytes: buffer.length,
+      format: safeExt,
     });
   } catch (err) {
-    console.error('Cloudinary upload error:', err.message);
-    return res.status(500).json({
-      ok: false,
-      error: 'No se pudo subir la imagen a Cloudinary',
-      detail: err.message,
-    });
+    console.error('Upload error:', err.message);
+    return res.status(500).json({ ok: false, error: 'Error al guardar la imagen', detail: err.message });
   }
 });
 
