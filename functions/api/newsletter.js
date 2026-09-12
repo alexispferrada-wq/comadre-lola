@@ -1,28 +1,18 @@
-// functions/api/newsletter.js — Cloudflare Pages Function
+// functions/api/newsletter.js — Proxy al backend del VPS (BD unificada)
+import { proxyFetch } from './_proxy.js';
+
 export async function onRequestPost(context) {
-  const { request, env } = context;
-  try {
-    const body = await request.json();
-    const { email } = body || {};
+  const { request } = context;
+  const body = await request.json().catch(() => ({}));
+  return proxyFetch('/api/newsletter', { method: 'POST', body }, context);
+}
 
-    if (!email) {
-      return new Response(JSON.stringify({ ok: false, error: 'Email requerido' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    if (env.DB) {
-      await env.DB.prepare('INSERT OR IGNORE INTO newsletter (email) VALUES (?)').bind(email).run();
-    }
-
-    return new Response(JSON.stringify({ ok: true, msg: '¡Te has suscrito con éxito!' }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    },
+  });
 }

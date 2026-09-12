@@ -651,6 +651,16 @@ app.post('/api/reservations', async (req, res) => {
   }
 });
 
+/* GET /api/orders — Listar comandas (garzón / display) */
+app.get('/api/orders', async (_req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM orders ORDER BY created_at DESC LIMIT 100');
+    res.json({ ok: true, orders: result.rows });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 /* POST /api/orders — Registrar pedido de comanda (desde garzón o cliente) */
 app.post('/api/orders', async (req, res) => {
   try {

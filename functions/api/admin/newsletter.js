@@ -1,27 +1,13 @@
-// functions/api/admin/newsletter.js
+// functions/api/admin/newsletter.js — Proxy al backend del VPS (BD unificada)
+import { proxyFetch } from '../_proxy.js';
+
 export async function onRequestGet(context) {
-  const { env } = context;
-  try {
-    if (!env.DB) {
-      return new Response(JSON.stringify({ ok: true, data: [] }), {
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+  return proxyFetch('/api/admin/newsletter', { method: 'GET' }, context);
+}
 
-    const result = await env.DB.prepare('SELECT * FROM newsletter ORDER BY created_at DESC LIMIT 200').all();
-    const data = (result.results || []).map(row => ({
-      _id: row.id,
-      email: row.email,
-      createdAt: row.created_at,
-    }));
-
-    return new Response(JSON.stringify({ ok: true, data }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: err.message, data: [] }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, OPTIONS' },
+  });
 }

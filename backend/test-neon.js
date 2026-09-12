@@ -1,7 +1,7 @@
 // Script de prueba de conexión a Neon PostgreSQL
 const { Client } = require('pg');
 
-const connectionString = 'postgresql://neondb_owner:npg_bdBCjvnx4gk2@ep-little-thunder-at81mbhn-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+const connectionString = 'process.env.DATABASE_URL';
 
 async function testConnection() {
   const client = new Client({ connectionString });

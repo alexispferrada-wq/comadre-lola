@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const connectionString = 'postgresql://neondb_owner:npg_bdBCjvnx4gk2@ep-little-thunder-at81mbhn-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+const connectionString = 'process.env.DATABASE_URL';
 
 async function run() {
   const client = new Client({ connectionString });

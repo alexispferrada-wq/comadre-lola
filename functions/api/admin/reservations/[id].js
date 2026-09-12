@@ -1,44 +1,9 @@
-// functions/api/admin/reservations/[id].js
-export async function onRequestPatch(context) {
-  const { request, params, env } = context;
-  try {
-    const id = params.id;
-    const body = await request.json();
-    const { estado } = body || {};
-
-    if (!env.DB) {
-      return new Response(JSON.stringify({ ok: true }), { headers: { 'Content-Type': 'application/json' } });
-    }
-
-    await env.DB.prepare('UPDATE reservations SET estado = ? WHERE id = ?')
-      .bind(estado, id)
-      .run();
-
-    return new Response(JSON.stringify({ ok: true, id, estado }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-}
+// functions/api/admin/reservations/[id].js — Proxy al backend del VPS
+import { proxyFetch } from '../../_proxy.js';
 
 export async function onRequestDelete(context) {
-  const { params, env } = context;
-  try {
-    const id = params.id;
-    if (env.DB) {
-      await env.DB.prepare('DELETE FROM reservations WHERE id = ?').bind(id).run();
-    }
-    return new Response(JSON.stringify({ ok: true }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  const { request } = context;
+  const url = new URL(request.url);
+  const id = url.pathname.split('/').pop();
+  return proxyFetch(`/api/admin/reservations/${id}`, { method: 'DELETE' }, context);
 }
