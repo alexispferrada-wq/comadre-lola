@@ -1,8 +1,11 @@
-// functions/api/_proxy.js — Cliente HTTP hacia el backend del VPS (api.lacomadrelola.cl)
+// functions/api/_proxy.js — Cliente HTTP hacia el backend del VPS
 // Reemplaza el acceso directo a D1/Neon: TODO el dato vive en la BD del VPS.
-export const API_BACKEND =
-  (typeof API_BACKEND_URL !== 'undefined' && API_BACKEND_URL) ||
-  'https://api.lacomadrelola.cl';
+// LOLA_API_URL: URL del backend (configurable en Cloudflare Pages).
+//   Producción limpia: https://api.lacomadrelola.cl
+//   Temporal (sin DNS): http://148.113.179.225:3006
+export function backendBase(env) {
+  return (env && env.LOLA_API_URL) || 'https://api.lacomadrelola.cl';
+}
 
 export async function proxyFetch(path, options = {}, context = {}) {
   const { request, env } = context;
@@ -22,7 +25,7 @@ export async function proxyFetch(path, options = {}, context = {}) {
   let body = options.body;
   if (body && typeof body !== 'string') body = JSON.stringify(body);
 
-  const resp = await fetch(`${API_BACKEND}${path}`, { method, headers, body });
+  const resp = await fetch(`${backendBase(env)}${path}`, { method, headers, body });
   const text = await resp.text();
   let json = null;
   try { json = text ? JSON.parse(text) : null; } catch (_) { json = { raw: text }; }
