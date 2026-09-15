@@ -1835,6 +1835,11 @@ footer{
 </head>
 <body>
 
+<!-- ── AVISO EVENTO SUSPENDIDO (lo controla la JEFA por WhatsApp) ── -->
+<div id="lolaEventBanner" style="display:none;position:sticky;top:0;z-index:99999;background:#e63946;color:#fff;text-align:center;padding:10px 14px;font-size:13px;font-weight:800;letter-spacing:.3px;box-shadow:0 2px 10px rgba(0,0,0,.35);">
+  ⚠️ EVENTO DE HOY SUSPENDIDO — revisa la cartelera para las próximas fechas.
+</div>
+
 <!-- ── NAV ── -->
 <nav class="nav" id="nav">
   <div class="nav-logo" onclick="scrollTo(0,0)">🌹 La Comadre Lola</div>
@@ -2895,6 +2900,11 @@ document.addEventListener('keydown', (e) => {
 /* ── Aplicar contenido publicado desde CMS ── */
 function applySiteContent(data) {
   if (!data || typeof data !== 'object') return;
+
+  // Aviso de evento suspendido (lo controla la JEFA por WhatsApp: "suspende el evento de hoy")
+  const susp = (data.eventos || []).find(e => e.estado === 'suspendido' || (e.badge || '').toUpperCase().includes('SUSPENDIDO'));
+  const bannerEl = document.getElementById('lolaEventBanner');
+  if (bannerEl) bannerEl.style.display = susp ? 'block' : 'none';
 
   // Carta desde CMS
   if (data.carta && Array.isArray(data.carta) && data.carta.length > 0) {
